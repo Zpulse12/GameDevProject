@@ -40,6 +40,13 @@ namespace NaamGaatNogKomen.Classes
                 counter = 0;
         }
 
+        public void GetFramesFromTexture(int width,int height,int numberOfWidthSprites,int numberOfHeightSprites)
+        {
+            int widthOfFrame = width / numberOfWidthSprites;
+            int heightOfFrame = height / numberOfHeightSprites;
+
+        }
+
 
     }
 }
