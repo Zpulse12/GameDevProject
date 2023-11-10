@@ -18,6 +18,13 @@ namespace NaamGaatNogKomen.Classes
             frames = new List<AnimationFrame>();
         }
 
+        public void AddFrame(AnimationFrame frame)
+        {
+            frames.Add(frame);
+            CurrentFrame = frames[0];
+        }
+
+
 
     }
 }
