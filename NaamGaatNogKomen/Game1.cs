@@ -24,6 +24,7 @@ namespace NaamGaatNogKomen
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            hero = new Hero(_heroTexture);
         }
 
         protected override void LoadContent()
