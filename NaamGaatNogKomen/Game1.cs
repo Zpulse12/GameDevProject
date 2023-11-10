@@ -42,6 +42,7 @@ namespace NaamGaatNogKomen
 
             // TODO: Add your update logic here
 
+            hero.Update(gameTime);
             base.Update(gameTime);
         }
 
