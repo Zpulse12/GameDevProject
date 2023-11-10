@@ -9,9 +9,14 @@ namespace NaamGaatNogKomen.Classes
     internal class Animation
     {
         public AnimationFrame CurrentFrame { get; set; }
-        private List<Animation> frames;
+        private List<AnimationFrame> frames;
         private int counter;
         private double secondCounter = 0;
+
+        public Animation()
+        {
+            frames = new List<AnimationFrame>();
+        }
 
 
     }
