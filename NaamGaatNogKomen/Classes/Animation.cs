@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,21 @@ namespace NaamGaatNogKomen.Classes
             frames.Add(frame);
             CurrentFrame = frames[0];
         }
+        public void Update(GameTime gameTime)
+        {
+            CurrentFrame = frames[counter];
 
+            secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
+            int fps = 15;
+
+            if (secondCounter >= 1d / fps)
+            {
+                counter++;
+                secondCounter = 0;
+            }
+            if (counter >= frames.Count)
+                counter = 0;
+        }
 
 
     }
