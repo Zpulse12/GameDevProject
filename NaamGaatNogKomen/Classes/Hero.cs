@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace NaamGaatNogKomen.Classes
 {
-    internal class Hero : 
+    internal class Hero : IGameObject
     {
+        private Texture2D texture;
+        Animation animation;
+
 
     }
 }
