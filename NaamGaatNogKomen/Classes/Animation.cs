@@ -1,5 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,13 @@ namespace NaamGaatNogKomen.Classes
             int widthOfFrame = width / numberOfWidthSprites;
             int heightOfFrame = height / numberOfHeightSprites;
 
+            for(int y = 0; y <= height - heightOfFrame; y += heightOfFrame)
+            {
+                for(int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
+                {
+                    frames.Add(new AnimationFrame(new Rectangle(x, y, widthOfFrame, heightOfFrame)));
+                }
+            }
         }
 
 
