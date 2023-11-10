@@ -45,8 +45,6 @@ namespace NaamGaatNogKomen
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
         }
     }
 }
