@@ -12,6 +12,11 @@ namespace NaamGaatNogKomen.Classes
         private Texture2D texture;
         Animation animation;
 
-
+        public Hero(Texture2D texture)
+        {
+            this.texture = texture;
+            animation = new Animation();
+            animation.GetFramesFromTexture(texture.Width, texture.Height, 5, 1);
+        }
     }
 }
