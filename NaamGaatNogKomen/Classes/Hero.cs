@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,10 @@ namespace NaamGaatNogKomen.Classes
             this.texture = texture;
             animation = new Animation();
             animation.GetFramesFromTexture(texture.Width, texture.Height, 5, 1);
+        }
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Microsoft.Xna.Framework.Vector2(0, 0), animation.CurrentFrame.SourceRectangle, Color.White);
         }
     }
 }
