@@ -18,7 +18,7 @@ namespace NaamGaatNogKomen.Classes
         {
             this.texture = texture;
             animation = new Animation();
-            animation.GetFramesFromTexture(texture.Width, texture.Height, 1, 5);
+            animation.GetFramesFromTexture(texture.Width, texture.Height, 5, 1);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
