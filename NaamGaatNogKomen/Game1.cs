@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NaamGaatNogKomen.Classes;
 
 namespace NaamGaatNogKomen
 {
@@ -8,6 +9,8 @@ namespace NaamGaatNogKomen
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Texture2D _heroTexture;
+        private Hero hero;
 
         public Game1()
         {
