@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NaamGaatNogKomen.Classes;
 
 namespace NaamGaatNogKomen
 {
@@ -8,6 +9,8 @@ namespace NaamGaatNogKomen
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Texture2D _heroTexture;
+        private Hero hero;
 
         public Game1()
         {
@@ -21,6 +24,7 @@ namespace NaamGaatNogKomen
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            hero = new Hero(_heroTexture);
         }
 
         protected override void LoadContent()
@@ -28,6 +32,7 @@ namespace NaamGaatNogKomen
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            _heroTexture = Content.Load<Texture2D>("HeroIdle");
         }
 
         protected override void Update(GameTime gameTime)
@@ -37,16 +42,20 @@ namespace NaamGaatNogKomen
 
             // TODO: Add your update logic here
 
+            hero.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            hero.Draw(_spriteBatch);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
+
+            // TODO: Add your drawing code here
         }
     }
 }
