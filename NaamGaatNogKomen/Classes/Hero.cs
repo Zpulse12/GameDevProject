@@ -36,6 +36,7 @@ namespace NaamGaatNogKomen.Classes
                 direction.X -= 1;
             if (state.IsKeyDown(Keys.Right))
                 direction.X += 1;
+            direction *= speed;
 
             animation.Update(gameTime);
         }
