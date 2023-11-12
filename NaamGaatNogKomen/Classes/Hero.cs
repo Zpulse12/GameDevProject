@@ -18,7 +18,7 @@ namespace NaamGaatNogKomen.Classes
         Animation animation;
         private Vector2 position = new Vector2(0, 0);
         private Vector2 speed = new Vector2(0, 0);
-        private Vector2 acceleration = new Vector2(0.0005f, 0.001f);
+        private Vector2 acceleration = new Vector2(0.001f, 1f);
         private IInputReader inputReader;
 
         public Hero(Texture2D texture,IInputReader inputReader)
@@ -54,7 +54,7 @@ namespace NaamGaatNogKomen.Classes
                 speed = Accelerate(speed, acceleration, -3, 3);
                 direction *= speed;
                 position += direction;
-                acceleration += new Vector2(0.0005f,0.001f);
+                acceleration += new Vector2(0.001f,1f);
             }
         }
 
