@@ -32,7 +32,7 @@ namespace NaamGaatNogKomen
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _heroTexture = Content.Load<Texture2D>("HeroIdle");
+            _heroTexture = Content.Load<Texture2D>("HeroWalk");
         }
 
         protected override void Update(GameTime gameTime)
