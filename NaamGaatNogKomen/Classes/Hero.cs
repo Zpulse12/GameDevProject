@@ -31,6 +31,7 @@ namespace NaamGaatNogKomen.Classes
         public void Update(GameTime gameTime)
         {
             KeyboardState state = Keyboard.GetState();
+            var direction = Vector2.Zero;
 
             animation.Update(gameTime);
         }
