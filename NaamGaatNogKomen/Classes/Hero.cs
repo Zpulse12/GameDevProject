@@ -14,7 +14,7 @@ namespace NaamGaatNogKomen.Classes
     {
         private Texture2D texture;
         Animation animation;
-        private Vector2 positie;
+        private Vector2 positie = new Vector2(0, 0);
 
         public Hero(Texture2D texture)
         {
@@ -24,7 +24,6 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            positie = new Vector2(0, 0);
             spriteBatch.Draw(texture, positie, animation.CurrentFrame.SourceRectangle, Color.White);
         }
         public void Update(GameTime gameTime)
