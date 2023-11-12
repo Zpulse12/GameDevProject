@@ -15,6 +15,7 @@ namespace NaamGaatNogKomen.Classes
         private Texture2D texture;
         Animation animation;
         private Vector2 positie = new Vector2(0, 0);
+        private Vector2 snelheid = new Vector2(1, 1);
 
         public Hero(Texture2D texture)
         {
