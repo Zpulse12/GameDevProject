@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,8 +30,9 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Update(GameTime gameTime)
         {
+            KeyboardState state = Keyboard.GetState();
+
             animation.Update(gameTime);
-            Move();
         }
         private void Move()
         {
