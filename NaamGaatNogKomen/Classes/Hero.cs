@@ -42,14 +42,7 @@ namespace NaamGaatNogKomen.Classes
             Vector2 direction = inputReader.ReadInput();
             if (position.X < 0 - 16)
                 position.X = 0 -16;
-            else
-            {
-                speed = Accelerate(speed,acceleration,-3,3);
-                direction *= speed;
-                position += direction;
-                acceleration += new Vector2(0.1f, 0.1f);
-            }
-            if (position.X > 800 - 48)
+            else if (position.X > 800 - 48)
                 position.X = 800 - 48;
             else
             {
