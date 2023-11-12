@@ -32,6 +32,10 @@ namespace NaamGaatNogKomen.Classes
         {
             KeyboardState state = Keyboard.GetState();
             var direction = Vector2.Zero;
+            if (state.IsKeyDown(Keys.Left))
+                direction.X -= 1;
+            if (state.IsKeyDown(Keys.Right))
+                direction.X += 1;
 
             animation.Update(gameTime);
         }
