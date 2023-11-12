@@ -17,8 +17,8 @@ namespace NaamGaatNogKomen.Classes
         private Texture2D texture;
         Animation animation;
         private Vector2 position = new Vector2(0, 0);
-        private Vector2 speed = new Vector2(1, 1);
-        Vector2 acceleration = new Vector2(0.1f, 0.1f);
+        private Vector2 speed = new Vector2(0, 0);
+        private Vector2 acceleration = new Vector2(0.01f, 0.01f);
         private IInputReader inputReader;
 
         public Hero(Texture2D texture,IInputReader inputReader)
@@ -64,9 +64,9 @@ namespace NaamGaatNogKomen.Classes
         {
             Vector2 newSpeed = currentspeed + acceleration;
             if (newSpeed.X < minSpeed)
-                return new Vector2(-1,1);
+                return new Vector2(minSpeed,1);
             if (newSpeed.X > maxSpeed)
-                return new Vector2(1, 1);
+                return new Vector2(maxSpeed, 1);
             return newSpeed;
         }
     }
