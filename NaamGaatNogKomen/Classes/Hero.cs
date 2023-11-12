@@ -31,5 +31,9 @@ namespace NaamGaatNogKomen.Classes
         {
             animation.Update(gameTime);
         }
+        private void Move()
+        {
+            positie += snelheid;
+        }
     }
 }
