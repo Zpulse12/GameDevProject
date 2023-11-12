@@ -33,19 +33,14 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Update(GameTime gameTime)
         {
+            Move();
+            animation.Update(gameTime);
+        }
+        private void Move()
+        {
             Vector2 direction = inputReader.ReadInput();
             direction *= speed;
             position += direction;
-
-            animation.Update(gameTime);
         }
-        //private void Move()
-        //{
-        //    position += speed;
-        //    if (position.X > 800 - 48 || position.X < 0 - 16)
-        //        speed.X *= -1;
-        //    if (position.Y > 480 - 48 || position.Y < 0 - 16)
-        //        speed.Y *= -1;
-        //}
     }
 }
