@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NaamGaatNogKomen.Classes.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +19,7 @@ namespace NaamGaatNogKomen.Classes
         private Vector2 position = new Vector2(0, 0);
         private Vector2 speed = new Vector2(3, 3);
 
-        public Hero(Texture2D texture)
+        public Hero(Texture2D texture,IInputReader inputReader)
         {
             this.texture = texture;
             animation = new Animation();
