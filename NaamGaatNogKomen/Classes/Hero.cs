@@ -35,9 +35,9 @@ namespace NaamGaatNogKomen.Classes
         private void Move()
         {
             positie += snelheid;
-            if (positie.X > 800 - 64 || positie.X < 0)
+            if (positie.X > 800 - 48 || positie.X < 0 - 16)
                 snelheid.X *= -1;
-            if (positie.Y > 480 - 64 || positie.Y < 0)
+            if (positie.Y > 480 - 48 || positie.Y < 0 - 16)
                 snelheid.Y *= -1;
         }
     }
