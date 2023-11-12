@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace NaamGaatNogKomen.Classes
     {
         private Texture2D texture;
         Animation animation;
+        private Vector2 positie;
 
         public Hero(Texture2D texture)
         {
