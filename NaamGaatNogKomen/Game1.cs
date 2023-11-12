@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes;
+using NaamGaatNogKomen.Classes.Input;
 
 namespace NaamGaatNogKomen
 {
@@ -24,7 +25,7 @@ namespace NaamGaatNogKomen
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            hero = new Hero(_heroTexture);
+            hero = new Hero(_heroTexture, new KeyboardReader());
         }
 
         protected override void LoadContent()

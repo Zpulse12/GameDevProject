@@ -23,7 +23,7 @@ namespace NaamGaatNogKomen.Classes
         public Hero(Texture2D texture,IInputReader inputReader)
         {
             this.texture = texture;
-            this.
+            this.inputReader = inputReader;
             animation = new Animation();
             animation.GetFramesFromTexture(texture.Width, texture.Height, 8, 1);
         }
