@@ -18,10 +18,12 @@ namespace NaamGaatNogKomen.Classes
         Animation animation;
         private Vector2 position = new Vector2(0, 0);
         private Vector2 speed = new Vector2(3, 3);
+        private IInputReader inputReader;
 
         public Hero(Texture2D texture,IInputReader inputReader)
         {
             this.texture = texture;
+            this.
             animation = new Animation();
             animation.GetFramesFromTexture(texture.Width, texture.Height, 8, 1);
         }
