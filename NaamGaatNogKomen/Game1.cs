@@ -8,14 +8,15 @@ namespace NaamGaatNogKomen
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        //private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _heroTexture;
         private Hero hero;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            //_graphics = new GraphicsDeviceManager(this);
+           
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
