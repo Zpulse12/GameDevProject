@@ -60,7 +60,7 @@ namespace NaamGaatNogKomen.Classes
             }
         }
 
-        private Vector2 Accelerate()
+        private Vector2 Accelerate(Vector2 currentspeed, Vector2 acceleration, float minSpeed, float maxSpeed)
         {
 
         }
