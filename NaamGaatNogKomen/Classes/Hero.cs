@@ -17,7 +17,7 @@ namespace NaamGaatNogKomen.Classes
         private Texture2D texture;
         Animation animation;
         private Vector2 position = new Vector2(0, 0);
-        private Vector2 speed = new Vector2(2, 1);
+        private Vector2 speed = new Vector2(1, 1);
         Vector2 acceleration = new Vector2(0.1f, 0.1f);
         private IInputReader inputReader;
 
@@ -44,17 +44,19 @@ namespace NaamGaatNogKomen.Classes
                 position.X = 0 -16;
             else
             {
+                speed *= acceleration;
                 direction *= speed;
                 position += direction;
-                speed += acceleration;
+                acceleration += new Vector2(0.1f, 0.1f);
             }
             if (position.X > 800 - 48)
                 position.X = 800 - 48;
             else
             {
+                speed *= acceleration;
                 direction *= speed;
                 position += direction;
-                speed += acceleration;
+                acceleration += new Vector2(0.1f,0.1f);
             }
         }
     }
