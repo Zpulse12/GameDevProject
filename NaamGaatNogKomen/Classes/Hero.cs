@@ -41,13 +41,13 @@ namespace NaamGaatNogKomen.Classes
 
             animation.Update(gameTime);
         }
-        private void Move()
-        {
-            position += speed;
-            if (position.X > 800 - 48 || position.X < 0 - 16)
-                speed.X *= -1;
-            if (position.Y > 480 - 48 || position.Y < 0 - 16)
-                speed.Y *= -1;
-        }
+        //private void Move()
+        //{
+        //    position += speed;
+        //    if (position.X > 800 - 48 || position.X < 0 - 16)
+        //        speed.X *= -1;
+        //    if (position.Y > 480 - 48 || position.Y < 0 - 16)
+        //        speed.Y *= -1;
+        //}
     }
 }
