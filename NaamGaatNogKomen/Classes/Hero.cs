@@ -46,6 +46,7 @@ namespace NaamGaatNogKomen.Classes
             {
                 direction *= speed;
                 position += direction;
+                speed += acceleration;
             }
             if (position.X > 800 - 48)
                 position.X = 800 - 48;
@@ -53,6 +54,7 @@ namespace NaamGaatNogKomen.Classes
             {
                 direction *= speed;
                 position += direction;
+                speed += acceleration;
             }
         }
     }
