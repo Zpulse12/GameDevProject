@@ -39,8 +39,20 @@ namespace NaamGaatNogKomen.Classes
         private void Move()
         {
             Vector2 direction = inputReader.ReadInput();
-            direction *= speed;
-            position += direction;
+            if (position.X < 0)
+                position.X = 0;
+            else
+            {
+                direction *= speed;
+                position += direction;
+            }
+            if (position.X > 480)
+                position.X = 480;
+            else
+            {
+                direction *= speed;
+                position += direction;
+            }
         }
     }
 }
