@@ -30,6 +30,7 @@ namespace NaamGaatNogKomen.Classes
         public void Update(GameTime gameTime)
         {
             animation.Update(gameTime);
+            Move();
         }
         private void Move()
         {
