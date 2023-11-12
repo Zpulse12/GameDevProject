@@ -33,12 +33,7 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Update(GameTime gameTime)
         {
-            KeyboardState state = Keyboard.GetState();
-            var direction = Vector2.Zero;
-            if (state.IsKeyDown(Keys.Left))
-                direction.X -= 1;
-            if (state.IsKeyDown(Keys.Right))
-                direction.X += 1;
+            Vector2 direction = inputReader.ReadInput();
             direction *= speed;
             position += direction;
 
