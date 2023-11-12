@@ -44,7 +44,7 @@ namespace NaamGaatNogKomen.Classes
                 position.X = 0 -16;
             else
             {
-                speed = Accelerate(speed,acceleration,-1,1);
+                speed = Accelerate(speed,acceleration,-3,3);
                 direction *= speed;
                 position += direction;
                 acceleration += new Vector2(0.1f, 0.1f);
@@ -53,7 +53,7 @@ namespace NaamGaatNogKomen.Classes
                 position.X = 800 - 48;
             else
             {
-                speed = Accelerate(speed, acceleration, -1, 1);
+                speed = Accelerate(speed, acceleration, -3, 3);
                 direction *= speed;
                 position += direction;
                 acceleration += new Vector2(0.1f,0.1f);
@@ -64,9 +64,9 @@ namespace NaamGaatNogKomen.Classes
         {
             Vector2 newSpeed = currentspeed + acceleration;
             if (newSpeed.X < minSpeed)
-                return new Vector2(minSpeed,1);
+                newSpeed.X = minSpeed;
             if (newSpeed.X > maxSpeed)
-                return new Vector2(maxSpeed, 1);
+                newSpeed.X = maxSpeed;
             return newSpeed;
         }
     }
