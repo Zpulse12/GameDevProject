@@ -65,6 +65,9 @@ namespace NaamGaatNogKomen.Classes
             Vector2 newSpeed = currentspeed + acceleration;
             if (newSpeed.X < minSpeed)
                 return new Vector2(-1,1);
+            if (newSpeed.X > maxSpeed)
+                return new Vector2(1, 1);
+            return newSpeed;
         }
     }
 }
