@@ -44,7 +44,7 @@ namespace NaamGaatNogKomen.Classes
                 position.X = 0 -16;
             else
             {
-                speed *= acceleration;
+                speed.X -= acceleration.X;
                 direction *= speed;
                 position += direction;
                 acceleration += new Vector2(0.1f, 0.1f);
@@ -53,11 +53,16 @@ namespace NaamGaatNogKomen.Classes
                 position.X = 800 - 48;
             else
             {
-                speed *= acceleration;
+                speed.X += acceleration.X;
                 direction *= speed;
                 position += direction;
                 acceleration += new Vector2(0.1f,0.1f);
             }
+        }
+
+        private Vector2 Accelerate()
+        {
+
         }
     }
 }
