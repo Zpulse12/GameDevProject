@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NaamGaatNogKomen.Classes.Input
 {
-    internal class KeyboardReader
+    internal class KeyboardReader : IInputReader
     {
         public Vector2 ReadInput()
         {
