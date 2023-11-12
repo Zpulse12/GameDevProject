@@ -14,8 +14,8 @@ namespace NaamGaatNogKomen.Classes
     {
         private Texture2D texture;
         Animation animation;
-        private Vector2 positie = new Vector2(0, 0);
-        private Vector2 snelheid = new Vector2(3, 3);
+        private Vector2 position = new Vector2(0, 0);
+        private Vector2 speed = new Vector2(3, 3);
 
         public Hero(Texture2D texture)
         {
@@ -25,7 +25,7 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, positie, animation.CurrentFrame.SourceRectangle, Color.White);
+            spriteBatch.Draw(texture, position, animation.CurrentFrame.SourceRectangle, Color.White);
         }
         public void Update(GameTime gameTime)
         {
@@ -34,11 +34,11 @@ namespace NaamGaatNogKomen.Classes
         }
         private void Move()
         {
-            positie += snelheid;
-            if (positie.X > 800 - 48 || positie.X < 0 - 16)
-                snelheid.X *= -1;
-            if (positie.Y > 480 - 48 || positie.Y < 0 - 16)
-                snelheid.Y *= -1;
+            position += speed;
+            if (position.X > 800 - 48 || position.X < 0 - 16)
+                speed.X *= -1;
+            if (position.Y > 480 - 48 || position.Y < 0 - 16)
+                speed.Y *= -1;
         }
     }
 }
