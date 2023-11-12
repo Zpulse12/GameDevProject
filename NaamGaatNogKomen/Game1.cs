@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes;
 using NaamGaatNogKomen.Classes.Input;
 
+
 namespace NaamGaatNogKomen
 {
     public class Game1 : Game
@@ -13,17 +14,23 @@ namespace NaamGaatNogKomen
         private Texture2D _heroTexture;
         private Hero hero;
 
+
+
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                IsFullScreen = true,
+                PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+                PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height
+            };
             IsMouseVisible = true;
+            Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
             hero = new Hero(_heroTexture, new KeyboardReader());
         }
@@ -34,6 +41,7 @@ namespace NaamGaatNogKomen
 
             // TODO: use this.Content to load your game content here
             _heroTexture = Content.Load<Texture2D>("HeroWalk");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -47,7 +55,7 @@ namespace NaamGaatNogKomen
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime gameTime) 
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
