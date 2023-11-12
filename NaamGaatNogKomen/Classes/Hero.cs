@@ -24,7 +24,8 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Microsoft.Xna.Framework.Vector2(0, 0), animation.CurrentFrame.SourceRectangle, Color.White);
+            positie = new Vector2(0, 0);
+            spriteBatch.Draw(texture, positie, animation.CurrentFrame.SourceRectangle, Color.White);
         }
         public void Update(GameTime gameTime)
         {
