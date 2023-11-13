@@ -26,8 +26,12 @@ namespace NaamGaatNogKomen.Classes
         {
             this.texture = texture;
             this.inputReader = inputReader;
+
             walkingAnimation = new Animation();
             walkingAnimation.GetFramesFromTexture(texture.Width, texture.Height, 8, 1);
+
+            idleAnimation = new Animation();
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {
