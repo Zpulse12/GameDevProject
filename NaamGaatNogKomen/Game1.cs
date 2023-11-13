@@ -10,7 +10,8 @@ namespace NaamGaatNogKomen
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D _heroTexture;
+        private Texture2D _heroWalkTexture;
+        private Texture2D _heroIdleTexture;
         private Hero hero;
 
         public Game1()
