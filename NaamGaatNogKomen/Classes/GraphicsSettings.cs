@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace NaamGaatNogKomen.Classes
 {
-    internal class Graphics
+    internal class GraphicsSettings
     {
-   
+        private GraphicsDeviceManager _graphics;
+
+        public GraphicsSettings(GraphicsDeviceManager graphics)
+        {
+            _graphics = graphics;
+        }
+
+ 
+
     }
 }

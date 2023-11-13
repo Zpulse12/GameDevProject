@@ -4,19 +4,20 @@ using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes;
 using NaamGaatNogKomen.Classes.Input;
 
+
 namespace NaamGaatNogKomen
 {
     public class Game1 : Game
     {
-        //private GraphicsDeviceManager _graphics;
+        private GraphicsSettings _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _heroTexture;
         private Hero hero;
 
         public Game1()
         {
-            //_graphics = new GraphicsDeviceManager(this);
-           
+            _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -24,9 +25,11 @@ namespace NaamGaatNogKomen
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            _graphics.ApplyFullscreenSettings();
             base.Initialize();
+           
             hero = new Hero(_heroTexture, new KeyboardReader());
+
         }
 
         protected override void LoadContent()
