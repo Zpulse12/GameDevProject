@@ -17,7 +17,13 @@ namespace NaamGaatNogKomen.Classes
             _graphics = graphics;
         }
 
- 
+        public void ApplyFullscreenSettings()
+        {
+            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.ApplyChanges();
+        }
 
     }
 }
