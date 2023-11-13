@@ -31,7 +31,7 @@ namespace NaamGaatNogKomen.Classes
             walkingAnimation.GetFramesFromTexture(texture.Width, texture.Height, 8, 1);
 
             idleAnimation = new Animation();
-
+            idleAnimation.GetFramesFromTexture(texture.Width, texture.Height, 5, 1);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
