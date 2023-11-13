@@ -14,7 +14,7 @@ namespace NaamGaatNogKomen.Classes
 {
     internal class Hero : IGameObject
     {
-        private Texture2D texture;
+        private Texture2D walkTexture;
         private Animation walkingAnimation;
         private Animation idleAnimation;
         private bool isMoving = false;
@@ -23,21 +23,21 @@ namespace NaamGaatNogKomen.Classes
         private Vector2 acceleration = new Vector2(0.001f, 1f);
         private IInputReader inputReader;
 
-        public Hero(Texture2D texture,IInputReader inputReader)
+        public Hero(Texture2D walkTexture,IInputReader inputReader)
         {
-            this.texture = texture;
+            this.walkTexture = walkTexture;
             this.inputReader = inputReader;
 
             walkingAnimation = new Animation();
-            walkingAnimation.GetFramesFromTexture(texture.Width, texture.Height, 8, 1);
+            walkingAnimation.GetFramesFromTexture(walkTexture.Width, walkTexture.Height, 8, 1);
 
             idleAnimation = new Animation();
-            idleAnimation.GetFramesFromTexture(texture.Width, texture.Height, 5, 1);
+            idleAnimation.GetFramesFromTexture(walkTexture.Width, walkTexture.Height, 5, 1);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkingAnimation : idleAnimation;
-            spriteBatch.Draw(texture, position, walkingAnimation.CurrentFrame.SourceRectangle, Color.White);
+            spriteBatch.Draw(walkTexture, position, walkingAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
         public void Update(GameTime gameTime)
         {
