@@ -39,13 +39,13 @@ namespace NaamGaatNogKomen.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkingAnimation : idleAnimation;
-            spriteBatch.Draw(walkTexture, position, walkingAnimation.CurrentFrame.SourceRectangle, Color.White);
+            spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
         public void Update(GameTime gameTime)
         {
             Move();
             Animation currentAnimation = isMoving ? walkingAnimation : idleAnimation;
-            walkingAnimation.Update(gameTime);
+            currentAnimation.Update(gameTime);
         }
         private void Move()
         {
