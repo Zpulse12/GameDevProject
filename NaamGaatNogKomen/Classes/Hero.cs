@@ -60,11 +60,14 @@ namespace NaamGaatNogKomen.Classes
                     acceleration.X = 0.0005f;
                     isMoving = false;
                 }
-                isMoving = true;
-                speed = Accelerate(speed, acceleration, -3, 3);
-                direction *= speed;
-                position += direction;
-                acceleration += new Vector2(0.001f,1f);
+                else
+                {
+                    isMoving = true;
+                    speed = Accelerate(speed, acceleration, -3, 3);
+                    direction *= speed;
+                    position += direction;
+                    acceleration += new Vector2(0.001f, 1f);
+                }
             }
         }
 
