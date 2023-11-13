@@ -16,7 +16,7 @@ namespace NaamGaatNogKomen.Classes
     {
         private Texture2D walkTexture;
         private Texture2D idleTexture;
-        private Animation walkingAnimation;
+        private Animation walkAnimation;
         private Animation idleAnimation;
         private bool isMoving = false;
         private Vector2 position = new Vector2(0, 0);
@@ -30,15 +30,15 @@ namespace NaamGaatNogKomen.Classes
             this.idleTexture = idleTexture;
             this.inputReader = inputReader;
 
-            walkingAnimation = new Animation();
-            walkingAnimation.GetFramesFromTexture(walkTexture.Width, walkTexture.Height, 8, 1);
+            walkAnimation = new Animation();
+            walkAnimation.GetFramesFromTexture(walkTexture.Width, walkTexture.Height, 8, 1);
 
             idleAnimation = new Animation();
             idleAnimation.GetFramesFromTexture(idleTexture.Width, idleTexture.Height, 5, 1);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            Animation currentAnimation = isMoving ? walkingAnimation : idleAnimation;
+            Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
             if(isMoving==true)
                 spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
             else
@@ -47,7 +47,7 @@ namespace NaamGaatNogKomen.Classes
         public void Update(GameTime gameTime)
         {
             Move();
-            Animation currentAnimation = isMoving ? walkingAnimation : idleAnimation;
+            Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
             currentAnimation.Update(gameTime);
         }
         private void Move()
