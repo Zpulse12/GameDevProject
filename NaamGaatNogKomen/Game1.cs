@@ -29,8 +29,8 @@ namespace NaamGaatNogKomen
             _graphics.ApplyFullscreenSettings();
             base.Initialize();
 
-           
-            hero = new Hero(_heroTexture, new KeyboardReader());
+
+            hero = new Hero(_heroWalkTexture, _heroIdleTexture, new KeyboardReader());
             hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
 
