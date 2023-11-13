@@ -36,6 +36,7 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Draw(SpriteBatch spriteBatch)
         {
+            Animation currentAnimation = isMoving ? walkingAnimation : idleAnimation;
             spriteBatch.Draw(texture, position, walkingAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
         public void Update(GameTime gameTime)
