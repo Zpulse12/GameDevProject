@@ -58,7 +58,9 @@ namespace NaamGaatNogKomen.Classes
                 {
                     speed.X = 0;
                     acceleration.X = 0.0005f;
+                    isMoving = false;
                 }
+                isMoving = true;
                 speed = Accelerate(speed, acceleration, -3, 3);
                 direction *= speed;
                 position += direction;
