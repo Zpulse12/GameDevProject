@@ -25,17 +25,17 @@ namespace NaamGaatNogKomen.Classes
         {
             this.texture = texture;
             this.inputReader = inputReader;
-            animation = new Animation();
-            animation.GetFramesFromTexture(texture.Width, texture.Height, 8, 1);
+            walkingAnimation = new Animation();
+            walkingAnimation.GetFramesFromTexture(texture.Width, texture.Height, 8, 1);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, animation.CurrentFrame.SourceRectangle, Color.White);
+            spriteBatch.Draw(texture, position, walkingAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
         public void Update(GameTime gameTime)
         {
             Move();
-            animation.Update(gameTime);
+            walkingAnimation.Update(gameTime);
         }
         private void Move()
         {
