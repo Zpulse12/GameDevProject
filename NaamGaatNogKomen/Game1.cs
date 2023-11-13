@@ -16,7 +16,7 @@ namespace NaamGaatNogKomen
 
         public Game1()
         {
-            _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));
+            _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));//De constructor accepteert alleen een object van de graphicsdevicemanager
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -29,6 +29,7 @@ namespace NaamGaatNogKomen
             base.Initialize();
            
             hero = new Hero(_heroTexture, new KeyboardReader());
+            hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
         }
 
