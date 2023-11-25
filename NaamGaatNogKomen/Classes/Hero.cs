@@ -51,10 +51,13 @@ namespace NaamGaatNogKomen.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
+
             if (isMoving && inputReader.ReadInput().X == 1)
                 lastMovementDirection = 1;
             else if (isMoving && inputReader.ReadInput().X == -1)
                 lastMovementDirection = -1;
+
+            Texture2D textureToDraw = isMoving ? walkTexture : idleTexture;
         }
         public void Update(GameTime gameTime)
         {
