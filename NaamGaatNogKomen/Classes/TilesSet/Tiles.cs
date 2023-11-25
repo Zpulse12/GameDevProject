@@ -12,16 +12,20 @@ namespace NaamGaatNogKomen.Classes.TilesSet
     internal class Tiles
     {
         protected Texture2D texture;
-        protected Vector2 position;
+
+        protected Vector2 position; // gaat de posititie bepalen van de texture
+
+
 
         public Tiles(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
             this.position = position;
         }
-        public virtual void Draw(SpriteBatch spriteBatch) 
+
+        public virtual void Draw(SpriteBatch sprite)
         {
-            spriteBatch.Draw(texture, position, Color.White);//Color.white let's tiles
-        }
+            sprite.Draw(texture, position, Color.White);//Color.White lets the sprite be drawen with the original texture
+
     }
 }

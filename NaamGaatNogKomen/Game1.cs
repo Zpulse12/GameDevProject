@@ -15,18 +15,29 @@ namespace NaamGaatNogKomen
         private Texture2D _heroIdleTexture;
         private Hero hero;
 
+
+
         public Game1()
         {
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                IsFullScreen = true,
+                PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+                PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height
+            };
+
             _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));//De constructor accepteert alleen een object van de graphicsdevicemanager
 
-            Content.RootDirectory = "Content";
+
             IsMouseVisible = true;
+            Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
             _graphics.ApplyFullscreenSettings();
+
             base.Initialize();
 
 
@@ -43,8 +54,13 @@ namespace NaamGaatNogKomen
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            _heroTexture = Content.Load<Texture2D>("HeroWalk");
+
+
             _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
             _heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -58,7 +74,7 @@ namespace NaamGaatNogKomen
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime gameTime) 
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
