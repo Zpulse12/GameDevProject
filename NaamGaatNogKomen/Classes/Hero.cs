@@ -66,10 +66,10 @@ namespace NaamGaatNogKomen.Classes
         private void Move()
         {
             Vector2 direction = inputReader.ReadInput();
-            if (position.X < 0 - 16) //collision with left side of screen
-                position.X = 0 - 16;
-            else if (position.X > _screenWidth - 48) //collision with right side of screen
-                position.X = _screenWidth - 48;
+            if (position.X < 0 - 48) //collision with left side of screen
+                position.X = 0 - 48;
+            else if (position.X > _screenWidth - 144) //collision with right side of screen
+                position.X = _screenWidth - 144;
             else
             {
                 if (direction.X == 0) //reset speed and acceleration when hero stops moving || changes direction
