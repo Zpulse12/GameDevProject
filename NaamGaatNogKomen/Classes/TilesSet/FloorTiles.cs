@@ -8,6 +8,11 @@ namespace NaamGaatNogKomen.Classes.TilesSet
 {
     internal class FloorTiles
     {
-
+        public AnimationFrame CurrentFrame { get; set; }
+        private List<AnimationFrame> frames;
+        public FloorTiles()
+        {
+            frames = new List<AnimationFrame>();
+        }
     }
 }
