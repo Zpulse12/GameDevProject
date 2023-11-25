@@ -39,8 +39,10 @@ namespace NaamGaatNogKomen.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
-            if(isMoving==true)
+            if (isMoving == true && inputReader.ReadInput().X == 1)
                 spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+            else if (isMoving == true && inputReader.ReadInput().X == -1)
+                spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 25, SpriteEffects.FlipHorizontally,0);
             else
                 spriteBatch.Draw(idleTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
