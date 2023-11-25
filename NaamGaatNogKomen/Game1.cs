@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes;
 using NaamGaatNogKomen.Classes.Input;
+using NaamGaatNogKomen.Classes.TilesSet;
 
 
 namespace NaamGaatNogKomen
@@ -15,15 +16,13 @@ namespace NaamGaatNogKomen
         private Texture2D _heroIdleTexture;
         private Texture2D _floorTiles;
         private Hero hero;
+        private FloorTiles floor;
 
 
 
         public Game1()
         {
-
             _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));//De constructor accepteert alleen een object van de graphicsdevicemanager
-
-
             IsMouseVisible = true;
             Content.RootDirectory = "Content";
         }
@@ -35,7 +34,7 @@ namespace NaamGaatNogKomen
 
             base.Initialize();
 
-
+            floor = new FloorTiles(_floorTiles);
             hero = new Hero(_heroWalkTexture, _heroIdleTexture, new KeyboardReader());
             hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -51,7 +50,7 @@ namespace NaamGaatNogKomen
             // TODO: use this.Content to load your game content here
             _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
             _heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
-            _floorTiles = Content.Load<Texture2D>("tilesset");
+            _floorTiles = Content.Load<Texture2D>("tilesSet");
 
         }
 
@@ -71,6 +70,7 @@ namespace NaamGaatNogKomen
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
             hero.Draw(_spriteBatch);
+            floor.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);
