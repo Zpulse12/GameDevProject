@@ -51,7 +51,8 @@ namespace NaamGaatNogKomen.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
-           
+            if (isMoving && inputReader.ReadInput().X == 1)
+                lastMovementDirection = 1;
         }
         public void Update(GameTime gameTime)
         {
