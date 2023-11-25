@@ -53,6 +53,8 @@ namespace NaamGaatNogKomen.Classes
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
             if (isMoving && inputReader.ReadInput().X == 1)
                 lastMovementDirection = 1;
+            else if (isMoving && inputReader.ReadInput().X == -1)
+                lastMovementDirection = -1;
         }
         public void Update(GameTime gameTime)
         {
