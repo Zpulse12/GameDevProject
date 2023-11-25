@@ -14,10 +14,6 @@ namespace NaamGaatNogKomen.Classes
 {
     internal class Hero : IGameObject
     {
-
-        private Texture2D texture;
-        private Animation animation;
-
         private Texture2D walkTexture;
         private Texture2D idleTexture;
         private Animation walkAnimation;
