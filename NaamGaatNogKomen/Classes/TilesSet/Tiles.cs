@@ -27,5 +27,6 @@ namespace NaamGaatNogKomen.Classes.TilesSet
         {
             sprite.Draw(texture, position, Color.White);//Color.White lets the sprite be drawen with the original texture
 
+        }
     }
 }
