@@ -15,7 +15,7 @@ namespace NaamGaatNogKomen.Classes
     internal class Hero : IGameObject
     {
         private Texture2D texture;
-        Animation animation;
+        private Animation animation;
         private Vector2 position = new Vector2(0, 0);
         private Vector2 speed = new Vector2(0, 0);
         private Vector2 acceleration = new Vector2(0.001f, 1f);
