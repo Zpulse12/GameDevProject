@@ -14,10 +14,6 @@ namespace NaamGaatNogKomen.Classes
 {
     internal class Hero : IGameObject
     {
-
-        private Texture2D texture;
-        private Animation animation;
-
         private Texture2D walkTexture;
         private Texture2D idleTexture;
         private Animation walkAnimation;
@@ -29,6 +25,7 @@ namespace NaamGaatNogKomen.Classes
         private IInputReader inputReader;
         private int _screenWidth; 
         private int _screenHeight;
+        private int lastMovementDirection = 1;
 
         public Hero(Texture2D walkTexture, Texture2D idleTexture, IInputReader inputReader)
         {
@@ -50,12 +47,15 @@ namespace NaamGaatNogKomen.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
-            if (isMoving == true && inputReader.ReadInput().X == 1)
-                spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
-            else if (isMoving == true && inputReader.ReadInput().X == -1)
-                spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 25, SpriteEffects.FlipHorizontally,0);
-            else
-                spriteBatch.Draw(idleTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+
+            if (isMoving && inputReader.ReadInput().X == 1)
+                lastMovementDirection = 1;
+            else if (isMoving && inputReader.ReadInput().X == -1)
+                lastMovementDirection = -1;
+
+            Texture2D textureToDraw = isMoving ? walkTexture : idleTexture;
+            SpriteEffects spriteEffect = (lastMovementDirection == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(textureToDraw, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, spriteEffect, 0);
         }
         public void Update(GameTime gameTime)
         {
@@ -66,10 +66,10 @@ namespace NaamGaatNogKomen.Classes
         private void Move()
         {
             Vector2 direction = inputReader.ReadInput();
-            if (position.X < 0 - 16) //collision with left side of screen
-                position.X = 0 - 16;
-            else if (position.X > _screenWidth - 48) //collision with right side of screen
-                position.X = _screenWidth - 48;
+            if (position.X < 0 - 48) //collision with left side of screen
+                position.X = 0 - 48;
+            else if (position.X > _screenWidth - 144) //collision with right side of screen
+                position.X = _screenWidth - 144;
             else
             {
                 if (direction.X == 0) //reset speed and acceleration when hero stops moving || changes direction
@@ -81,10 +81,10 @@ namespace NaamGaatNogKomen.Classes
                 else
                 {
                     isMoving = true;
-                    speed = Accelerate(speed, acceleration, -3, 3);
+                    speed = Accelerate(speed, acceleration, -3, 6);
                     direction *= speed;
                     position += direction;
-                    acceleration += new Vector2(0.001f, 1f);
+                    acceleration += new Vector2(0.005f, 1f);
                 }
             }
         }
