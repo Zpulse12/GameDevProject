@@ -12,7 +12,7 @@ namespace NaamGaatNogKomen.Classes.TilesSet
     {
         private Texture2D floors; 
         private Animation flooranimation = new Animation();
-        private Vector2 position = new Vector2(0, 0);
+        private Vector2 position = new Vector2(100, 100);
         public FloorTiles(Texture2D floor)
         {
             this.floors = floor;
