@@ -81,7 +81,7 @@ namespace NaamGaatNogKomen.Classes
                 else
                 {
                     isMoving = true;
-                    speed = Accelerate(speed, acceleration, -3, 3);
+                    speed = Accelerate(speed, acceleration, -3, 6);
                     direction *= speed;
                     position += direction;
                     acceleration += new Vector2(0.001f, 1f);
