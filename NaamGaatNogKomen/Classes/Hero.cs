@@ -56,7 +56,7 @@ namespace NaamGaatNogKomen.Classes
                 spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, SpriteEffects.FlipHorizontally,0);
             else if (inputReader.ReadInput().X == 1)
                 spriteBatch.Draw(idleTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White,0, new Vector2(), 3, SpriteEffects.None, 0);
-            else
+            else if (inputReader.ReadInput().X == -1)
                 spriteBatch.Draw(idleTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, SpriteEffects.FlipHorizontally, 0);
         }
         public void Update(GameTime gameTime)
