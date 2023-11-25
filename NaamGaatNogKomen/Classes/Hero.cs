@@ -59,6 +59,7 @@ namespace NaamGaatNogKomen.Classes
 
             Texture2D textureToDraw = isMoving ? walkTexture : idleTexture;
             SpriteEffects spriteEffect = (lastMovementDirection == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            spriteBatch.Draw(textureToDraw, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, spriteEffect, 0);
         }
         public void Update(GameTime gameTime)
         {
