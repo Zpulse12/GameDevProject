@@ -19,12 +19,6 @@ namespace NaamGaatNogKomen
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this)
-            {
-                IsFullScreen = true,
-                PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
-                PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height
-            };
 
             _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));//De constructor accepteert alleen een object van de graphicsdevicemanager
 
@@ -55,7 +49,6 @@ namespace NaamGaatNogKomen
 
             // TODO: use this.Content to load your game content here
 
-            _heroTexture = Content.Load<Texture2D>("HeroWalk");
 
 
             _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
