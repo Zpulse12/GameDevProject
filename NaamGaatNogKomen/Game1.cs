@@ -9,9 +9,10 @@ namespace NaamGaatNogKomen
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private GraphicsSettings _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D _heroTexture;
+        private Texture2D _heroWalkTexture;
+        private Texture2D _heroIdleTexture;
         private Hero hero;
 
 
@@ -24,6 +25,10 @@ namespace NaamGaatNogKomen
                 PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
                 PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height
             };
+
+            _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));//De constructor accepteert alleen een object van de graphicsdevicemanager
+
+
             IsMouseVisible = true;
             Content.RootDirectory = "Content";
         }
@@ -31,8 +36,17 @@ namespace NaamGaatNogKomen
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _graphics.ApplyFullscreenSettings();
+
             base.Initialize();
-            hero = new Hero(_heroTexture, new KeyboardReader());
+
+
+            hero = new Hero(_heroWalkTexture, _heroIdleTexture, new KeyboardReader());
+            hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+
+           
+
         }
 
         protected override void LoadContent()
@@ -40,7 +54,12 @@ namespace NaamGaatNogKomen
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
             _heroTexture = Content.Load<Texture2D>("HeroWalk");
+
+
+            _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
+            _heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
 
         }
 
