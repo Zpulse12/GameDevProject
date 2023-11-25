@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes.Input;
@@ -14,6 +14,10 @@ namespace NaamGaatNogKomen.Classes
 {
     internal class Hero : IGameObject
     {
+
+        private Texture2D texture;
+        private Animation animation;
+
         private Texture2D walkTexture;
         private Texture2D idleTexture;
         private Animation walkAnimation;
@@ -23,8 +27,10 @@ namespace NaamGaatNogKomen.Classes
         private Vector2 speed = new Vector2(0, 0);
         private Vector2 acceleration = new Vector2(0.001f, 1f);
         private IInputReader inputReader;
+        private int _screenWidth; 
+        private int _screenHeight;
 
-        public Hero(Texture2D walkTexture,Texture2D idleTexture, IInputReader inputReader)
+        public Hero(Texture2D walkTexture, Texture2D idleTexture, IInputReader inputReader)
         {
             this.walkTexture = walkTexture;
             this.idleTexture = idleTexture;
@@ -36,10 +42,15 @@ namespace NaamGaatNogKomen.Classes
             idleAnimation = new Animation();
             idleAnimation.GetFramesFromTexture(idleTexture.Width, idleTexture.Height, 5, 1);
         }
+        public void SetScreenSize(int screenWidth, int screenHeight) 
+        { 
+            this._screenWidth = screenWidth; 
+            this._screenHeight = screenHeight; 
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
-            if(isMoving==true)
+            if (isMoving == true)
                 spriteBatch.Draw(walkTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
             else
                 spriteBatch.Draw(idleTexture, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
@@ -54,9 +65,9 @@ namespace NaamGaatNogKomen.Classes
         {
             Vector2 direction = inputReader.ReadInput();
             if (position.X < 0 - 16) //collision with left side of screen
-                position.X = 0 -16;
-            else if (position.X > 800 - 48) //collision with right side of screen
-                position.X = 800 - 48;
+                position.X = 0 - 16;
+            else if (position.X > _screenWidth - 48) //collision with right side of screen
+                position.X = _screenWidth - 48;
             else
             {
                 if (direction.X == 0) //reset speed and acceleration when hero stops moving || changes direction
