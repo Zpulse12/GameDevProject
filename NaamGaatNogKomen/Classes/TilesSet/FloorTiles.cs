@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +10,19 @@ namespace NaamGaatNogKomen.Classes.TilesSet
 {
     internal class FloorTiles
     {
-        public AnimationFrame CurrentFrame { get; set; }
-        private List<AnimationFrame> frames;
-        public FloorTiles()
+        private Texture2D floors; 
+        private Animation flooranimation = new Animation();
+        private Vector2 position = new Vector2(100, 100);
+        public FloorTiles(Texture2D floor)
         {
-            frames = new List<AnimationFrame>();
+            this.floors = floor;
+            flooranimation.GetFramesFromTexture(floor.Width, floor.Height,4,1);
+            
+        }
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            Animation currentAnimation = flooranimation;
+            spriteBatch.Draw(floors, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
     }
 }

@@ -15,8 +15,6 @@ namespace NaamGaatNogKomen.Classes.TilesSet
 
         protected Vector2 position; // gaat de posititie bepalen van de texture
 
-
-
         public Tiles(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
