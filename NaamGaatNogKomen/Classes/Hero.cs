@@ -19,12 +19,12 @@ namespace NaamGaatNogKomen.Classes
         private Animation walkAnimation;
         private Animation idleAnimation;
         private Vector2 position = new Vector2(100, 800);
+        private bool isMoving = false;
         private Vector2 speed = new Vector2(0, 0);
         private Vector2 acceleration = new Vector2(0.001f, 1f);
+        private bool isJumping = false;
         private int collisionLeft = 48;
         private int collisionRight = 144;
-        private bool isMoving = false;
-        private bool isJumping = false;
         private IInputReader inputReader;
         private int _screenWidth; 
         private int _screenHeight;
