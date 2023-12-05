@@ -25,8 +25,8 @@ namespace NaamGaatNogKomen.Classes
         private Vector2 speed = new Vector2(0, 0);
         private Vector2 acceleration = new Vector2(0.001f, 1f);
         private bool isJumping = false;
-        private float jumpSpeed = 10f;
-        private float gravity = 1f;
+        private float jumpSpeed = -15f;
+        private float gravity = 0.5f;
         private int collisionLeft = 48;
         private int collisionRight = 144;
         private int collisionFloor = 300;
