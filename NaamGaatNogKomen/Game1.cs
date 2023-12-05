@@ -54,6 +54,7 @@ namespace NaamGaatNogKomen
 
             _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
             _heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
+            _heroJumpTexture = Content.Load<Texture2D>("HeroJump");
 
         }
 
