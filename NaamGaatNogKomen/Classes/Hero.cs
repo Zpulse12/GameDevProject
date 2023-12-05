@@ -81,6 +81,8 @@ namespace NaamGaatNogKomen.Classes
             Move();
             if (isJumping)
             {
+                speed.Y += gravity;
+                position.Y += speed.Y;
                 jumpAnimation.Update(gameTime);
             }
             else
