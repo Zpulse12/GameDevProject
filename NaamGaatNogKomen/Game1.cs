@@ -36,7 +36,7 @@ namespace NaamGaatNogKomen
             base.Initialize();
 
 
-            hero = new Hero(_heroWalkTexture, _heroIdleTexture, new KeyboardReader());
+            hero = new Hero(_heroWalkTexture, _heroIdleTexture,_heroJumpTexture, new KeyboardReader());
             hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
 
