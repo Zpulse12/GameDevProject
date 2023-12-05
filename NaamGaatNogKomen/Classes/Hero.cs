@@ -34,10 +34,11 @@ namespace NaamGaatNogKomen.Classes
         private int _screenHeight;
         private int lastMovementDirection = 1;
 
-        public Hero(Texture2D walkTexture, Texture2D idleTexture, IInputReader inputReader)
+        public Hero(Texture2D walkTexture, Texture2D idleTexture,Texture2D jumpTexture, IInputReader inputReader)
         {
             this.walkTexture = walkTexture;
             this.idleTexture = idleTexture;
+            this.jumpTexture = jumpTexture;
             this.inputReader = inputReader;
 
             walkAnimation = new Animation();
@@ -45,6 +46,9 @@ namespace NaamGaatNogKomen.Classes
 
             idleAnimation = new Animation();
             idleAnimation.GetFramesFromTexture(idleTexture.Width, idleTexture.Height, 5, 1);
+
+            jumpAnimation = new Animation();
+            jumpAnimation.GetFramesFromTexture(jumpTexture.Width, jumpTexture.Height, 3, 1);
         }
         public void SetScreenSize(int screenWidth, int screenHeight) 
         { 
