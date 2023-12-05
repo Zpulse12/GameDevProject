@@ -21,6 +21,8 @@ namespace NaamGaatNogKomen.Classes
         private Vector2 position = new Vector2(0, 0);
         private Vector2 speed = new Vector2(0, 0);
         private Vector2 acceleration = new Vector2(0.001f, 1f);
+        private int collisionLeft = 48;
+        private int collisionRight = 144;
         private bool isMoving = false;
         private IInputReader inputReader;
         private int _screenWidth; 
