@@ -16,8 +16,10 @@ namespace NaamGaatNogKomen.Classes
     {
         private Texture2D walkTexture;
         private Texture2D idleTexture;
+        private Texture2D jumpTexture;
         private Animation walkAnimation;
         private Animation idleAnimation;
+        private Animation jumpAnimation;
         private Vector2 position = new Vector2(100, 800);
         private bool isMoving = false;
         private Vector2 speed = new Vector2(0, 0);
