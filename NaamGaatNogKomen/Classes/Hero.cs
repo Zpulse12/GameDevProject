@@ -96,6 +96,12 @@ namespace NaamGaatNogKomen.Classes
                 isJumping = true;
                 speed.Y = jumpSpeed;
             }
+            if (position.Y > _screenHeight - 100)  
+            {
+                isJumping = false;
+                position.Y = _screenHeight - 100;
+                speed.Y = 0;
+            }
             if (position.X < 0 - collisionLeft) //collision with left side of screen
                 position.X = 0 - collisionLeft;
             else if (position.X > _screenWidth - collisionRight) //collision with right side of screen
