@@ -29,6 +29,7 @@ namespace NaamGaatNogKomen.Classes
         private float gravity = 1f;
         private int collisionLeft = 48;
         private int collisionRight = 144;
+        private int collisionFloor = 300;
         private IInputReader inputReader;
         private int _screenWidth; 
         private int _screenHeight;
