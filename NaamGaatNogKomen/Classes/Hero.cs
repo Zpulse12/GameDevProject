@@ -24,6 +24,7 @@ namespace NaamGaatNogKomen.Classes
         private int collisionLeft = 48;
         private int collisionRight = 144;
         private bool isMoving = false;
+        private bool isJumping = false;
         private IInputReader inputReader;
         private int _screenWidth; 
         private int _screenHeight;
