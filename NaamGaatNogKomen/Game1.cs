@@ -13,6 +13,7 @@ namespace NaamGaatNogKomen
         private SpriteBatch _spriteBatch;
         private Texture2D _heroWalkTexture;
         private Texture2D _heroIdleTexture;
+        private Texture2D _heroJumpTexture;
         private Hero hero;
 
 
