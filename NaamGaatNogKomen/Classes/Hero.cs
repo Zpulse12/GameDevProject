@@ -57,16 +57,23 @@ namespace NaamGaatNogKomen.Classes
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
+            if (isJumping)
+            {
+                spriteBatch.Draw(jumpTexture, position, jumpAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, SpriteEffects.None, 0);
+            }
+            else
+            {
+                Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
 
-            if (isMoving && inputReader.ReadInput().X == 1)
-                lastMovementDirection = 1;
-            else if (isMoving && inputReader.ReadInput().X == -1)
-                lastMovementDirection = -1;
+                if (isMoving && inputReader.ReadInput().X == 1)
+                    lastMovementDirection = 1;
+                else if (isMoving && inputReader.ReadInput().X == -1)
+                    lastMovementDirection = -1;
 
-            Texture2D textureToDraw = isMoving ? walkTexture : idleTexture;
-            SpriteEffects spriteEffect = (lastMovementDirection == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(textureToDraw, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, spriteEffect, 0);
+                Texture2D textureToDraw = isMoving ? walkTexture : idleTexture;
+                SpriteEffects spriteEffect = (lastMovementDirection == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+                spriteBatch.Draw(textureToDraw, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, spriteEffect, 0);
+            }
         }
         public void Update(GameTime gameTime)
         {
