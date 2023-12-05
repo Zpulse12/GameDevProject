@@ -71,8 +71,15 @@ namespace NaamGaatNogKomen.Classes
         public void Update(GameTime gameTime)
         {
             Move();
-            Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
-            currentAnimation.Update(gameTime);
+            if (isJumping)
+            {
+                jumpAnimation.Update(gameTime);
+            }
+            else
+            {
+                Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
+                currentAnimation.Update(gameTime);
+            }
         }
         private void Move()
         {
