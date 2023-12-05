@@ -18,8 +18,6 @@ namespace NaamGaatNogKomen.Classes
         private Texture2D idleTexture;
         private Animation walkAnimation;
         private Animation idleAnimation;
-
-        private Rectangle collision = new Rectangle();
         private Vector2 position = new Vector2(0, 0);
         private Vector2 speed = new Vector2(0, 0);
         private Vector2 acceleration = new Vector2(0.001f, 1f);
@@ -40,11 +38,6 @@ namespace NaamGaatNogKomen.Classes
 
             idleAnimation = new Animation();
             idleAnimation.GetFramesFromTexture(idleTexture.Width, idleTexture.Height, 5, 1);
-
-            collision.X = 0;
-            collision.Y = 0;
-            collision.Width = 100;
-            collision.Height = 100;
         }
         public void SetScreenSize(int screenWidth, int screenHeight) 
         { 
