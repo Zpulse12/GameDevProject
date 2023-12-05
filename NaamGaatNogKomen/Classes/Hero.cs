@@ -77,7 +77,7 @@ namespace NaamGaatNogKomen.Classes
         private void Move()
         {
             Vector2 direction = inputReader.ReadInput();
-            if (inputReader.IsKeyPressed(Keys.Space) && !isJumping)
+            if (direction.Y==1 && !isJumping)
             {
                 isJumping = true;
                 speed.Y = jumpSpeed;
