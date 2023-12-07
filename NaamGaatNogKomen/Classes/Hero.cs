@@ -94,19 +94,13 @@ namespace NaamGaatNogKomen.Classes
         private void Move()
         {
             Vector2 direction = inputReader.ReadInput();
-            if (direction.Y==1 && !isJumping)
-            {
-                isJumping = true;
-                speed.Y = jumpSpeed;
-                speed.X = direction.X * 5f;
-            }
             if (isJumping)
             {
                 speed.Y += gravity;
                 position.Y += speed.Y;
-                position.X = speed.X;
+                position.X += speed.X;
 
-                if (position.Y > _screenHeight - collisionFloor)
+                if (position.Y >= _screenHeight - collisionFloor)
                 {
                     isJumping = false;
                     position.Y = _screenHeight - collisionFloor;
@@ -114,25 +108,43 @@ namespace NaamGaatNogKomen.Classes
                     speed.X = 0;
                 }
             }
-            if (position.X < 0 - collisionLeft) //collision with left side of screen
-                position.X = 0 - collisionLeft;
-            else if (position.X > _screenWidth - collisionRight) //collision with right side of screen
-                position.X = _screenWidth - collisionRight;
             else
             {
-                if (direction.X == 0) //reset speed and acceleration when hero stops moving || changes direction
+                if (position.X < 0 - collisionLeft)
                 {
+                    position.X = 0 - collisionLeft;
                     speed.X = 0;
-                    acceleration.X = 0.0005f;
-                    isMoving = false;
+                }
+                else if (position.X > _screenWidth - collisionRight)
+                {
+                    position.X = _screenWidth - collisionRight;
+                    speed.X = 0;
                 }
                 else
                 {
-                    isMoving = true;
-                    speed = Accelerate(speed, acceleration, -3, 6);
-                    direction *= speed;
-                    position += direction;
-                    acceleration += new Vector2(0.005f, 1f);
+                    if (direction.Y == 1 && !isJumping)
+                    {
+                        isJumping = true;
+                        speed.Y = jumpSpeed;
+                        speed.X = direction.X * 5f;
+                    }
+                    else
+                    {
+                        if (direction.X == 0)
+                        {
+                            speed.X = 0;
+                            acceleration.X = 0.0005f;
+                            isMoving = false;
+                        }
+                        else
+                        {
+                            isMoving = true;
+                            speed = Accelerate(speed, acceleration, -3, 6);
+                            direction *= speed;
+                            position += direction;
+                            acceleration += new Vector2(0.005f, 1f);
+                        }
+                    }
                 }
             }
         }
