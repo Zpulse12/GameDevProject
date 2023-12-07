@@ -98,6 +98,7 @@ namespace NaamGaatNogKomen.Classes
             {
                 isJumping = true;
                 speed.Y = jumpSpeed;
+                speed.X = direction.X * 5f;
             }
             if (isJumping)
             {
