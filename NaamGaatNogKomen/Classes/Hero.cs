@@ -60,7 +60,9 @@ namespace NaamGaatNogKomen.Classes
         {
             if (isJumping)
             {
-                spriteBatch.Draw(jumpTexture, position, jumpAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, SpriteEffects.None, 0);
+                Texture2D jumpTextureToDraw = jumpTexture;
+                SpriteEffects jumpSpriteEffect = (lastMovementDirection == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+                spriteBatch.Draw(jumpTextureToDraw, position, jumpAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, jumpSpriteEffect, 0);
             }
             else
             {
