@@ -104,6 +104,7 @@ namespace NaamGaatNogKomen.Classes
             {
                 speed.Y += gravity;
                 position.Y += speed.Y;
+                position.X = speed.X;
 
                 if (position.Y > _screenHeight - collisionFloor)
                 {
