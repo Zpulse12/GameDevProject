@@ -31,16 +31,11 @@ namespace NaamGaatNogKomen
         {
             // TODO: Add your initialization logic here
             _graphics.ApplyFullscreenSettings();
-
             base.Initialize();
-
             floor = new FloorTiles(_floorTiles);
             hero = new Hero(_heroWalkTexture, _heroIdleTexture, new KeyboardReader());
+            
             hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-
-
-           
-
         }
 
         protected override void LoadContent()
@@ -50,7 +45,8 @@ namespace NaamGaatNogKomen
             // TODO: use this.Content to load your game content here
             _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
             _heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
-            _floorTiles = Content.Load<Texture2D>("tilesSet");
+            _floorTiles = Content.Load<Texture2D>("tilesset");
+
 
         }
 
@@ -62,15 +58,17 @@ namespace NaamGaatNogKomen
             // TODO: Add your update logic here
 
             hero.Update(gameTime);
+            floor.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime) 
         {
+            Vector2 floorPosition = new Vector2(0, 1000);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
             hero.Draw(_spriteBatch);
-            floor.Draw(_spriteBatch);
+            floor.Draw(_spriteBatch,floorPosition);
             _spriteBatch.End();
 
             base.Draw(gameTime);

@@ -8,21 +8,30 @@ using System.Threading.Tasks;
 
 namespace NaamGaatNogKomen.Classes.TilesSet
 {
-    internal class FloorTiles
+    public class FloorTiles
     {
-        private Texture2D floors; 
-        private Animation flooranimation = new Animation();
-        private Vector2 position = new Vector2(100, 100);
+        private Texture2D floors;
+        private Animation floorAnimation = new Animation();
+
         public FloorTiles(Texture2D floor)
         {
             this.floors = floor;
-            flooranimation.GetFramesFromTexture(floor.Width, floor.Height,4,1);
-            
+            floorAnimation.GetFramesFromTexture(floor.Width, floor.Height, 4, 1);
         }
-        public void Draw(SpriteBatch spriteBatch)
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            Animation currentAnimation = flooranimation;
-            spriteBatch.Draw(floors, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+            AnimationFrame currentFrame = floorAnimation.CurrentFrame;
+            Rectangle destinationRectangle = new Rectangle((int)position.X, (int)position.Y, GraphicsDeviceManager.DefaultBackBufferWidth, floors.Height);
+            spriteBatch.Draw(floors, destinationRectangle, currentFrame.SourceRectangle, Color.White);
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            floorAnimation.Update(gameTime);
         }
     }
+
+
+
 }
