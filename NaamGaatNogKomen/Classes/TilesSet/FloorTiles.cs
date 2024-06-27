@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace NaamGaatNogKomen.Classes.TilesSet
 {
@@ -21,13 +22,20 @@ namespace NaamGaatNogKomen.Classes.TilesSet
             this.tiles = new List<Rectangle>();
         }
 
-        public void GenerateTiles(int screenWidth)
+        public void GenerateTiles(int screenWidth, int screenHeight)
         {
             tiles.Clear();
-            // Generate bottom row
+            int tileY = screenHeight - tileHeight; // Position tiles at the bottom of the screen
             for (int x = 0; x < screenWidth; x += tileWidth)
             {
-                tiles.Add(new Rectangle(x, 600 - tileHeight, tileWidth, tileHeight));
+                // Create a gap at a specific position
+                if (x > screenWidth / 2 && x < screenWidth / 2 + tileWidth * 2)
+                {
+                    continue; // Skip adding tiles to create a gap
+                }
+
+                tiles.Add(new Rectangle(x, tileY, tileWidth, tileHeight));
+                Debug.WriteLine($"Tile Position: {x}, {tileY}"); // Print each tile's position
             }
         }
 
@@ -52,4 +60,5 @@ namespace NaamGaatNogKomen.Classes.TilesSet
             return tiles;
         }
     }
+
 }

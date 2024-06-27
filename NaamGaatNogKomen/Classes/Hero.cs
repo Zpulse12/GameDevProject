@@ -1,18 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes.Input;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NaamGaatNogKomen.Classes
 {
-    internal class Hero : IGameObject
+    public class Hero
     {
         private Texture2D walkTexture;
         private Texture2D idleTexture;
@@ -23,9 +16,15 @@ namespace NaamGaatNogKomen.Classes
         private Vector2 speed = new Vector2(0, 0);
         private Vector2 acceleration = new Vector2(0.001f, 1f);
         private IInputReader inputReader;
-        private int _screenWidth; 
+        private int _screenWidth;
         private int _screenHeight;
         private int lastMovementDirection = 1;
+        private bool isJumping = false;
+        public bool isFalling = true;
+        private float jumpSpeed = -12f;
+        private float gravity = 0.5f;
+        private float scale = 1.0f; // Ensure the hero is correctly scaled
+        private float verticalSpeed = 0;
 
         public Hero(Texture2D walkTexture, Texture2D idleTexture, IInputReader inputReader)
         {
@@ -39,11 +38,13 @@ namespace NaamGaatNogKomen.Classes
             idleAnimation = new Animation();
             idleAnimation.GetFramesFromTexture(idleTexture.Width, idleTexture.Height, 5, 1);
         }
-        public void SetScreenSize(int screenWidth, int screenHeight) 
-        { 
-            this._screenWidth = screenWidth; 
-            this._screenHeight = screenHeight; 
+
+        public void SetScreenSize(int screenWidth, int screenHeight, int tileHeight)
+        {
+            this._screenWidth = screenWidth;
+            this._screenHeight = screenHeight;
         }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
@@ -55,24 +56,50 @@ namespace NaamGaatNogKomen.Classes
 
             Texture2D textureToDraw = isMoving ? walkTexture : idleTexture;
             SpriteEffects spriteEffect = (lastMovementDirection == -1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(textureToDraw, position, currentAnimation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(), 3, spriteEffect, 0);
+            spriteBatch.Draw(textureToDraw, position, currentAnimation?.CurrentFrame?.SourceRectangle, Color.White, 0, new Vector2(), scale, spriteEffect, 0);
         }
         public void Update(GameTime gameTime)
         {
+            ApplyGravity();
             Move();
             Animation currentAnimation = isMoving ? walkAnimation : idleAnimation;
-            currentAnimation.Update(gameTime);
+            currentAnimation?.Update(gameTime);
+
+            Debug.WriteLine($"Hero Position after Update: {position}");
         }
+
+
+        private void ApplyGravity()
+        {
+            if (isFalling)
+            {
+                verticalSpeed += gravity;
+                position.Y += verticalSpeed;
+            }
+            else
+            {
+                verticalSpeed = 0;
+            }
+            Debug.WriteLine($"Vertical speed: {verticalSpeed}, Position Y: {position.Y}");
+        }
+
+        public void StopFalling()
+        {
+            isFalling = false;
+            verticalSpeed = 0;
+            Debug.WriteLine("Hero stopped falling.");
+        }
+
         private void Move()
         {
             Vector2 direction = inputReader.ReadInput();
-            if (position.X < 0 - 48) //collision with left side of screen
-                position.X = 0 - 48;
-            else if (position.X > _screenWidth - 144) //collision with right side of screen
-                position.X = _screenWidth - 144;
+            if (position.X < 0)
+                position.X = 0;
+            else if (position.X > _screenWidth - (walkTexture.Width / 8) * scale)
+                position.X = _screenWidth - (walkTexture.Width / 8) * scale;
             else
             {
-                if (direction.X == 0) //reset speed and acceleration when hero stops moving || changes direction
+                if (direction.X == 0)
                 {
                     speed.X = 0;
                     acceleration.X = 0.0005f;
@@ -89,6 +116,7 @@ namespace NaamGaatNogKomen.Classes
             }
         }
 
+
         private Vector2 Accelerate(Vector2 currentspeed, Vector2 acceleration, float minSpeed, float maxSpeed)
         {
             Vector2 newSpeed = currentspeed + acceleration;
@@ -97,6 +125,20 @@ namespace NaamGaatNogKomen.Classes
             if (newSpeed.X > maxSpeed)
                 newSpeed.X = maxSpeed;
             return newSpeed;
+        }
+
+        public Rectangle GetBounds()
+        {
+            var bounds = new Rectangle((int)position.X, (int)position.Y, (int)((walkTexture.Width / 8) * scale), (int)(walkTexture.Height * scale));
+            Debug.WriteLine($"Hero Bounds: {bounds}");
+            return bounds;
+        }
+
+
+        public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
         }
     }
 }
