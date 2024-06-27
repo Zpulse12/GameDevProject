@@ -1,53 +1,58 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using NaamGaatNogKomen.Classes;
+using NaamGaatNogKomen.Classes.GameWorld;
 using NaamGaatNogKomen.Classes.Input;
-using NaamGaatNogKomen.Classes.TilesSet;
-
+using System.Collections.Generic;
 
 namespace NaamGaatNogKomen
 {
     public class Game1 : Game
     {
-        private GraphicsSettings _graphics;
+        private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D _heroWalkTexture;
-        private Texture2D _heroIdleTexture;
-        private Texture2D _floorTiles;
-        private Hero hero;
-        private FloorTiles floor;
-
-
+        private StartScreen startScreen;
+        private LevelManager levelManager;
+        private GameOverScreen gameOverScreen;
+        private bool isGameOver;
 
         public Game1()
         {
-            _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));//De constructor accepteert alleen een object van de graphicsdevicemanager
-            IsMouseVisible = true;
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            _graphics.ApplyFullscreenSettings();
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 600;
+            _graphics.IsFullScreen = false;
+            _graphics.ApplyChanges();
             base.Initialize();
-            floor = new FloorTiles(_floorTiles);
-            hero = new Hero(_heroWalkTexture, _heroIdleTexture, new KeyboardReader());
-            
-            hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
-            _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
-            _heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
-            _floorTiles = Content.Load<Texture2D>("tilesset");
+            Texture2D floorTexture = Content.Load<Texture2D>("tilesset");
+            Texture2D heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
+            Texture2D heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
+            Texture2D backgroundTexture = Content.Load<Texture2D>("background");
+            SpriteFont font = Content.Load<SpriteFont>("DefaultFont");
 
+            IInputReader inputReader = new KeyboardReader();
 
+            GameWorld gameWorld = new GameWorld(floorTexture, heroWalkTexture, heroIdleTexture, backgroundTexture, inputReader, font, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
+            Level level1 = new Level(gameWorld);
+
+            GameWorld gameWorld2 = new GameWorld(floorTexture, heroWalkTexture, heroIdleTexture, backgroundTexture, inputReader, font, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
+            Level level2 = new Level(gameWorld2);
+
+            levelManager = new LevelManager(new List<Level> { level1, level2 });
+            startScreen = new StartScreen(font);
+            gameOverScreen = new GameOverScreen(font);
         }
 
         protected override void Update(GameTime gameTime)
@@ -55,25 +60,46 @@ namespace NaamGaatNogKomen
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            if (startScreen.IsGameStarted && !isGameOver)
+            {
+                levelManager.Update(gameTime);
+                if (levelManager.CurrentLevel.GameWorld.IsGameOver())
+                {
+                    isGameOver = true;
+                }
+            }
+            else if (isGameOver)
+            {
+                gameOverScreen.Update(gameTime);
+            }
+            else
+            {
+                startScreen.Update(gameTime);
+            }
 
-            hero.Update(gameTime);
-            floor.Update(gameTime);
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime) 
+        protected override void Draw(GameTime gameTime)
         {
-            Vector2 floorPosition = new Vector2(0, 1000);
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin();
-            hero.Draw(_spriteBatch);
-            floor.Draw(_spriteBatch,floorPosition);
-            _spriteBatch.End();
+
+            if (startScreen.IsGameStarted && !isGameOver)
+            {
+                _spriteBatch.Begin();
+                levelManager.Draw(_spriteBatch);
+                _spriteBatch.End();
+            }
+            else if (isGameOver)
+            {
+                gameOverScreen.Draw(_spriteBatch, _graphics);
+            }
+            else
+            {
+                startScreen.Draw(_spriteBatch, _graphics);
+            }
 
             base.Draw(gameTime);
-
-            // TODO: Add your drawing code here
         }
     }
 }
