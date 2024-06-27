@@ -1,17 +1,11 @@
-
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NaamGaatNogKomen.Classes
 {
     internal class Animation
     {
-        public AnimationFrame CurrentFrame { get; set; }
+        public AnimationFrame CurrentFrame { get; private set; }
         private List<AnimationFrame> frames;
         private int counter;
         private double secondCounter = 0;
@@ -24,11 +18,18 @@ namespace NaamGaatNogKomen.Classes
         public void AddFrame(AnimationFrame frame)
         {
             frames.Add(frame);
-            CurrentFrame = frames[0];
+            if (frames.Count == 1)
+            {
+                CurrentFrame = frames[0];
+            }
         }
+
         public void Update(GameTime gameTime)
         {
-            CurrentFrame = frames[counter];
+            if (frames.Count == 0)
+            {
+                return;
+            }
 
             secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
             int fps = 15;
@@ -39,24 +40,25 @@ namespace NaamGaatNogKomen.Classes
                 secondCounter = 0;
             }
             if (counter >= frames.Count)
+            {
                 counter = 0;
+            }
+
+            CurrentFrame = frames[counter];
         }
 
-        public void GetFramesFromTexture(int width,int height,int numberOfWidthSprites,int numberOfHeightSprites)
+        public void GetFramesFromTexture(int width, int height, int numberOfWidthSprites, int numberOfHeightSprites)
         {
             int widthOfFrame = width / numberOfWidthSprites;
             int heightOfFrame = height / numberOfHeightSprites;
 
-            for(int y = 0; y <= height - heightOfFrame; y += heightOfFrame)
+            for (int y = 0; y <= height - heightOfFrame; y += heightOfFrame)
             {
-                for(int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
+                for (int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
                 {
-                    frames.Add(new AnimationFrame(new Rectangle(x, y, widthOfFrame, heightOfFrame)));
+                    AddFrame(new AnimationFrame(new Rectangle(x, y, widthOfFrame, heightOfFrame)));
                 }
             }
         }
-
-
-
     }
 }
