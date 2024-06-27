@@ -12,19 +12,19 @@ namespace NaamGaatNogKomen.Classes.TilesSet
     internal class Tiles
     {
         protected Texture2D texture;
+        protected Vector2 position;
 
-        protected Vector2 position; // gaat de posititie bepalen van de texture
-
-        public Tiles(Texture2D texture, Vector2 position)
+        public Tiles(Texture2D texture, float screenWidth, float screenHeight)
         {
             this.texture = texture;
-            this.position = position;
+            // Start de positie vanaf de onderkant van het scherm
+            this.position = new Vector2(0, screenHeight - texture.Height);
         }
 
-        public virtual void Draw(SpriteBatch sprite)
+        public virtual void Draw(SpriteBatch sprite, Rectangle sourceRectangle)
         {
-            sprite.Draw(texture, position, Color.White);//Color.White lets the sprite be drawen with the original texture
-
+            sprite.Draw(texture, position, sourceRectangle, Color.White);
         }
     }
+
 }

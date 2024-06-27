@@ -10,19 +10,15 @@ namespace NaamGaatNogKomen.Classes
 {
     internal class GraphicsSettings
     {
-        private GraphicsDeviceManager _graphics;
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public bool FullScreen { get; set; }
 
-        public GraphicsSettings(GraphicsDeviceManager graphics)
+        public GraphicsSettings(int width, int height, bool fullScreen)
         {
-            _graphics = graphics;
-        }
-
-        public void ApplyFullscreenSettings()
-        {
-            _graphics.IsFullScreen = true;
-            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            _graphics.ApplyChanges();
+            Width = width;
+            Height = height;
+            FullScreen = fullScreen;
         }
 
     }

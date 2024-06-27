@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NaamGaatNogKomen.Classes
+namespace NaamGaatNogKomen.Classes.Interfaces
 {
-    internal interface IGameObject
+    public interface IGameObject
     {
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
