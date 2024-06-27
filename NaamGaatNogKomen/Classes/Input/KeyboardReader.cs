@@ -3,17 +3,21 @@ using System.Numerics;
 
 namespace NaamGaatNogKomen.Classes.Input
 {
-    internal class KeyboardReader : IInputReader
+    public class KeyboardInputReader : IInputReader
     {
         public Vector2 ReadInput()
         {
-            KeyboardState state = Keyboard.GetState();
-            Vector2 direction = Vector2.Zero;
-            if (state.IsKeyDown(Keys.Left))
-                direction.X -= 1;
-            if (state.IsKeyDown(Keys.Right))
-                direction.X += 1;
-            return direction;
+            Vector2 inputDirection = Vector2.Zero;
+            var keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+                inputDirection.X -= 1;
+            if (keyboardState.IsKeyDown(Keys.Right))
+                inputDirection.X += 1;
+            if (keyboardState.IsKeyDown(Keys.Space))
+                inputDirection.Y -= 1; // Use Y-axis for jumping
+
+            return inputDirection;
         }
     }
 }
