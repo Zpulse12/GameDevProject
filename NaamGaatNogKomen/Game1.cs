@@ -39,15 +39,16 @@ namespace NaamGaatNogKomen
             Texture2D floorTexture = Content.Load<Texture2D>("tilesset");
             Texture2D heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
             Texture2D heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
+            Texture2D platformTexture = Content.Load<Texture2D>("tilesset");
             Texture2D backgroundTexture = Content.Load<Texture2D>("background");
             SpriteFont font = Content.Load<SpriteFont>("DefaultFont");
 
-            IInputReader inputReader = new KeyboardReader();
+            IInputReader inputReader = new KeyboardInputReader();
 
-            GameWorld gameWorld = new GameWorld(floorTexture, heroWalkTexture, heroIdleTexture, backgroundTexture, inputReader, font, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
+            GameWorld gameWorld = new GameWorld(floorTexture, heroWalkTexture, heroIdleTexture, platformTexture, backgroundTexture, inputReader, font, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
             Level level1 = new Level(gameWorld);
 
-            GameWorld gameWorld2 = new GameWorld(floorTexture, heroWalkTexture, heroIdleTexture, backgroundTexture, inputReader, font, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
+            GameWorld gameWorld2 = new GameWorld(floorTexture, heroWalkTexture, heroIdleTexture, platformTexture, backgroundTexture, inputReader, font, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight, this);
             Level level2 = new Level(gameWorld2);
 
             levelManager = new LevelManager(new List<Level> { level1, level2 });

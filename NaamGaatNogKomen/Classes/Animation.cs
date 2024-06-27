@@ -1,63 +1,42 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace NaamGaatNogKomen.Classes
+namespace NaamGaatNogKomen
 {
-    internal class Animation
+    public class Animation
     {
-        public AnimationFrame CurrentFrame { get; private set; }
-        private List<AnimationFrame> frames;
-        private int counter;
-        private double secondCounter = 0;
+        public List<Rectangle> Frames { get; private set; }
+        public int CurrentFrameIndex { get; private set; }
+        public float FrameTime { get; private set; }
+        private float time;
 
-        public Animation()
+        public Rectangle CurrentFrame
         {
-            frames = new List<AnimationFrame>();
+            get { return Frames[CurrentFrameIndex]; }
         }
 
-        public void AddFrame(AnimationFrame frame)
+        public void GetFramesFromTexture(int textureWidth, int textureHeight, int frameCountX, int frameCountY)
         {
-            frames.Add(frame);
-            if (frames.Count == 1)
+            Frames = new List<Rectangle>();
+            int frameWidth = textureWidth / frameCountX;
+            int frameHeight = textureHeight / frameCountY;
+            for (int y = 0; y < frameCountY; y++)
             {
-                CurrentFrame = frames[0];
+                for (int x = 0; x < frameCountX; x++)
+                {
+                    Frames.Add(new Rectangle(x * frameWidth, y * frameHeight, frameWidth, frameHeight));
+                }
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            if (frames.Count == 0)
+            time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (time >= FrameTime)
             {
-                return;
-            }
-
-            secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
-            int fps = 15;
-
-            if (secondCounter >= 1d / fps)
-            {
-                counter++;
-                secondCounter = 0;
-            }
-            if (counter >= frames.Count)
-            {
-                counter = 0;
-            }
-
-            CurrentFrame = frames[counter];
-        }
-
-        public void GetFramesFromTexture(int width, int height, int numberOfWidthSprites, int numberOfHeightSprites)
-        {
-            int widthOfFrame = width / numberOfWidthSprites;
-            int heightOfFrame = height / numberOfHeightSprites;
-
-            for (int y = 0; y <= height - heightOfFrame; y += heightOfFrame)
-            {
-                for (int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
-                {
-                    AddFrame(new AnimationFrame(new Rectangle(x, y, widthOfFrame, heightOfFrame)));
-                }
+                CurrentFrameIndex = (CurrentFrameIndex + 1) % Frames.Count;
+                time = 0f;
             }
         }
     }
