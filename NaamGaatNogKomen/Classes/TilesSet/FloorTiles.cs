@@ -1,64 +1,49 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace NaamGaatNogKomen.Classes.TilesSet
+namespace NaamGaatNogKomen
 {
     public class FloorTiles
     {
-        private Texture2D floors;
-        private int numberOfColumns; // Number of tiles in the width of the tileset
-        private int tileWidth; // Width of each tile
-        private int tileHeight; // Height of each tile
-        private List<Rectangle> tiles;
+        private Texture2D _texture;
+        private int _tileWidth;
+        private int _tileHeight;
+        private List<Rectangle> _tiles;
+        private Rectangle _sourceRectangle;
 
-        public FloorTiles(Texture2D floor, int numberOfColumns)
+        public int TileHeight => _tileHeight;
+
+        public FloorTiles(Texture2D texture, int tileWidth, int tileHeight, Rectangle sourceRectangle)
         {
-            this.floors = floor;
-            this.numberOfColumns = numberOfColumns;
-            this.tileWidth = floors.Width / numberOfColumns;
-            this.tileHeight = floors.Height / numberOfColumns;
-            this.tiles = new List<Rectangle>();
+            _texture = texture;
+            _tileWidth = tileWidth;
+            _tileHeight = tileHeight;
+            _tiles = new List<Rectangle>();
+            _sourceRectangle = sourceRectangle;
         }
 
         public void GenerateTiles(int screenWidth, int screenHeight)
         {
-            tiles.Clear();
-            int tileY = screenHeight - tileHeight; // Position tiles at the bottom of the screen
-            for (int x = 0; x < screenWidth; x += tileWidth)
+            _tiles.Clear();
+            int tileY = screenHeight - _tileHeight; // Position tiles at the bottom of the screen
+            for (int x = 0; x < screenWidth; x += _tileWidth)
             {
-                // Create a gap at a specific position
-                if (x > screenWidth / 2 && x < screenWidth / 2 + tileWidth * 2)
-                {
-                    continue; // Skip adding tiles to create a gap
-                }
-
-                tiles.Add(new Rectangle(x, tileY, tileWidth, tileHeight));
-                Debug.WriteLine($"Tile Position: {x}, {tileY}"); // Print each tile's position
+                _tiles.Add(new Rectangle(x, tileY, _tileWidth, _tileHeight));
             }
         }
 
-        public List<Rectangle> GetWalkableTiles()
+        public List<Rectangle> GetTiles()
         {
-            return tiles;
+            return _tiles;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle sourceRectangle = new Rectangle(0, (numberOfColumns - 1) * tileHeight, tileWidth, tileHeight);
-            foreach (var tile in tiles)
+            foreach (var tile in _tiles)
             {
-                spriteBatch.Draw(floors, tile, sourceRectangle, Color.White);
+                spriteBatch.Draw(_texture, tile, _sourceRectangle, Color.White);
             }
         }
-
-        public int TileHeight => tileHeight;
-
-        public List<Rectangle> GetTiles()
-        {
-            return tiles;
-        }
     }
-
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NaamGaatNogKomen.Classes.Input;
-using NaamGaatNogKomen.Classes.TilesSet;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -11,6 +10,7 @@ namespace NaamGaatNogKomen.Classes.GameWorld
     {
         private FloorTiles floorTiles;
         private Hero hero;
+        private Platform platform;
         private Texture2D backgroundTexture;
         private int screenWidth;
         private int screenHeight;
@@ -18,13 +18,21 @@ namespace NaamGaatNogKomen.Classes.GameWorld
         private GameOverScreen gameOverScreen;
         private Game game;
 
-        public GameWorld(Texture2D floorTexture, Texture2D heroWalkTexture, Texture2D heroIdleTexture, Texture2D backgroundTexture, IInputReader inputReader, SpriteFont font, int screenWidth, int screenHeight, Game game)
+        public GameWorld(Texture2D floorTexture, Texture2D heroWalkTexture, Texture2D heroIdleTexture, Texture2D platformTexture, Texture2D backgroundTexture, IInputReader inputReader, SpriteFont font, int screenWidth, int screenHeight, Game game)
         {
             this.game = game;
 
-            floorTiles = new FloorTiles(floorTexture, 3);
+            // Floor tiles setup
+            Rectangle floorTileSourceRect = new Rectangle(0, 0, 32, 32);
+            floorTiles = new FloorTiles(floorTexture, 32, 32, floorTileSourceRect);
             floorTiles.GenerateTiles(screenWidth, screenHeight);
 
+            // Platform setup
+            Rectangle platformTileSourceRect = new Rectangle(32, 0, 32, 32);
+            platform = new Platform(platformTexture, platformTileSourceRect);
+            platform.GeneratePlatforms(screenWidth, screenHeight);
+
+            // Hero setup
             hero = new Hero(heroWalkTexture, heroIdleTexture, inputReader);
             hero.SetScreenSize(screenWidth, screenHeight, floorTiles.TileHeight);
 
@@ -44,35 +52,44 @@ namespace NaamGaatNogKomen.Classes.GameWorld
         private void HandleCollisions()
         {
             List<Rectangle> tiles = floorTiles.GetTiles();
+            List<Rectangle> platforms = platform.GetPlatforms();
             Rectangle heroBounds = hero.GetBounds();
 
             bool isColliding = false;
 
-            Debug.WriteLine($"Hero Bounds before collision check: {heroBounds}");
 
             foreach (var tile in tiles)
             {
-                Debug.WriteLine($"Checking collision between Hero Bounds: {heroBounds} and Tile Bounds: {tile}");
 
                 if (heroBounds.Intersects(tile))
                 {
                     hero.Position = new Vector2(hero.Position.X, tile.Top - heroBounds.Height);
                     hero.StopFalling();
                     isColliding = true;
-                    Debug.WriteLine("Collision detected. Hero position adjusted.");
                     break;
+                }
+            }
+
+            foreach (var platform in platforms)
+            {
+                if (heroBounds.Intersects(platform))
+                {
+                    if (hero.VerticalSpeed > 0) // Falling down
+                    {
+                        hero.Position = new Vector2(hero.Position.X, platform.Top - heroBounds.Height);
+                        hero.StopFalling();
+                        isColliding = true;
+                        break;
+                    }
                 }
             }
 
             if (!isColliding)
             {
-                hero.isFalling = true;
-                Debug.WriteLine("Hero is falling. Position adjusted.");
+                hero.IsFalling = true;
             }
 
-            Debug.WriteLine($"Hero Position after collision check: {hero.Position}");
         }
-
 
         public void Update(GameTime gameTime)
         {
@@ -82,6 +99,7 @@ namespace NaamGaatNogKomen.Classes.GameWorld
                 if (!gameOverScreen.IsGameOver)
                 {
                     floorTiles.GenerateTiles(screenWidth, screenHeight);
+                    platform.GeneratePlatforms(screenWidth, screenHeight);
                     Rectangle firstTile = floorTiles.GetTiles()[0];
                     hero.Position = new Vector2(firstTile.X, 610);
                     isGameOver = false;
@@ -89,17 +107,17 @@ namespace NaamGaatNogKomen.Classes.GameWorld
                 return;
             }
 
-            hero.Update(gameTime);
+            hero.Update(gameTime, platform.GetPlatforms());
             HandleCollisions();
             CheckGameOver();
 
-            Debug.WriteLine($"Hero Position after Update: {hero.Position}");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             floorTiles.Draw(spriteBatch);
+            platform.Draw(spriteBatch);
             hero.Draw(spriteBatch);
 
             if (isGameOver)
