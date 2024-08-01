@@ -4,29 +4,44 @@ using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes;
 using NaamGaatNogKomen.Classes.Input;
 
+
 namespace NaamGaatNogKomen
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private GraphicsSettings _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _heroWalkTexture;
         private Texture2D _heroIdleTexture;
+        private Texture2D _heroJumpTexture;
         private Hero hero;
+
+
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+
+            _graphics = new GraphicsSettings(new GraphicsDeviceManager(this));//De constructor accepteert alleen een object van de graphicsdevicemanager
+
+
             IsMouseVisible = true;
+            Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _graphics.ApplyFullscreenSettings();
 
             base.Initialize();
-            hero = new Hero(_heroWalkTexture, _heroIdleTexture, new KeyboardReader());
+
+
+            hero = new Hero(_heroWalkTexture, _heroIdleTexture,_heroJumpTexture, new KeyboardReader());
+            hero.SetScreenSize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+
+           
+
         }
 
         protected override void LoadContent()
@@ -34,8 +49,13 @@ namespace NaamGaatNogKomen
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+
+
             _heroWalkTexture = Content.Load<Texture2D>("HeroWalk");
             _heroIdleTexture = Content.Load<Texture2D>("HeroIdle");
+            _heroJumpTexture = Content.Load<Texture2D>("HeroJump");
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,7 +69,7 @@ namespace NaamGaatNogKomen
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime gameTime) 
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();

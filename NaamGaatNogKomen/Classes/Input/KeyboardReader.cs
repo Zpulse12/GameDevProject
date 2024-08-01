@@ -18,6 +18,8 @@ namespace NaamGaatNogKomen.Classes.Input
                 direction.X -= 1;
             if (state.IsKeyDown(Keys.Right))
                 direction.X += 1;
+            if (state.IsKeyDown(Keys.Space))
+                direction.Y = 1;
             return direction;
         }
     }
