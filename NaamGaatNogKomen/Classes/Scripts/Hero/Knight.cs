@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -36,6 +35,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private KnightMovementStates knightMovementStates;
         private KnightMovementDirection knightMovementDirection;
 
+        public static readonly float maxVelocityX = 3;
+
 
         public Knight()
         {
@@ -59,13 +60,66 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public void Update(float deltaTime)
         {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
+            {
+                knightMovementStates = KnightMovementStates.Run;
+
+                velocity.X = Lerp(velocity.X, -maxVelocityX, 0.75f * deltaTime);
+            }
+            else if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
+            {
+                knightMovementStates = KnightMovementStates.Run;
+
+                velocity.X = Lerp(velocity.X, maxVelocityX, 0.75f * deltaTime);
+            }
+            else if (velocity.X != 0)
+            {
+                if (velocity.X > 0)
+                {
+                    velocity.X = Lerp(velocity.X, -0.66f * maxVelocityX, 0.9f * deltaTime);
+                    if (velocity.X < 0) velocity.X = 0;
+                }
+                else
+                {
+                    velocity.X = Lerp(velocity.X, 0.66f * maxVelocityX, 0.9f * deltaTime);
+                    if (velocity.X > 0) velocity.X = 0;
+                }
+            }
+
+            if (velocity.X != 0)
+            {
+                position.X += velocity.X;
+            }
+            else
+            {
+                knightMovementStates = KnightMovementStates.Idle;
+            }
+
+            if (velocity.X > 0)
+            {
+                knightMovementDirection = KnightMovementDirection.Right;
+            }
+            else if (velocity.X < 0)
+            {
+                knightMovementDirection = KnightMovementDirection.Left;
+            }
+
+
+
             animation.position = position;
-            animation.Update(deltaTime, knightMovementStates, knightMovementDirection);
+            animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             animation.Draw(spriteBatch);
+        }
+
+        private static float Lerp(float start, float end, float t)
+        {
+            return start * (1 - t) + end * t;
         }
     }
 }
