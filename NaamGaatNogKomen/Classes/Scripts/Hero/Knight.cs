@@ -44,7 +44,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             velocity.Y = 0;
 
             position.X = 20;
-            position.Y = 20;
+            position.Y = 150;
 
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
@@ -52,7 +52,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("blackknight");
+            texture = content.Load<Texture2D>("newknight");
 
 
             animation = new KnightAnimation(texture);
@@ -62,13 +62,13 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
+            if (keyboardState.IsKeyDown(Keys.Left))
             {
                 knightMovementStates = KnightMovementStates.Run;
 
                 velocity.X = Lerp(velocity.X, -maxVelocityX, 0.75f * deltaTime);
             }
-            else if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
+            else if (keyboardState.IsKeyDown(Keys.Right))
             {
                 knightMovementStates = KnightMovementStates.Run;
 

@@ -13,9 +13,9 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private Vector2 currentFrame;
         private Rectangle sourceRect;
         private KnightMovementStates prevMovementState;
-        private readonly int[] framesCount = new int[] { 5, 8 };
-        public readonly float[] animationDuration = new float[] { 0.15f, 0.075f };
-        private readonly int[][] frameSize = new int[][] { new int[] { 17, 22 }, new int[] { 21, 23 } };
+        private readonly int[] framesCount = new int[] { 5, 8, 1, 1 };
+        public readonly float[] animationDuration = new float[] { 0.175f, 0.075f }; 
+        private readonly int[][] frameSize = new int[][] { new int[] { 17, 22 }, new int[] { 21, 23 }, new int[] { 17, 22 }, new int[] { 20, 23 } };
         private readonly int maxFrameHight = 23;
         public KnightAnimation(Texture2D spritesheet)
         {
