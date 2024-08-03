@@ -19,12 +19,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private readonly int maxFrameHight = 23;
         public KnightAnimation(Texture2D spritesheet)
         {
+            texture = spritesheet;
             timer = 0;
             currentFrame.X = 0;
             currentFrame.Y = (int)KnightMovementStates.Idle;
-            texture = spritesheet;
-
-            spriteEffects = SpriteEffects.None;
             prevMovementState = KnightMovementStates.Idle;
         }
 
@@ -41,7 +39,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
             if (knightMovementState == KnightMovementStates.Run)
             {
-                if (timer >= 1 / (absVelocity * 7))
+                if (timer >= 1 / (absVelocity * 6))
                 {
                     currentFrame.X = currentFrame.X + 1 >= framesCount[(int)knightMovementState] ? 0 : currentFrame.X + 1;
                     timer = 0;
@@ -63,9 +61,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                                 maxFrameHight * (int)currentFrame.Y,
                                 frameSize[(int)knightMovementState][0],
                                 frameSize[(int)knightMovementState][1]);
-            spriteEffects = SpriteEffects.None;
             if (knightMovementDirection == KnightMovementDirection.Left)
                 spriteEffects = SpriteEffects.FlipHorizontally;
+            else
+                spriteEffects = SpriteEffects.None;
 
             prevMovementState = knightMovementState;
         }
