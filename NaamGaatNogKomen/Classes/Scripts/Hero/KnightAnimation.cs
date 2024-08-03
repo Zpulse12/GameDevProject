@@ -70,7 +70,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, 4, spriteEffects, 0);
+            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
         }
     }
 }
