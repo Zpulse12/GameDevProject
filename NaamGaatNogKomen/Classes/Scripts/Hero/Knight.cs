@@ -35,7 +35,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private KnightMovementStates knightMovementStates;
         private KnightMovementDirection knightMovementDirection;
 
-        public static readonly float maxVelocityX = 3;
+        public static readonly float maxVelocityX = 0.75f * GameManager.gameScale;
 
 
         public Knight()
