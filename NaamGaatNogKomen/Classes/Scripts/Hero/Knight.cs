@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes.Scripts.Hero;
+using System.Collections.Generic;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Hero
 {
@@ -35,6 +36,16 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private KnightMovementStates knightMovementStates;
         private KnightMovementDirection knightMovementDirection;
 
+        private int knightWidth;
+        private int knightHieght;
+
+        private readonly Dictionary<KnightMovementStates, Vector2> knightSize = new Dictionary<KnightMovementStates, Vector2>
+        {
+            { KnightMovementStates.Idle, new Vector2(17, 22) },
+            { KnightMovementStates.Run, new Vector2(21, 23) },
+            { KnightMovementStates.Jump, new Vector2(17, 22) },
+            { KnightMovementStates.Fall, new Vector2(20, 23) }
+        };
         public static readonly float maxVelocityX = 0.75f * GameManager.gameScale;
 
 
@@ -48,6 +59,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
+            knightWidth = (int)knightSize[knightMovementStates].X;
+            knightHieght = (int)knightSize[knightMovementStates].Y;
         }
 
         public void LoadContent(ContentManager content)
@@ -88,7 +101,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 }
             }
 
-            if (velocity.X != 0)
+            if (velocity.X != 0 && !(position.X == 0 && velocity.X <= 0))
             {
                 position.X += velocity.X;
             }
@@ -96,18 +109,26 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             {
                 knightMovementStates = KnightMovementStates.Idle;
             }
+            if (position.X < 0)
+            {
+                position.X = 0;
+                velocity.X = 0;
+            }
+            // move the map when the knight is in the middle of the screen
+            if (position.X + knightWidth / 2 > GameManager.mapWidth / 2)
+            {
+               GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
+               position.X = GameManager.mapWidth / 2 - knightWidth / 2;
+            }
 
             if (velocity.X > 0)
-            {
                 knightMovementDirection = KnightMovementDirection.Right;
-            }
             else if (velocity.X < 0)
-            {
                 knightMovementDirection = KnightMovementDirection.Left;
-            }
 
 
-
+            knightWidth = (int)(knightSize[knightMovementStates].X * GameManager.gameScale);
+            knightHieght = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale);
             animation.position = position;
             animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
         }
