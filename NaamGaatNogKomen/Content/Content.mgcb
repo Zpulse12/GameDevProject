@@ -44,7 +44,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Defaultfont.spritefont
 
-#begin HeroIdle.png
+#begin newknight.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -54,19 +54,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:HeroIdle.png
-
-#begin HeroWalk.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:HeroWalk.png
+/build:newknight.png
 
 #begin tilesSet.png
 /importer:TextureImporter
