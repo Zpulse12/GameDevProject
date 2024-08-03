@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System.IO;
 using static System.Formats.Asn1.AsnWriter;
+using System;
 
 namespace NaamGaatNogKomen.Classes.Scripts
 {
@@ -22,7 +23,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public MapGenerator()
         {
-            Level1Data = LoadMap("Content//Level1_Platform.csv");
+            string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
+            Level1Data = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
         }
 
         public void LoadContent(ContentManager content)
@@ -74,6 +76,10 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
             }
             return result;
+        }
+        public void MoveLeft(float amount)
+        {
+            mapPosition.X -= amount;
         }
     }
 }

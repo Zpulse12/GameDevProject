@@ -12,7 +12,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
     {
         private static Knight knight;
         private static MapGenerator mapGenerator;
-
+        private static float movingLeftRemaining;
 
 
         public static readonly float gameScale = 3f;
@@ -24,6 +24,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public GameManager()
         {
+            movingLeftRemaining = 0;
+
         }
 
 
@@ -48,6 +50,14 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             knight.Draw(spriteBatch);
             mapGenerator.Draw(spriteBatch);
+        }
+        public static void MoveMapLeft(float amount)
+        {
+            movingLeftRemaining += amount - (int)amount;
+            amount += (int)movingLeftRemaining;
+            movingLeftRemaining -= (int)movingLeftRemaining;
+
+            mapGenerator.MoveLeft((int)amount);
         }
     }
 }
