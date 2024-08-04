@@ -27,17 +27,19 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
     internal class Knight
     {
-        private float scale;
+        public Hitbox hitbox;
         private bool isJumping;
         private Vector2 position;
         private Vector2 velocity;
         private Texture2D texture;
         private KnightAnimation animation;
         private KnightMovementStates knightMovementStates;
+        private KnightMovementStates previousMovementStates;
         private KnightMovementDirection knightMovementDirection;
 
         private int knightWidth;
-        private int knightHieght;
+        private int knightHeight;
+        private readonly float gravity = 8f * GameManager.gameScale;
 
         private readonly Dictionary<KnightMovementStates, Vector2> knightSize = new Dictionary<KnightMovementStates, Vector2>
         {
@@ -51,6 +53,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public Knight()
         {
+            isJumping = false;
             velocity.X = 0;
             velocity.Y = 0;
 
@@ -60,13 +63,14 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
             knightWidth = (int)knightSize[knightMovementStates].X;
-            knightHieght = (int)knightSize[knightMovementStates].Y;
+            knightHeight = (int)knightSize[knightMovementStates].Y;
         }
 
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("newknight");
-
+            hitbox = new Hitbox(new Rectangle(0, 0, (int)(knightWidth * GameManager.gameScale), (int)(knightHeight * GameManager.gameScale)), Vector2.Zero);
+            hitbox.Update(position);
 
             animation = new KnightAnimation(texture);
         }
@@ -104,31 +108,98 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             if (velocity.X != 0 && !(position.X == 0 && velocity.X <= 0))
             {
                 position.X += velocity.X;
-            }
-            else
-            {
-                knightMovementStates = KnightMovementStates.Idle;
+                hitbox.Update(position);
             }
             if (position.X < 0)
             {
                 position.X = 0;
                 velocity.X = 0;
+                hitbox.Update(position);
+
             }
             // move the map when the knight is in the middle of the screen
             if (position.X + knightWidth / 2 > GameManager.mapWidth / 2)
             {
                GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
                position.X = GameManager.mapWidth / 2 - knightWidth / 2;
+                hitbox.Update(position);
+
             }
+
+            if (isJumping)
+            {
+                velocity.Y += gravity * deltaTime;
+                position.Y += velocity.Y;
+                hitbox.Update(position);
+
+                int overlapY = GameManager.HitMap(hitbox, false, true);
+                if (overlapY > 0 && overlapY <= (knightHeight * GameManager.gameScale) / 2)
+                {
+                    if (velocity.Y > 0)
+                        position.Y -= overlapY;
+                    else
+                        position.Y += overlapY;
+
+                    hitbox.Update(position);
+                    if (velocity.Y > 0) // was falling and hit the ground
+                    {
+                        velocity.Y = 0;
+                        isJumping = false;
+                    }
+                }
+            }
+
+            else 
+            {
+
+                position.Y += 1;
+                hitbox.Update(position);
+                int overlapY = GameManager.HitMap(hitbox, false, true);
+                if (overlapY == 0)
+                {
+                    isJumping = true;
+                    knightMovementStates = KnightMovementStates.Fall;
+                }
+                else
+                {
+                    position.Y -= 1;
+                    velocity.Y = 0;
+                    hitbox.Update(position);
+                }
+            }
+                
+            if (velocity.X == 0 && velocity.Y == 0)
+                knightMovementStates = KnightMovementStates.Idle;
+            else if (velocity.Y < 0)
+                knightMovementStates = KnightMovementStates.Jump;
+            else if (velocity.Y > 0)
+                knightMovementStates = KnightMovementStates.Fall;
+            else
+                knightMovementStates = KnightMovementStates.Run;
 
             if (velocity.X > 0)
                 knightMovementDirection = KnightMovementDirection.Right;
             else if (velocity.X < 0)
                 knightMovementDirection = KnightMovementDirection.Left;
 
-
             knightWidth = (int)(knightSize[knightMovementStates].X * GameManager.gameScale);
-            knightHieght = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale);
+            knightHeight = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale);
+
+            if (previousMovementStates != knightMovementStates)
+            {
+                int widthDiff = (int)(knightSize[previousMovementStates].X - knightSize[knightMovementStates].X);
+                widthDiff *= (int)GameManager.gameScale;
+                position.X += widthDiff;
+
+                int heightDiff = (int)(knightSize[previousMovementStates].Y - knightSize[knightMovementStates].Y);
+                heightDiff *= (int)GameManager.gameScale;
+                position.Y += heightDiff;
+
+                hitbox = new Hitbox(new Rectangle(0, 0, knightWidth, knightHeight), Vector2.Zero);
+                hitbox.Update(position);
+
+                previousMovementStates = knightMovementStates;
+            }
             animation.position = position;
             animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
         }
