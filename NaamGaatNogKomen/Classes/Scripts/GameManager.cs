@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using NaamGaatNogKomen.Classes.Scripts.Hero;
 using System.Reflection.Metadata;
+using System.Reflection.Emit;
 
 namespace NaamGaatNogKomen.Classes.Scripts
 {
@@ -12,6 +13,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
     {
         private static Knight knight;
         private static MapGenerator mapGenerator;
+        private static int level;
         private static int lives;
         private static float movingLeftRemaining;
 
@@ -27,6 +29,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             knight = new Knight();
             mapGenerator = new MapGenerator();
+            level = 0;
             lives = 3;
             movingLeftRemaining = 0;
 
@@ -37,6 +40,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             knight.LoadContent(content);
             mapGenerator.LoadContent(content);
+            GoToNextLevel();
         }
 
 
@@ -105,6 +109,12 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 return true;
 
             return false;
+        }
+
+        public static void GoToNextLevel()
+        {
+            mapGenerator.LoadLevel(++level);
+            knight.GoToInitialPosition(level);
         }
     }
 }

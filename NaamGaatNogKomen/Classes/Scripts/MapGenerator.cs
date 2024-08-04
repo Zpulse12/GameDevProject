@@ -14,31 +14,26 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private Texture2D tileset;
         private Vector2 mapPosition;
 
-        private Dictionary<Vector2, int> level1Data;
-        private Dictionary<Vector2, int> level1BackgroundData;
-
-        private Dictionary<Vector2, int> level1CollidersData;
+        private Dictionary<Vector2, int> levelData;
+        private Dictionary<Vector2, int> levelBackgroundData;
+        private Dictionary<Vector2, int> levelCollidersData;
         public List<Hitbox> colliders;
         public List<Hitbox> spikes;
         public Hitbox finishLine;
-        private static readonly int tileSize = 16;
+        public static readonly int tileSize = 16;
         private static readonly int tilesetWidth = 19;
 
 
 
         public MapGenerator()
         {
-            string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
-            level1Data = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
-            level1CollidersData = LoadMap(dir + $"Map Creation\\Level1_Colliders.csv");
-            level1BackgroundData = LoadMap(dir + $"Map Creation\\Level1_Background.csv");
-            AddColliders(level1CollidersData);
 
         }
 
         public void LoadContent(ContentManager content)
         {
             tileset = content.Load<Texture2D>("Castle_tileset");
+            LoadLevel(1);
         }
 
         public void Update(float deltaTime)
@@ -46,7 +41,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var item in level1Data)
+            foreach (var item in levelData)
             {
 
                 if (item.Value != -1)
@@ -61,7 +56,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                                     Color.White, 0, Vector2.Zero, GameManager.gameScale, SpriteEffects.None, 0);
                 }
             }
-            foreach (var item in level1BackgroundData)
+            foreach (var item in levelBackgroundData)
             {
                 if (item.Value != -1)
                 {
@@ -155,6 +150,15 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 collider.MoveLeft(amount);
             finishLine.MoveLeft(amount);
 
+        }
+
+        public void LoadLevel(int level)
+        {
+            string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
+            levelData = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
+            levelCollidersData = LoadMap(dir + $"Map Creation\\Level1_Colliders.csv");
+            levelBackgroundData = LoadMap(dir + $"Map Creation\\Level1_Background.csv");
+            AddColliders(levelCollidersData);
         }
     }
 }

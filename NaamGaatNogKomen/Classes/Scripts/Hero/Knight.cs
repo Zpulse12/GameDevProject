@@ -52,6 +52,13 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             { KnightMovementStates.Jump, new Vector2(17, 22) },
             { KnightMovementStates.Fall, new Vector2(19, 22) }
         };
+
+        private readonly Dictionary<int, Vector2> intialPosition = new Dictionary<int, Vector2>
+        {
+            { 1, new Vector2(3 * MapGenerator.tileSize, (16 - 7) * MapGenerator.tileSize - 22) * GameManager.gameScale },
+            { 2, new Vector2(21, 22) }
+        };
+
         public static readonly float maxVelocityX = 1f * GameManager.gameScale;
 
 
@@ -253,7 +260,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 }
                 if (GameManager.TouchedFinishLine(hitbox))
                 {
-                    //Todo: go to level 2
+                    GameManager.GoToNextLevel();
 
                 }
 
@@ -275,6 +282,11 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         public void DeathRoutine()
         {
             isDead = true;
+        }
+
+        public void GoToInitialPosition(int level)
+        {
+            position = intialPosition[level];
         }
     }
 }
