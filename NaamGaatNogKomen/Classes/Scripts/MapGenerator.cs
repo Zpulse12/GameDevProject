@@ -83,9 +83,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             List<Hitbox> colList = new List<Hitbox>();
 
-            foreach (var item in Level1Data)
+            foreach (var item in colData)
             {
-                if (item.Value != -1)
+                if (item.Value == 0)
                 {
                     Vector2 pos;
                     pos.X = item.Key.X * tileSize * GameManager.gameScale;

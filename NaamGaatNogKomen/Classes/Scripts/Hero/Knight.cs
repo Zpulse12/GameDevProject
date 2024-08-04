@@ -44,11 +44,11 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private readonly Dictionary<KnightMovementStates, Vector2> knightSize = new Dictionary<KnightMovementStates, Vector2>
         {
             { KnightMovementStates.Idle, new Vector2(17, 22) },
-            { KnightMovementStates.Run, new Vector2(21, 23) },
+            { KnightMovementStates.Run, new Vector2(21, 22) },
             { KnightMovementStates.Jump, new Vector2(17, 22) },
-            { KnightMovementStates.Fall, new Vector2(20, 23) }
+            { KnightMovementStates.Fall, new Vector2(19, 22) }
         };
-        public static readonly float maxVelocityX = 0.75f * GameManager.gameScale;
+        public static readonly float maxVelocityX = 1f * GameManager.gameScale;
 
 
         public Knight()
@@ -57,7 +57,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             velocity.X = 0;
             velocity.Y = 0;
 
-            position.X = 20;
+            position.X = 50;
             position.Y = 150;
 
             knightMovementStates = KnightMovementStates.Idle;
@@ -69,7 +69,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("newknight");
-            hitbox = new Hitbox(new Rectangle(0, 0, (int)(knightWidth * GameManager.gameScale), (int)(knightHeight * GameManager.gameScale)), Vector2.Zero);
+            hitbox = new Hitbox(new Rectangle((int)(2 * GameManager.gameScale), 0, (int)(17 * GameManager.gameScale), (int)(22 * GameManager.gameScale)), Vector2.Zero);
             hitbox.Update(position);
 
             animation = new KnightAnimation(texture);
@@ -105,11 +105,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 }
             }
 
-            if (velocity.X != 0 && !(position.X == 0 && velocity.X <= 0))
-            {
-                position.X += velocity.X;
-                hitbox.Update(position);
-            }
+    
             if (position.X < 0)
             {
                 position.X = 0;
@@ -117,13 +113,36 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 hitbox.Update(position);
 
             }
-            // move the map when the knight is in the middle of the screen
-            if (position.X + knightWidth / 2 > GameManager.mapWidth / 2)
+            if (velocity.X != 0)
             {
-               GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
+                
+                position.X += velocity.X;
+                hitbox.Update(position);
+                int overlabX = GameManager.HitMap(hitbox, true, false);
+
+                if (overlabX > 0 && overlabX < (knightWidth) / 2)
+                {
+                    position.X -= velocity.X;
+                    velocity.X = 0;
+
+                    hitbox.Update(position);
+                }
+            }
+
+            // move the map when the knight is in the middle of the screen
+            if (position.X + 10 * GameManager.gameScale / 2 > GameManager.mapWidth / 2)
+            {
+                GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
                position.X = GameManager.mapWidth / 2 - knightWidth / 2;
                 hitbox.Update(position);
 
+            }
+
+            if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) && !isJumping) // Jump
+            {
+                isJumping = true;
+                velocity.Y = -3.25f * GameManager.gameScale;
+                knightMovementStates = KnightMovementStates.Jump;
             }
 
             if (isJumping)
@@ -182,24 +201,19 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             else if (velocity.X < 0)
                 knightMovementDirection = KnightMovementDirection.Left;
 
-            knightWidth = (int)(knightSize[knightMovementStates].X * GameManager.gameScale);
-            knightHeight = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale);
-
-            if (previousMovementStates != knightMovementStates)
-            {
-                int widthDiff = (int)(knightSize[previousMovementStates].X - knightSize[knightMovementStates].X);
-                widthDiff *= (int)GameManager.gameScale;
-                position.X += widthDiff;
-
-                int heightDiff = (int)(knightSize[previousMovementStates].Y - knightSize[knightMovementStates].Y);
-                heightDiff *= (int)GameManager.gameScale;
-                position.Y += heightDiff;
-
-                hitbox = new Hitbox(new Rectangle(0, 0, knightWidth, knightHeight), Vector2.Zero);
-                hitbox.Update(position);
-
-                previousMovementStates = knightMovementStates;
-            }
+            // Check if the movement state has changed 
+            // update position and size accordingly
+            //if (previousMovementStates != knightMovementStates)
+            //{
+            //	knightWidth = (int)(knightSize[knightMovementStates].X * GameManager.gameScale);
+            //	knightHeight = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale)
+            //	int widthDiff = (int)(knightSize[previousMovementStates].X - knightSize[knightMovementStates].X);
+            //	widthDiff *= (int)GameManager.gameScale;
+            //	position.X += widthDiff;
+            //	hitbox = new Hitbox(new Rectangle(0, 0, knightWidth, knightHeight), Vector2.Zero);
+            //	hitbox.Update(position);
+            //	previousMovementStates = knightMovementStates;
+            //}
             animation.position = position;
             animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
         }
