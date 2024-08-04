@@ -15,7 +15,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private Vector2 mapPosition;
 
         private Dictionary<Vector2, int> Level1Data;
-
+        public List<Hitbox> colliders;
         private static readonly int tileSize = 16;
         private static readonly int tilesetWidth = 19;
 
@@ -25,6 +25,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
             Level1Data = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
+            colliders = AddColliders(LoadMap(dir + $"Map Creation\\Level1_Colliders.csv"));
+
         }
 
         public void LoadContent(ContentManager content)
@@ -39,10 +41,10 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             foreach (var item in Level1Data)
             {
-                Vector2 pos = mapPosition;
 
                 if (item.Value != -1)
                 {
+                    Vector2 pos = mapPosition;
                     pos.X += item.Key.X * tileSize * GameManager.gameScale;
                     pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
                     spriteBatch.Draw(tileset, pos,
@@ -54,7 +56,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             }
         }
 
-        public Dictionary<Vector2, int> LoadMap(string filepath)
+        private Dictionary<Vector2, int> LoadMap(string filepath)
         {
             Dictionary<Vector2, int> result = new Dictionary<Vector2, int>();
             using (StreamReader reader = new StreamReader(filepath))
@@ -77,9 +79,32 @@ namespace NaamGaatNogKomen.Classes.Scripts
             }
             return result;
         }
-        public void MoveLeft(float amount)
+        private List<Hitbox> AddColliders(Dictionary<Vector2, int> colData)
+        {
+            List<Hitbox> colList = new List<Hitbox>();
+
+            foreach (var item in Level1Data)
+            {
+                if (item.Value != -1)
+                {
+                    Vector2 pos;
+                    pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
+
+                    Rectangle r = new Rectangle((int)pos.X, (int)pos.Y,
+                            (int)(tileSize * GameManager.gameScale), (int)(tileSize * GameManager.gameScale));
+                    colList.Add(new Hitbox(r, new Vector2(0, 0)));
+                }
+            }
+
+            return colList;
+        }
+
+        public void MoveLeft(int amount)
         {
             mapPosition.X -= amount;
+            foreach (Hitbox collider in colliders)
+                collider.MoveLeft(amount);
         }
     }
 }
