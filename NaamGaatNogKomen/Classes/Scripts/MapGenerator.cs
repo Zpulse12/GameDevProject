@@ -15,6 +15,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private Vector2 mapPosition;
 
         private Dictionary<Vector2, int> level1Data;
+        private Dictionary<Vector2, int> level1BackgroundData;
+
         private Dictionary<Vector2, int> level1CollidersData;
         public List<Hitbox> colliders;
         public List<Hitbox> spikes;
@@ -28,6 +30,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
             level1Data = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
             level1CollidersData = LoadMap(dir + $"Map Creation\\Level1_Colliders.csv");
+            level1BackgroundData = LoadMap(dir + $"Map Creation\\Level1_Background.csv");
             AddColliders(level1CollidersData);
 
         }
@@ -45,6 +48,20 @@ namespace NaamGaatNogKomen.Classes.Scripts
             foreach (var item in level1Data)
             {
 
+                if (item.Value != -1)
+                {
+                    Vector2 pos = mapPosition;
+                    pos.X += item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
+                    spriteBatch.Draw(tileset, pos,
+                                    new Rectangle(item.Value % tilesetWidth * tileSize,
+                                                item.Value / tilesetWidth * tileSize,
+                                                tileSize, tileSize),
+                                    Color.White, 0, Vector2.Zero, GameManager.gameScale, SpriteEffects.None, 0);
+                }
+            }
+            foreach (var item in level1BackgroundData)
+            {
                 if (item.Value != -1)
                 {
                     Vector2 pos = mapPosition;
