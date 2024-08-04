@@ -250,9 +250,15 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                         position.X -= 13 * GameManager.gameScale;
                         invincibilityTimer = 0;
                     }
-                    animation.position = position;
-                    animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
                 }
+                if (GameManager.TouchedFinishLine(hitbox))
+                {
+                    //Todo: go to level 2
+
+                }
+
+                animation.position = position;
+                animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
             }
         }
 
