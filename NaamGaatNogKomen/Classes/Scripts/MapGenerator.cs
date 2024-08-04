@@ -14,8 +14,10 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private Texture2D tileset;
         private Vector2 mapPosition;
 
-        private Dictionary<Vector2, int> Level1Data;
+        private Dictionary<Vector2, int> level1Data;
+        private Dictionary<Vector2, int> level1CollidersData;
         public List<Hitbox> colliders;
+        public List<Hitbox> spikes;
         private static readonly int tileSize = 16;
         private static readonly int tilesetWidth = 19;
 
@@ -24,8 +26,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
         public MapGenerator()
         {
             string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
-            Level1Data = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
-            colliders = AddColliders(LoadMap(dir + $"Map Creation\\Level1_Colliders.csv"));
+            level1Data = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
+            level1CollidersData = LoadMap(dir + $"Map Creation\\Level1_Colliders.csv");
+            AddColliders(level1CollidersData);
 
         }
 
@@ -39,7 +42,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var item in Level1Data)
+            foreach (var item in level1Data)
             {
 
                 if (item.Value != -1)
@@ -79,31 +82,49 @@ namespace NaamGaatNogKomen.Classes.Scripts
             }
             return result;
         }
-        private List<Hitbox> AddColliders(Dictionary<Vector2, int> colData)
+        private void AddColliders(Dictionary<Vector2, int> colData)
         {
-            List<Hitbox> colList = new List<Hitbox>();
+            colliders = new List<Hitbox>();
+            spikes = new List<Hitbox>();
 
             foreach (var item in colData)
             {
+                Vector2 pos;
+                Rectangle r;
                 if (item.Value == 0)
                 {
-                    Vector2 pos;
                     pos.X = item.Key.X * tileSize * GameManager.gameScale;
                     pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
 
-                    Rectangle r = new Rectangle((int)pos.X, (int)pos.Y,
+                    r = new Rectangle((int)pos.X, (int)pos.Y,
                             (int)(tileSize * GameManager.gameScale), (int)(tileSize * GameManager.gameScale));
-                    colList.Add(new Hitbox(r, new Vector2(0, 0)));
+                    colliders.Add(new Hitbox(r, new Vector2(0, 0)));
+                }
+                else if (item.Value == 1)
+                {
+                    pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y = (item.Key.Y + 0.5625f) * tileSize * GameManager.gameScale;
+
+                    r = new Rectangle((int)pos.X, (int)pos.Y,
+                            (int)(tileSize * GameManager.gameScale), (int)(tileSize * GameManager.gameScale * 0.4375f));
+                    spikes.Add(new Hitbox(r, new Vector2(0, 0)));
+
+
+                    pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y = (item.Key.Y + 1) * tileSize * GameManager.gameScale;
+                    r = new Rectangle((int)pos.X, (int)pos.Y,
+                            (int)(tileSize * GameManager.gameScale), (int)(tileSize * GameManager.gameScale));
+                    colliders.Add(new Hitbox(r, new Vector2(0, 0)));
                 }
             }
-
-            return colList;
         }
 
         public void MoveLeft(int amount)
         {
             mapPosition.X -= amount;
             foreach (Hitbox collider in colliders)
+                collider.MoveLeft(amount);
+            foreach (Hitbox collider in spikes)
                 collider.MoveLeft(amount);
         }
     }
