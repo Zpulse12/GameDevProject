@@ -99,5 +99,12 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
             return false;
         }
+        public static bool TouchedFinishLine(Hitbox hitbox)
+        {
+            if (hitbox.rectangle.Intersects(mapGenerator.finishLine.rectangle))
+                return true;
+
+            return false;
+        }
     }
 }

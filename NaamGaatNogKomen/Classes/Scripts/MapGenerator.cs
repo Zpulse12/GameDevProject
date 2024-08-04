@@ -20,6 +20,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private Dictionary<Vector2, int> level1CollidersData;
         public List<Hitbox> colliders;
         public List<Hitbox> spikes;
+        public Hitbox finishLine;
         private static readonly int tileSize = 16;
         private static readonly int tilesetWidth = 19;
 
@@ -133,6 +134,15 @@ namespace NaamGaatNogKomen.Classes.Scripts
                             (int)(tileSize * GameManager.gameScale), (int)(tileSize * GameManager.gameScale));
                     colliders.Add(new Hitbox(r, new Vector2(0, 0)));
                 }
+                else if (item.Value == 2)
+                {
+                    pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
+
+                    r = new Rectangle((int)pos.X, (int)pos.Y,
+                            (int)(tileSize * GameManager.gameScale), (int)(tileSize * GameManager.gameScale));
+                    finishLine = new Hitbox(r, new Vector2(0, 0));
+                }
             }
         }
 
@@ -143,6 +153,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 collider.MoveLeft(amount);
             foreach (Hitbox collider in spikes)
                 collider.MoveLeft(amount);
+            finishLine.MoveLeft(amount);
+
         }
     }
 }
