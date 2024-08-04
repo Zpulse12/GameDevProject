@@ -13,9 +13,9 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         Run,
         Jump,
         Fall,
+        Dead,
         Attack,
         Taking_Damage,
-        Dead,
         Shield_Blocking
     }
 
@@ -28,18 +28,22 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
     internal class Knight
     {
         public Hitbox hitbox;
+        private bool isDead;
         private bool isJumping;
         private Vector2 position;
         private Vector2 velocity;
         private Texture2D texture;
         private KnightAnimation animation;
         private KnightMovementStates knightMovementStates;
-        private KnightMovementStates previousMovementStates;
         private KnightMovementDirection knightMovementDirection;
+
+        public static float invincibilityTimer;
+        public static float DeathAnimationTimer;
 
         private int knightWidth;
         private int knightHeight;
         private readonly float gravity = 8f * GameManager.gameScale;
+        private readonly float invincibilityTime = 2;
 
         private readonly Dictionary<KnightMovementStates, Vector2> knightSize = new Dictionary<KnightMovementStates, Vector2>
         {
@@ -53,7 +57,11 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public Knight()
         {
+            isDead = false;
             isJumping = false;
+            invincibilityTimer = 0;
+            DeathAnimationTimer = 4;
+
             velocity.X = 0;
             velocity.Y = 0;
 
@@ -62,13 +70,13 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
-            knightWidth = (int)knightSize[knightMovementStates].X;
-            knightHeight = (int)knightSize[knightMovementStates].Y;
+            knightWidth = (int)(knightSize[knightMovementStates].X * GameManager.gameScale);
+            knightHeight = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale);
         }
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("newknight");
+            texture = content.Load<Texture2D>("knight");
             hitbox = new Hitbox(new Rectangle((int)(2 * GameManager.gameScale), 0, (int)(17 * GameManager.gameScale), (int)(22 * GameManager.gameScale)), Vector2.Zero);
             hitbox.Update(position);
 
@@ -77,145 +85,175 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public void Update(float deltaTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Left))
+            if (!isDead)
             {
-                knightMovementStates = KnightMovementStates.Run;
+                KeyboardState keyboardState = Keyboard.GetState();
 
-                velocity.X = Lerp(velocity.X, -maxVelocityX, 0.75f * deltaTime);
-            }
-            else if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                knightMovementStates = KnightMovementStates.Run;
-
-                velocity.X = Lerp(velocity.X, maxVelocityX, 0.75f * deltaTime);
-            }
-            else if (velocity.X != 0)
-            {
-                if (velocity.X > 0)
+                if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                    velocity.X = Lerp(velocity.X, -0.66f * maxVelocityX, 0.9f * deltaTime);
-                    if (velocity.X < 0) velocity.X = 0;
+                    knightMovementStates = KnightMovementStates.Run;
+                    velocity.X = Lerp(velocity.X, -maxVelocityX, 0.75f * deltaTime);
                 }
-                else
+                else if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                    velocity.X = Lerp(velocity.X, 0.66f * maxVelocityX, 0.9f * deltaTime);
-                    if (velocity.X > 0) velocity.X = 0;
+                    knightMovementStates = KnightMovementStates.Run;
+                    velocity.X = Lerp(velocity.X, maxVelocityX, 0.75f * deltaTime);
                 }
-            }
-
-    
-            if (position.X < 0)
-            {
-                position.X = 0;
-                velocity.X = 0;
-                hitbox.Update(position);
-
-            }
-            if (velocity.X != 0)
-            {
-                
-                position.X += velocity.X;
-                hitbox.Update(position);
-                int overlabX = GameManager.HitMap(hitbox, true, false);
-
-                if (overlabX > 0 && overlabX < (knightWidth) / 2)
+                else if (velocity.X != 0)
                 {
-                    position.X -= velocity.X;
-                    velocity.X = 0;
-
-                    hitbox.Update(position);
-                }
-            }
-
-            // move the map when the knight is in the middle of the screen
-            if (position.X + 10 * GameManager.gameScale / 2 > GameManager.mapWidth / 2)
-            {
-                GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
-               position.X = GameManager.mapWidth / 2 - knightWidth / 2;
-                hitbox.Update(position);
-
-            }
-
-            if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) && !isJumping) // Jump
-            {
-                isJumping = true;
-                velocity.Y = -3.25f * GameManager.gameScale;
-                knightMovementStates = KnightMovementStates.Jump;
-            }
-
-            if (isJumping)
-            {
-                velocity.Y += gravity * deltaTime;
-                position.Y += velocity.Y;
-                hitbox.Update(position);
-
-                int overlapY = GameManager.HitMap(hitbox, false, true);
-                if (overlapY > 0 && overlapY <= (knightHeight * GameManager.gameScale) / 2)
-                {
-                    if (velocity.Y > 0)
-                        position.Y -= overlapY;
-                    else
-                        position.Y += overlapY;
-
-                    hitbox.Update(position);
-                    if (velocity.Y > 0) // was falling and hit the ground
+                    if (velocity.X > 0)
                     {
-                        velocity.Y = 0;
-                        isJumping = false;
+                        velocity.X = Lerp(velocity.X, -0.66f * maxVelocityX, 0.9f * deltaTime);
+                        if (velocity.X < 0) velocity.X = 0;
+                    }
+                    else
+                    {
+                        velocity.X = Lerp(velocity.X, 0.66f * maxVelocityX, 0.9f * deltaTime);
+                        if (velocity.X > 0) velocity.X = 0;
                     }
                 }
-            }
 
-            else 
-            {
 
-                position.Y += 1;
-                hitbox.Update(position);
-                int overlapY = GameManager.HitMap(hitbox, false, true);
-                if (overlapY == 0)
+                if (position.X < 0)
+                {
+                    position.X = 0;
+                    velocity.X = 0;
+                    hitbox.Update(position);
+                }
+
+                if (velocity.X != 0)
+                {
+                    position.X += velocity.X;
+                    hitbox.Update(position);
+                    int overlabX = GameManager.HitMap(hitbox, true, false);
+
+                    if (overlabX > 0 && overlabX < (knightWidth) / 2)
+                    {
+                        position.X -= velocity.X;
+                        velocity.X = 0;
+
+                        hitbox.Update(position);
+                    }
+                }
+
+                if (position.X + 21 * GameManager.gameScale / 2 > GameManager.mapWidth / 2)
+                {
+                    GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
+                    position.X = GameManager.mapWidth / 2 - knightWidth / 2;
+                    hitbox.Update(position);
+                }
+
+                if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) && !isJumping)
                 {
                     isJumping = true;
-                    knightMovementStates = KnightMovementStates.Fall;
+                    velocity.Y = -3.25f * GameManager.gameScale;
+                    knightMovementStates = KnightMovementStates.Jump;
+                }
+
+                if (isJumping)
+                {
+                    velocity.Y += gravity * deltaTime;
+                    position.Y += velocity.Y;
+                    hitbox.Update(position);
+
+                    int overlapY = GameManager.HitMap(hitbox, false, true);
+                    if (overlapY > 0 && overlapY <= (knightHeight * GameManager.gameScale) / 2)
+                    {
+                        if (velocity.Y > 0)
+                            position.Y -= overlapY;
+                        else
+                            position.Y += overlapY;
+
+                        hitbox.Update(position);
+                        if (velocity.Y > 0)
+                        {
+                            velocity.Y = 0;
+                            isJumping = false;
+                        }
+                    }
                 }
                 else
                 {
-                    position.Y -= 1;
-                    velocity.Y = 0;
+                    position.Y += 1;
                     hitbox.Update(position);
+                    int overlapY = GameManager.HitMap(hitbox, false, true);
+                    if (overlapY == 0)
+                    {
+                        isJumping = true;
+                        knightMovementStates = KnightMovementStates.Fall;
+                    }
+                    else
+                    {
+                        position.Y -= 1;
+                        velocity.Y = 0;
+                        hitbox.Update(position);
+                    }
+                }
+
+                if (invincibilityTimer > 0)
+                {
+                    invincibilityTimer -= deltaTime;
+                }
+                else
+                {
+                    if (GameManager.HitSpikes(hitbox))
+                    {
+                        invincibilityTimer = invincibilityTime;
+                    }
+                }
+
+                if (velocity.X == 0 && velocity.Y == 0)
+                    knightMovementStates = KnightMovementStates.Idle;
+                else if (velocity.Y < 0)
+                    knightMovementStates = KnightMovementStates.Jump;
+                else if (velocity.Y > 0)
+                    knightMovementStates = KnightMovementStates.Fall;
+                else
+                    knightMovementStates = KnightMovementStates.Run;
+
+                if (velocity.X > 0)
+                    knightMovementDirection = KnightMovementDirection.Right;
+                else if (velocity.X < 0)
+                    knightMovementDirection = KnightMovementDirection.Left;
+
+                animation.position = position;
+                animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
+            }
+            else
+            {
+                if (isJumping)
+                {
+                    velocity.Y += gravity * deltaTime;
+                    position.Y += velocity.Y;
+                    hitbox.Update(position);
+
+                    int overlapY = GameManager.HitMap(hitbox, false, true);
+                    if (overlapY > 0 && overlapY <= (knightHeight * GameManager.gameScale) / 2)
+                    {
+                        if (velocity.Y > 0)
+                            position.Y -= overlapY;
+                        else
+                            position.Y += overlapY;
+
+                        hitbox.Update(position);
+                        if (velocity.Y > 0)
+                        {
+                            velocity.Y = 0;
+                            isJumping = false;
+                        }
+                    }
+                    else if (knightMovementStates != KnightMovementStates.Dead)
+                    {
+                        knightMovementStates = KnightMovementStates.Dead;
+
+                        position.Y -= 5 * GameManager.gameScale;
+                        position.X -= 13 * GameManager.gameScale;
+                        invincibilityTimer = 0;
+                    }
+                    animation.position = position;
+                    animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
                 }
             }
-                
-            if (velocity.X == 0 && velocity.Y == 0)
-                knightMovementStates = KnightMovementStates.Idle;
-            else if (velocity.Y < 0)
-                knightMovementStates = KnightMovementStates.Jump;
-            else if (velocity.Y > 0)
-                knightMovementStates = KnightMovementStates.Fall;
-            else
-                knightMovementStates = KnightMovementStates.Run;
-
-            if (velocity.X > 0)
-                knightMovementDirection = KnightMovementDirection.Right;
-            else if (velocity.X < 0)
-                knightMovementDirection = KnightMovementDirection.Left;
-
-            // Check if the movement state has changed 
-            // update position and size accordingly
-            //if (previousMovementStates != knightMovementStates)
-            //{
-            //	knightWidth = (int)(knightSize[knightMovementStates].X * GameManager.gameScale);
-            //	knightHeight = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale)
-            //	int widthDiff = (int)(knightSize[previousMovementStates].X - knightSize[knightMovementStates].X);
-            //	widthDiff *= (int)GameManager.gameScale;
-            //	position.X += widthDiff;
-            //	hitbox = new Hitbox(new Rectangle(0, 0, knightWidth, knightHeight), Vector2.Zero);
-            //	hitbox.Update(position);
-            //	previousMovementStates = knightMovementStates;
-            //}
-            animation.position = position;
-            animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -226,6 +264,11 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private static float Lerp(float start, float end, float t)
         {
             return start * (1 - t) + end * t;
+        }
+
+        public void DeathRoutine()
+        {
+            isDead = true;
         }
     }
 }

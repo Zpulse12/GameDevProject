@@ -13,9 +13,9 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private Vector2 currentFrame;
         private Rectangle sourceRect;
         private KnightMovementStates prevMovementState;
-        private readonly int[] framesCount = new int[] { 5, 8, 1, 1 };
-        public readonly float[] animationDuration = new float[] { 0.175f, 0.075f, 1f, 1f };
-        private readonly int[][] frameSize = new int[][] { new int[] { 21, 22 }, new int[] { 21, 22 }, new int[] { 21, 22 }, new int[] { 21, 22 } }; // w , h
+        private readonly int[] framesCount = new int[] { 5, 8, 1, 1, 7 };
+        public readonly float[] animationDuration = new float[] { 0.175f, 0.075f, 1f, 1f, 0.4f }; //this is the full duration of the animation
+        private readonly int[][] frameSize = new int[][] { new int[] { 21, 22 }, new int[] { 21, 22 }, new int[] { 21, 22 }, new int[] { 21, 22 }, new int[] { 44, 27 } };
         private readonly int maxFrameHight = 23;
         public KnightAnimation(Texture2D spritesheet)
         {
@@ -53,13 +53,22 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     timer = 0;
                 }
             }
+            else if (knightMovementState == KnightMovementStates.Dead)
+            {
+                if (currentFrame.X < 2 && timer >= animationDuration[(int)knightMovementState] * 1.25f ||
+                  (currentFrame.X >= 2 && timer >= animationDuration[(int)knightMovementState]))
+                {
+                    currentFrame.X = currentFrame.X + 1 >= framesCount[(int)knightMovementState] ? 2 : currentFrame.X + 1;
+                    timer = 0;
+                }
+            }
             timer += deltaTime;
 
 
             sourceRect = new Rectangle(
                                 (int)(1 + currentFrame.X * (frameSize[(int)knightMovementState][0] + 1)),
-                                maxFrameHight * (int)currentFrame.Y,
-                                frameSize[(int)knightMovementState][0],
+                                maxFrameHight * (int)currentFrame.Y + 1,
+								frameSize[(int)knightMovementState][0],
                                 frameSize[(int)knightMovementState][1]);
             if (knightMovementDirection == KnightMovementDirection.Left)
                 spriteEffects = SpriteEffects.FlipHorizontally;
@@ -70,7 +79,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
+            if (Knight.invincibilityTimer > 0)
+                spriteBatch.Draw(texture, position, sourceRect, Color.Red, 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
+            else
+                spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
         }
     }
 }

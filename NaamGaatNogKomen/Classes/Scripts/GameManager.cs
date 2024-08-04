@@ -12,6 +12,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
     {
         private static Knight knight;
         private static MapGenerator mapGenerator;
+        private static int lives;
         private static float movingLeftRemaining;
 
 
@@ -24,6 +25,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public GameManager()
         {
+            knight = new Knight();
+            mapGenerator = new MapGenerator();
+            lives = 3;
             movingLeftRemaining = 0;
 
         }
@@ -31,10 +35,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public void LoadContent(ContentManager content)
         {
-            knight = new Knight();
             knight.LoadContent(content);
-
-            mapGenerator = new MapGenerator();
             mapGenerator.LoadContent(content);
         }
 
@@ -80,6 +81,23 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
             }
             return 0;
+        }
+
+        public static bool HitSpikes(Hitbox hitbox)
+        {
+            foreach (Hitbox collider in mapGenerator.spikes)
+                if (hitbox.rectangle.Intersects(collider.rectangle))
+                {
+                    --lives;
+
+                    if (lives == 0)
+                    {
+                        knight.DeathRoutine();
+                    }
+
+                    return true;
+                }
+            return false;
         }
     }
 }
