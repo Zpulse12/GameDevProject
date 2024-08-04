@@ -219,7 +219,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             }
             else
             {
-                if (knightMovementStates == KnightMovementStates.Jump || knightMovementStates == KnightMovementStates.Fall)
+                if (isJumping)
                 {
                     velocity.Y += gravity * deltaTime;
                     position.Y += velocity.Y;
@@ -240,6 +240,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                             isJumping = false;
                         }
                     }
+                    animation.position = position;
+                    animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
                 }
                 else
                 {
