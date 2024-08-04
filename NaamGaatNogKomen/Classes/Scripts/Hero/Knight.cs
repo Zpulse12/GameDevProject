@@ -13,9 +13,9 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         Run,
         Jump,
         Fall,
+        Dead,
         Attack,
         Taking_Damage,
-        Dead,
         Shield_Blocking
     }
 
@@ -38,6 +38,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private KnightMovementDirection knightMovementDirection;
 
         public static float invincibilityTimer;
+        public static float DeathAnimationTimer;
 
         private int knightWidth;
         private int knightHeight;
@@ -59,6 +60,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             isDead = false;
             isJumping = false;
             invincibilityTimer = 0;
+            DeathAnimationTimer = 4;
 
             velocity.X = 0;
             velocity.Y = 0;
@@ -74,7 +76,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("newknight");
+            texture = content.Load<Texture2D>("knight");
             hitbox = new Hitbox(new Rectangle((int)(2 * GameManager.gameScale), 0, (int)(17 * GameManager.gameScale), (int)(22 * GameManager.gameScale)), Vector2.Zero);
             hitbox.Update(position);
 
@@ -240,12 +242,16 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                             isJumping = false;
                         }
                     }
+                    else if (knightMovementStates != KnightMovementStates.Dead)
+                    {
+                        knightMovementStates = KnightMovementStates.Dead;
+
+                        position.Y -= 5 * GameManager.gameScale;
+                        position.X -= 13 * GameManager.gameScale;
+                        invincibilityTimer = 0;
+                    }
                     animation.position = position;
                     animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
-                }
-                else
-                {
-                    knightMovementStates = KnightMovementStates.Dead;
                 }
             }
         }
