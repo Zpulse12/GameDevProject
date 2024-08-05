@@ -32,7 +32,7 @@ namespace NaamGaatNogKomen
             _graphics.ApplyChanges();
 
             // TODO: use this.Content to load your game content here
-            gameManager = new GameManager();
+            gameManager = new GameManager(_graphics);
             gameManager.LoadContent(Content);
         }
         protected override void Update(GameTime gameTime)

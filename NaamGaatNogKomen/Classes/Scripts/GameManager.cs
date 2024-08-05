@@ -13,6 +13,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
     {
         private static Knight knight;
         private static MapGenerator mapGenerator;
+        private static Texture2D plainTexture;
         private static int level;
         private static int lives;
         private static float movingLeftRemaining;
@@ -25,14 +26,15 @@ namespace NaamGaatNogKomen.Classes.Scripts
         //public static readonly int level2FinshLineX = (int)(1788 * gameScale);
 
 
-        public GameManager()
+        public GameManager(GraphicsDeviceManager graphics)
         {
             knight = new Knight();
             mapGenerator = new MapGenerator();
+            plainTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
+            plainTexture.SetData(new Color[] { Color.White });
             level = 0;
             lives = 3;
             movingLeftRemaining = 0;
-
         }
 
 
@@ -54,6 +56,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
         public void Draw(SpriteBatch spriteBatch)
         {
             mapGenerator.Draw(spriteBatch);
+            for (int i = 0; i < lives; ++i)
+                DrawPixelHeart(spriteBatch, 80 + 100 * i, (int)(MapGenerator.tileSize), (int)gameScale, Color.Red);
             knight.Draw(spriteBatch);
         }
         public static void MoveMapLeft(float amount)
@@ -115,6 +119,28 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             mapGenerator.LoadLevel(++level);
             knight.GoToInitialPosition(level);
+        }
+
+        public static void DrawPixelHeart(SpriteBatch spriteBatch, int x, int y, int size, Color color)
+        {
+
+            Rectangle[] heart = new Rectangle[]
+            {
+                new Rectangle(x + size * 1, y + size * 0, size * 2, size),
+                new Rectangle(x + size * 6, y + size * 0, size * 2, size),
+
+                new Rectangle(x + size * 0, y + size * 1, size * 4, size),
+                new Rectangle(x + size * 5, y + size * 1, size * 4, size),
+
+                new Rectangle(x + size * 0, y + size * 2, size * 9, size * 2),
+                new Rectangle(x + size * 1, y + size * 4, size * 7, size * 1),
+                new Rectangle(x + size * 2, y + size * 5, size * 5, size * 1),
+                new Rectangle(x + size * 3, y + size * 6, size * 3, size * 1),
+                new Rectangle(x + size * 4, y + size * 7, size * 1, size * 1),
+            };
+
+            foreach (Rectangle rect in heart)
+                spriteBatch.Draw(plainTexture, rect, color);
         }
     }
 }
