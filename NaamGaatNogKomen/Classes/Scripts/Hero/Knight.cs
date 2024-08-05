@@ -143,7 +143,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     }
                 }
 
-                if (position.X + 21 * GameManager.gameScale / 2 > GameManager.mapWidth / 2)
+                if (position.X + 22 * GameManager.gameScale / 2 > GameManager.mapWidth / 2 &&
+                             knightMovementDirection == KnightMovementDirection.Right)
                 {
                     GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
                     position.X = GameManager.mapWidth / 2 - knightWidth / 2;
