@@ -125,6 +125,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         public static void GoToNextLevel()
         {
             mapGenerator.LoadLevel(++level);
+            monstersManager.LoadLevel(level);
             knight.GoToInitialPosition(level);
         }
 

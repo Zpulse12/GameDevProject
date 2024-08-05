@@ -24,11 +24,11 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         private readonly Vector2 frameSize = new Vector2(43, 37); // w, h
         private readonly Vector2 velocity = new Vector2(4 * GameManager.gameScale, 4 * GameManager.gameScale);
 
-        public Monster1()
+        public Monster1(Vector2 position)
         {
             movingLeft = true;
             movingDown = true;
-            position = new Vector2(50, 50);
+            this.position = position; //new Vector2(50, 50);
 
             timer = 0;
             currentFrame = Vector2.Zero;

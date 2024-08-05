@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,36 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public MonstersManager()
         {
-            Monster1List = new List<Monster1>();
-            Monster1List.Add(new Monster1());
+            //Monster1List = new List<Monster1>();
+            //Monster1List.Add(new Monster1());
         }
 
         public void LoadContent(ContentManager content)
         {
             Monster1Texture = content.Load<Texture2D>("Enemy1");
         }
+        public void LoadLevel(int level)
+        {
+            Dictionary<Vector2, int> MonsterData = MapGenerator.LoadMap($"Map Creation\\Level{level}_Enemies.csv");
+            AddMonsters(MonsterData);
+        }
 
+        private void AddMonsters(Dictionary<Vector2, int> monstData)
+        {
+            Monster1List = new List<Monster1>();
+
+            foreach (var item in monstData)
+            {
+                if (item.Value == 10) // monster 1 (flying monster)
+                {
+                    Vector2 pos;
+                    pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
+                    pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
+
+                    Monster1List.Add(new Monster1(pos));
+                }
+            }
+        }
         public void Update(float deltaTime)
         {
             foreach (Monster1 monster in Monster1List)

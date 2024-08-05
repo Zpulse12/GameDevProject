@@ -72,7 +72,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             }
         }
 
-        private Dictionary<Vector2, int> LoadMap(string filepath)
+        public static Dictionary<Vector2, int> LoadMap(string filepath)
         {
             Dictionary<Vector2, int> result = new Dictionary<Vector2, int>();
             using (StreamReader reader = new StreamReader(filepath))
