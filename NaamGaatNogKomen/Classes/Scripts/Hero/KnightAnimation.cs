@@ -80,7 +80,12 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Knight.invincibilityTimer > 0)
-                spriteBatch.Draw(texture, position, sourceRect, Color.Red, 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
+            {
+                if ((int)(Knight.invincibilityTimer / 0.1f) % 2 == 1)
+                    spriteBatch.Draw(texture, position, sourceRect, new Color(0xEF3535FFu), 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
+                else
+                    spriteBatch.Draw(texture, position, sourceRect, new Color(0x8B0F0FFFu), 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
+            }
             else
                 spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, GameManager.gameScale, spriteEffects, 0);
         }
