@@ -7,12 +7,22 @@
   "expandedProjectPaths": [
   ],
   "fileStates": {
+    "Caslte_Tileset.tsx": {
+      "scaleInEditor": 1
+    },
+    "Colliders.tsx": {
+      "scaleInEditor": 0.75
+    },
+    "Enemy1.tsx": {
+      "scaleInDock": 1,
+      "scaleInEditor": 1
+    },
     "Level1.tmx": {
       "scale": 2,
       "selectedLayer": 2,
       "viewCenter": {
-        "x": 149.25,
-        "y": 200.75
+        "x": 210.25,
+        "y": 94.25
       }
     },
     "Level11.tmx": {
@@ -24,11 +34,11 @@
       }
     },
     "Level2.tmx": {
-      "scale": 1.1686079545454546,
-      "selectedLayer": 2,
+      "scale": 3,
+      "selectedLayer": 1,
       "viewCenter": {
-        "x": 227.19338762610917,
-        "y": 115.94992099185606
+        "x": 150.5,
+        "y": 134.16666666666663
       }
     }
   },
@@ -44,6 +54,7 @@
   ],
   "project": "Castle.tiled-project",
   "recentFiles": [
+    "Enemy1.tsx",
     "Caslte_Tileset.tsx",
     "Colliders.tsx",
     "Level11.tmx"

@@ -6,6 +6,7 @@ using System;
 using NaamGaatNogKomen.Classes.Scripts.Hero;
 using System.Reflection.Metadata;
 using System.Reflection.Emit;
+using NaamGaatNogKomen.Classes.Scripts.Enemies;
 
 namespace NaamGaatNogKomen.Classes.Scripts
 {
@@ -13,6 +14,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
     {
         private static Knight knight;
         private static MapGenerator mapGenerator;
+        private static MonstersManager monstersManager;
         private static Texture2D plainTexture;
         private static int level;
         private static int lives;
@@ -30,6 +32,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             knight = new Knight();
             mapGenerator = new MapGenerator();
+            monstersManager = new MonstersManager();
             plainTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             plainTexture.SetData(new Color[] { Color.White });
             level = 0;
@@ -42,6 +45,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             knight.LoadContent(content);
             mapGenerator.LoadContent(content);
+            monstersManager.LoadContent(content);
             GoToNextLevel();
         }
 
@@ -51,6 +55,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         {
             knight.Update(deltaTime);
             mapGenerator.Update(deltaTime);
+            monstersManager.Update(deltaTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -59,6 +64,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             for (int i = 0; i < lives; ++i)
                 DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i, (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
             knight.Draw(spriteBatch);
+            monstersManager.Draw(spriteBatch);
         }
         public static void MoveMapLeft(float amount)
         {
@@ -67,6 +73,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             movingLeftRemaining -= (int)movingLeftRemaining;
 
             mapGenerator.MoveLeft((int)amount);
+            monstersManager.MoveLeft((int)amount);
         }
         public static int HitMap(Hitbox hitbox, bool withX, bool withY)
         {
