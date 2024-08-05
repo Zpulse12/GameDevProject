@@ -97,7 +97,7 @@
 /processorParam:TextureFormat=Color
 /build:Enemy1.png
 
-#begin Enemy1.png
+#begin fixedknight.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -107,7 +107,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Enemy1.png
+/build:fixedknight.png
 
 #begin knight.png
 /importer:TextureImporter
