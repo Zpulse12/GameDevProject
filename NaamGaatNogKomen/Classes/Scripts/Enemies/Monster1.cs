@@ -13,22 +13,26 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         private bool movingLeft;
         private bool movingDown;
         private Vector2 position;
+        private Vector2 displacment;
         private Vector2 currentFrame; 
         private Rectangle sourceRect; 
-        public SpriteEffects spriteEffects; 
+        public SpriteEffects spriteEffects;
 
 
 
+        private readonly int maxXDisplacment = (int)(12 * MapGenerator.tileSize * GameManager.gameScale);
+        private readonly int maxYDisplacment = (int)(3 * MapGenerator.tileSize * GameManager.gameScale);
         private readonly int MonsterFrameCount = 4;
         private readonly float animationDuration = 0.2f;
         private readonly Vector2 frameSize = new Vector2(43, 37); // w, h
-        private readonly Vector2 velocity = new Vector2(4 * GameManager.gameScale, 4 * GameManager.gameScale);
+        private readonly Vector2 velocity = new Vector2(25 * GameManager.gameScale, 20 * GameManager.gameScale);
 
         public Monster1(Vector2 position)
         {
             movingLeft = true;
             movingDown = true;
-            this.position = position; //new Vector2(50, 50);
+            this.position = position;
+            displacment = Vector2.Zero;
 
             timer = 0;
             currentFrame = Vector2.Zero;
@@ -40,6 +44,34 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public void Update(float deltaTime)
         {
+            if (movingDown)
+            {
+                if (displacment.Y >= maxYDisplacment)
+                    movingDown = false;
+                else
+                    displacment.Y += velocity.Y * deltaTime;
+            }
+            else
+            {
+                if (displacment.Y <= 0)
+                    movingDown = true;
+                else
+                    displacment.Y -= velocity.Y * deltaTime;
+            }
+            if (movingLeft)
+            {
+                if (displacment.X <= -maxXDisplacment)
+                    movingLeft = false;
+                else
+                    displacment.X -= velocity.X * deltaTime;
+            }
+            else
+            {
+                if (displacment.X >= 0)
+                    movingLeft = true;
+                else
+                    displacment.X += velocity.X * deltaTime;
+            }
             if (timer >= animationDuration)
             {
                 currentFrame.X = currentFrame.X + 1 >= MonsterFrameCount ? 0 : currentFrame.X + 1;
@@ -61,7 +93,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
-            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
+            spriteBatch.Draw(texture, position + displacment, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
         }
 
         public void MoveLeft(int amount)
