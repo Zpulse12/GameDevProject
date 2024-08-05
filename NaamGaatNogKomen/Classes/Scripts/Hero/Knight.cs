@@ -56,7 +56,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private readonly Dictionary<int, Vector2> intialPosition = new Dictionary<int, Vector2>
         {
             { 1, new Vector2(3 * MapGenerator.tileSize, (16 - 7) * MapGenerator.tileSize - 22) * GameManager.gameScale },
-            { 2, new Vector2(21, 22) }
+            { 2, new Vector2(3 * MapGenerator.tileSize, (16 - 7) * MapGenerator.tileSize - 22) * GameManager.gameScale }
         };
 
         public static readonly float maxVelocityX = 1f * GameManager.gameScale;

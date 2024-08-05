@@ -154,6 +154,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public void LoadLevel(int level)
         {
+            mapPosition = new Vector2(0, 0);
             string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
             levelData = LoadMap(dir + $"Map Creation\\Level1_Platform.csv");
             levelCollidersData = LoadMap(dir + $"Map Creation\\Level1_Colliders.csv");

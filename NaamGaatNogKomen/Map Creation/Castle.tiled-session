@@ -8,11 +8,11 @@
   ],
   "fileStates": {
     "Level1.tmx": {
-      "scale": 1,
-      "selectedLayer": 0,
+      "scale": 2,
+      "selectedLayer": 2,
       "viewCenter": {
-        "x": 373.5,
-        "y": 218.5
+        "x": 149.25,
+        "y": 200.75
       }
     },
     "Level11.tmx": {
@@ -21,6 +21,14 @@
       "viewCenter": {
         "x": 287,
         "y": 151
+      }
+    },
+    "Level2.tmx": {
+      "scale": 1.1686079545454546,
+      "selectedLayer": 2,
+      "viewCenter": {
+        "x": 227.19338762610917,
+        "y": 115.94992099185606
       }
     }
   },
@@ -36,6 +44,8 @@
   ],
   "project": "Castle.tiled-project",
   "recentFiles": [
+    "Caslte_Tileset.tsx",
+    "Colliders.tsx",
     "Level11.tmx"
   ],
   "tileset.lastUsedFormat": "tsx",
