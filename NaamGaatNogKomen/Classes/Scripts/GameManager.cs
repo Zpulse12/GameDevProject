@@ -63,8 +63,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
             mapGenerator.Draw(spriteBatch);
             for (int i = 0; i < lives; ++i)
                 DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i, (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
-            knight.Draw(spriteBatch);
             monstersManager.Draw(spriteBatch);
+            knight.Draw(spriteBatch);
+
         }
         public static void MoveMapLeft(float amount)
         {
