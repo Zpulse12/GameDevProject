@@ -83,7 +83,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("knight");
+            texture = content.Load<Texture2D>("fixedknight");
             hitbox = new Hitbox(new Rectangle((int)(2 * GameManager.gameScale), 0, (int)(17 * GameManager.gameScale), (int)(22 * GameManager.gameScale)), Vector2.Zero);
             hitbox.Update(position);
 
