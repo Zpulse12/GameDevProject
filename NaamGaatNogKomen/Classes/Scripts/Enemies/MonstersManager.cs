@@ -15,7 +15,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         public List<Monster1> Monster1List;
         private Texture2D Monster1Texture;
 
-
+        public List<Monster2> Monster2List;
+        private Texture2D Monster2Texture;
 
         public MonstersManager()
         {
@@ -26,6 +27,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         public void LoadContent(ContentManager content)
         {
             Monster1Texture = content.Load<Texture2D>("Enemy1");
+            Monster2Texture = content.Load<Texture2D>("Enemy2");
         }
         public void LoadLevel(int level)
         {
@@ -36,6 +38,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         private void AddMonsters(Dictionary<Vector2, int> monstData)
         {
             Monster1List = new List<Monster1>();
+            Monster2List = new List<Monster2>();
 
             foreach (var item in monstData)
             {
@@ -47,11 +50,21 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
                     Monster1List.Add(new Monster1(pos));
                 }
+                else if (item.Value == 11) // monster 2 (crawling monster)
+                {
+                    Vector2 pos;
+                    pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
+                    pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
+
+                    Monster2List.Add(new Monster2(pos));
+                }
             }
         }
         public void Update(float deltaTime)
         {
             foreach (Monster1 monster in Monster1List)
+                monster.Update(deltaTime);
+            foreach (Monster2 monster in Monster2List)
                 monster.Update(deltaTime);
         }
 
@@ -59,11 +72,15 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         {
             foreach (Monster1 monster in Monster1List)
                 monster.Draw(spriteBatch, Monster1Texture);
+            foreach (Monster2 monster in Monster2List)
+                monster.Draw(spriteBatch, Monster2Texture);
         }
 
         public void MoveLeft(int amount)
         {
             foreach (Monster1 monster in Monster1List)
+                monster.MoveLeft(amount);
+            foreach (Monster2 monster in Monster2List)
                 monster.MoveLeft(amount);
         }
     }
