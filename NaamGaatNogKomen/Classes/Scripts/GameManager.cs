@@ -124,6 +124,16 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
                     return true;
                 }
+            foreach (var monster in monstersManager.Monster2List)
+                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
+                {
+                    --lives;
+
+                    if (lives == 0)
+                        knight.DeathRoutine();
+
+                    return true;
+                }
             return false;
         }
         public static bool TouchedFinishLine(Hitbox hitbox)
