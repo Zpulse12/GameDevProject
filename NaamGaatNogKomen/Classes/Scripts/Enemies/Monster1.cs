@@ -72,6 +72,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 else
                     displacment.X += velocity.X * deltaTime;
             }
+            hitbox.Update(position + displacment);
             if (timer >= animationDuration)
             {
                 currentFrame.X = currentFrame.X + 1 >= MonsterFrameCount ? 0 : currentFrame.X + 1;
