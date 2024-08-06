@@ -12,7 +12,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
     internal class MonstersManager
     {
-        private List<Monster1> Monster1List;
+        public List<Monster1> Monster1List;
         private Texture2D Monster1Texture;
 
 

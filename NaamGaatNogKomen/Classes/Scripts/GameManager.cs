@@ -107,9 +107,20 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     --lives;
 
                     if (lives == 0)
-                    {
                         knight.DeathRoutine();
-                    }
+                    return true;
+                }
+            return false;
+        }
+        public static bool HitMonster(Hitbox hitbox)
+        {
+            foreach (var monster in monstersManager.Monster1List)
+                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
+                {
+                    --lives;
+
+                    if (lives == 0)
+                        knight.DeathRoutine();
 
                     return true;
                 }
