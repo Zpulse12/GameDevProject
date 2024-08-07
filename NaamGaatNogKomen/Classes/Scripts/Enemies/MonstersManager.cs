@@ -14,6 +14,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
     {
         public List<Monster1> Monster1List;
         private Texture2D Monster1Texture;
+        private Texture2D Monster2DeathTexture;
 
         public List<Monster2> Monster2List;
         private Texture2D Monster2Texture;
@@ -26,12 +27,13 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public void LoadContent(ContentManager content)
         {
-            Monster1Texture = content.Load<Texture2D>("Enemy1");
-            Monster2Texture = content.Load<Texture2D>("Enemy2");
+            Monster1Texture = content.Load<Texture2D>("Monster1");
+            Monster2Texture = content.Load<Texture2D>("Monster2");
+            Monster2DeathTexture = content.Load<Texture2D>("Monster2Death");
         }
         public void LoadLevel(int level)
         {
-            Dictionary<Vector2, int> MonsterData = MapGenerator.LoadMap($"Map Creation\\Level{level}_Enemies.csv");
+            Dictionary<Vector2, int> MonsterData = MapGenerator.LoadMap($"Map Creation\\Level{level}_Monsters.csv");
             AddMonsters(MonsterData);
         }
 
@@ -73,7 +75,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             foreach (Monster1 monster in Monster1List)
                 monster.Draw(spriteBatch, Monster1Texture);
             foreach (Monster2 monster in Monster2List)
-                monster.Draw(spriteBatch, Monster2Texture);
+                monster.Draw(spriteBatch, Monster2Texture, Monster2DeathTexture);
         }
 
         public void MoveLeft(int amount)
