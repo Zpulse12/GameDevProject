@@ -112,7 +112,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
             return false;
         }
-        public static bool HitMonster(Hitbox hitbox)
+        public static bool HitMonster(Hitbox hitbox, KnightMovementStates knightMovementStates)
         {
             foreach (var monster in monstersManager.Monster1List)
                 if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
@@ -125,14 +125,21 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     return true;
                 }
             foreach (var monster in monstersManager.Monster2List)
-                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
+                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster.IsAlive())
                 {
-                    --lives;
+                    if (knightMovementStates == KnightMovementStates.Fall)
+                    {
+                        monster.Die();
+                    }
+                    else
+                    {
+                        --lives;
 
-                    if (lives == 0)
-                        knight.DeathRoutine();
+                        if (lives == 0)
+                            knight.DeathRoutine();
 
-                    return true;
+                        return true;
+                    }
                 }
             return false;
         }

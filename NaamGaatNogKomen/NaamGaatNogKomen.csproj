@@ -16,7 +16,7 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Map Creation\Level1_Enemies.csv">
+    <None Update="Map Creation\Level1_Monsters.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Map Creation\Level1_Colliders.csv">

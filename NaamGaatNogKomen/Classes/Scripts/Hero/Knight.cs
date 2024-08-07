@@ -204,8 +204,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 }
                 else
                 {
-                    if (GameManager.HitSpikes(hitbox) || GameManager.HitMonster(hitbox))
-                        {
+                    if (GameManager.HitSpikes(hitbox) || GameManager.HitMonster(hitbox, knightMovementStates))
+                    {
                         invincibilityTimer = invincibilityTime;
                     }
                 }
