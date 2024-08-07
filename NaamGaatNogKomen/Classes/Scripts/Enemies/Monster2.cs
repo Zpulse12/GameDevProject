@@ -114,7 +114,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             isAlive = false;
             currentFrame = Vector2.Zero;
             timer = 0;
-            position.X -= 12 * GameManager.gameScale;
+            if (movingLeft)
+                position.X -= 12 * GameManager.gameScale;
+            else
+                position.X += 12 * GameManager.gameScale;
         }
         public bool IsAlive()
         {
