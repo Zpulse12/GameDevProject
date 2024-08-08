@@ -44,7 +44,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
             foreach (var item in monstData)
             {
-                if (item.Value == 10) // monster 1 (flying monster)
+                if (item.Value == 0) // monster 1 (flying monster)
                 {
                     Vector2 pos;
                     pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
@@ -52,7 +52,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
                     Monster1List.Add(new Monster1(pos));
                 }
-                else if (item.Value == 11) // monster 2 (crawling monster)
+                else if (item.Value == 1) // monster 2 (crawling monster)
                 {
                     Vector2 pos;
                     pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
