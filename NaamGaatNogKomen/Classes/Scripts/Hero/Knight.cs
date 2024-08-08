@@ -98,12 +98,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
                 if (keyboardState.IsKeyDown(Keys.Left))
                 {
-                    knightMovementStates = KnightMovementStates.Run;
                     velocity.X = Lerp(velocity.X, -maxVelocityX, 0.75f * deltaTime);
                 }
                 else if (keyboardState.IsKeyDown(Keys.Right))
                 {
-                    knightMovementStates = KnightMovementStates.Run;
                     velocity.X = Lerp(velocity.X, maxVelocityX, 0.75f * deltaTime);
                 }
                 else if (velocity.X != 0)
@@ -283,6 +281,12 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         public void DeathRoutine()
         {
             isDead = true;
+        }
+        public void Bounce()
+        {
+            isJumping = true;
+            velocity.Y = -2.5f * GameManager.gameScale;
+            knightMovementStates = KnightMovementStates.Jump;
         }
 
         public void GoToInitialPosition(int level)

@@ -24,7 +24,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         private readonly int monsterFrameCount = 4;
         private readonly int monsterDeathFrameCount = 8;
         private readonly float animationDuration = 0.2f; //this is the time interval between frames of the animation
-        private readonly float deathAnimationDuration = 0.3f; //this is the time interval between frames of the animation
+        private readonly float deathAnimationDuration = 0.2f; //this is the time interval between frames of the animation
         private readonly Vector2 frameSize = new Vector2(32, 16); // w, h
         private readonly Vector2 deathFrameSize = new Vector2(42, 16); // w, h
         private readonly Vector2 velocity = new Vector2(25 * GameManager.gameScale, 0);
