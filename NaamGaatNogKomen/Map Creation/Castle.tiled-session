@@ -17,6 +17,7 @@
       "scaleInEditor": 0.75
     },
     "Enemy1.tsx": {
+      "dynamicWrapping": true,
       "scaleInDock": 1,
       "scaleInEditor": 1
     },
@@ -25,7 +26,7 @@
       "selectedLayer": 3,
       "viewCenter": {
         "x": 284.75,
-        "y": 57.75
+        "y": -18.25
       }
     },
     "Level11.tmx": {
@@ -43,6 +44,9 @@
         "x": 150.5,
         "y": 134.16666666666663
       }
+    },
+    "Monsters.tsx": {
+      "dynamicWrapping": false
     }
   },
   "last.exportedFilePath": "C:\\Users\\Haita\\OneDrive - AP Hogeschool Antwerpen\\AP\\23-24 s1\\Game dev\\NaamGaatNogKomen\\NaamGaatNogKomen\\Map Creation",
@@ -58,8 +62,8 @@
   ],
   "project": "Castle.tiled-project",
   "recentFiles": [
-    "Level1.tmx",
     "Enemy1.tsx",
+    "Level1.tmx",
     "Caslte_Tileset.tsx",
     "Colliders.tsx",
     "Level11.tmx"
