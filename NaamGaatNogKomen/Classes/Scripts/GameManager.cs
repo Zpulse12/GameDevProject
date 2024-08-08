@@ -130,6 +130,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     if (knightMovementStates == KnightMovementStates.Fall)
                     {
                         monster.Die();
+                        knight.Bounce();
                     }
                     else
                     {
