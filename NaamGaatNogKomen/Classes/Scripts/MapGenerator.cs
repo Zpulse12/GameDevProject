@@ -26,9 +26,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
 
         public MapGenerator()
-        {
-
-        }
+        {}
 
         public void LoadContent(ContentManager content)
         {
@@ -39,7 +37,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         public void Update(float deltaTime)
         { }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void DrawPlatform(SpriteBatch spriteBatch)
         {
             foreach (var item in levelData)
             {
@@ -56,6 +54,10 @@ namespace NaamGaatNogKomen.Classes.Scripts
                                     Color.White, 0, Vector2.Zero, GameManager.gameScale, SpriteEffects.None, 0);
                 }
             }
+        }
+
+        public void DrawBackground(SpriteBatch spriteBatch)
+        {
             foreach (var item in levelBackgroundData)
             {
                 if (item.Value != -1)
