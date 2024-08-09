@@ -22,11 +22,11 @@
       "scaleInEditor": 1
     },
     "Level1.tmx": {
-      "scale": 2,
-      "selectedLayer": 3,
+      "scale": 4,
+      "selectedLayer": 1,
       "viewCenter": {
-        "x": 284.75,
-        "y": -18.25
+        "x": 126.5,
+        "y": 172.125
       }
     },
     "Level11.tmx": {
@@ -38,18 +38,25 @@
       }
     },
     "Level2.tmx": {
-      "scale": 3,
+      "scale": 4,
       "selectedLayer": 1,
       "viewCenter": {
-        "x": 150.5,
-        "y": 134.16666666666663
+        "x": 619.75,
+        "y": 55.125
       }
     },
     "Monsters.tsx": {
-      "dynamicWrapping": false
+      "dynamicWrapping": false,
+      "scaleInDock": 1,
+      "scaleInEditor": 1
+    },
+    "Swamp_tileset.tsx": {
+      "scaleInDock": 3,
+      "scaleInEditor": 4
     }
   },
   "last.exportedFilePath": "C:\\Users\\Haita\\OneDrive - AP Hogeschool Antwerpen\\AP\\23-24 s1\\Game dev\\NaamGaatNogKomen\\NaamGaatNogKomen\\Map Creation",
+  "last.externalTilesetPath": "C:\\Users\\Haita\\OneDrive - AP Hogeschool Antwerpen\\AP\\23-24 s1\\Game dev\\NaamGaatNogKomen\\NaamGaatNogKomen\\Map Creation",
   "last.imagePath": "C:\\Users\\Haita\\OneDrive - AP Hogeschool Antwerpen\\AP\\23-24 s1\\Game dev\\NaamGaatNogKomen\\NaamGaatNogKomen\\Map Creation",
   "map.height": 16,
   "map.lastUsedExportFilter": "CSV files (*.csv)",
@@ -62,12 +69,16 @@
   ],
   "project": "Castle.tiled-project",
   "recentFiles": [
-    "Enemy1.tsx",
+    "Swamp_tileset.tsx",
+    "Level2.tmx",
     "Level1.tmx",
+    "Monsters.tsx",
+    "Enemy1.tsx",
     "Caslte_Tileset.tsx",
     "Colliders.tsx",
     "Level11.tmx"
   ],
+  "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
   "tileset.lastUsedFormat": "tsx",
   "tileset.tileSize": {
     "height": 16,

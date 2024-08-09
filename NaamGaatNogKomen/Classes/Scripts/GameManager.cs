@@ -19,13 +19,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private static int level;
         private static int lives;
         private static float movingLeftRemaining;
-
-
         public static readonly float gameScale = 3f;
-        public static readonly int mapWidth = (int)(24 * 16 * gameScale);
-        public static readonly int mapHeight = (int)(16 * 16 * gameScale);
-        //public static readonly int level1FinshLineX = (int)(3263 * gameScale);
-        //public static readonly int level2FinshLineX = (int)(1788 * gameScale);
+        public static readonly int mapWidth = (int)(24 * MapGenerator.tileSize * gameScale);
+        public static readonly int mapHeight = (int)(16 * MapGenerator.tileSize * gameScale);
 
 
         public GameManager(GraphicsDeviceManager graphics)
@@ -60,10 +56,11 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            mapGenerator.Draw(spriteBatch);
+            mapGenerator.DrawBackground(spriteBatch, level);
             for (int i = 0; i < lives; ++i)
                 DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i, (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
             monstersManager.Draw(spriteBatch);
+            mapGenerator.DrawPlatform(spriteBatch, level);
             knight.Draw(spriteBatch);
 
         }
