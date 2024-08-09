@@ -21,6 +21,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public List<Monster3> Monster3List;
         private Texture2D Monster3Texture;
+        private Texture2D Monster3ProjectileTexture;
 
         public MonstersManager()
         {
@@ -34,6 +35,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             Monster2Texture = content.Load<Texture2D>("Monster2");
             Monster2DeathTexture = content.Load<Texture2D>("Monster2Death");
             Monster3Texture = content.Load<Texture2D>("Monster3");
+            Monster3ProjectileTexture = content.Load<Texture2D>("Projectile");
         }
         public void LoadLevel(int level)
         {
@@ -77,8 +79,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         }
         public void Update(float deltaTime)
         {
-            //foreach (Monster1 monster in Monster1List)
-            //	monster.Update(deltaTime);
+            foreach (Monster1 monster in Monster1List)
+                monster.Update(deltaTime);
             foreach (Monster2 monster in Monster2List)
                 monster.Update(deltaTime);
             foreach (Monster3 monster in Monster3List)
@@ -92,7 +94,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             foreach (Monster2 monster in Monster2List)
                 monster.Draw(spriteBatch, Monster2Texture, Monster2DeathTexture);
             foreach (Monster3 monster in Monster3List)
-                monster.Draw(spriteBatch, Monster3Texture);
+                monster.Draw(spriteBatch, Monster3Texture, Monster3ProjectileTexture);
         }
 
         public void MoveLeft(int amount)

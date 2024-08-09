@@ -198,11 +198,12 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
                 if (invincibilityTimer > 0)
                 {
+                    GameManager.HitMonster(hitbox, knightMovementStates, invincibilityTimer > 0);
                     invincibilityTimer -= deltaTime;
                 }
                 else
                 {
-                    if (GameManager.HitSpikes(hitbox) || GameManager.HitMonster(hitbox, knightMovementStates))
+                    if (GameManager.HitSpikes(hitbox) || GameManager.HitMonster(hitbox, knightMovementStates, false))
                     {
                         invincibilityTimer = invincibilityTime;
                     }

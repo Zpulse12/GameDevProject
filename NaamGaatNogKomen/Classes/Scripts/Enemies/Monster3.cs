@@ -7,6 +7,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
     internal class Monster3
     {
         public Hitbox hitbox;
+        public Projectile projectile;
 
         private float timer; //this is a timer used for the coins animation
 
@@ -17,7 +18,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         private Vector2 currentFrame; //this is the current frame the animation is using from the sprite sheet
         private Rectangle sourceRect; //this is used to select a portion of the spritesheet
-        public SpriteEffects spriteEffects; // this can flip the animation horizontally or vertically
+        private SpriteEffects spriteEffects; // this can flip the animation horizontally or vertically
 
 
         private readonly int maxXDisplacment = (int)(12 * MapGenerator.tileSize * GameManager.gameScale);
@@ -30,7 +31,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         public Monster3(Vector2 position)
         {
             movingLeft = true;
-            movingDown = true;
             this.position = position;
             displacment = Vector2.Zero;
 
@@ -39,28 +39,14 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
             hitbox = new Hitbox(new Rectangle(0, (int)(7 * GameManager.gameScale), (int)(37 * GameManager.gameScale), (int)(30 * GameManager.gameScale)), Vector2.Zero);
             hitbox.Update(position);
+
+            projectile = new Projectile(position);//(new Vector2(2 * MapGenerator.tileSize, 2 * MapGenerator.tileSize));
         }
 
 
         public void Update(float deltaTime)
         {
             // movement handling
-
-            // Up/Down movement
-            //if (movingDown)
-            //{
-            //	if (displacment.Y >= maxYDisplacment)
-            //		movingDown = false;
-            //	else
-            //		displacment.Y += velocity.Y * deltaTime;
-            //}
-            //else
-            //{
-            //	if (displacment.Y <= 0)
-            //		movingDown = true;
-            //	else
-            //		displacment.Y -= velocity.Y * deltaTime;
-            //}
 
             //// Left/Right movement
             //if (movingLeft)
@@ -102,16 +88,23 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 spriteEffects = SpriteEffects.FlipHorizontally;
             else
                 spriteEffects = SpriteEffects.None;
+
+            if (projectile.Disapeared())
+                projectile = new Projectile(position + new Vector2(6 * GameManager.gameScale, 21 * GameManager.gameScale));
+
+            projectile.Update(deltaTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Texture2D texture)
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture, Texture2D projectileTexture)
         {
+            projectile.Draw(spriteBatch, projectileTexture);
             spriteBatch.Draw(texture, position + displacment, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
         }
 
         public void MoveLeft(int amount)
         {
             position.X -= amount;
+            projectile.MoveLeft(amount);
         }
     }
 }
