@@ -12,29 +12,55 @@ namespace NaamGaatNogKomen.Classes.Scripts
     {
         private Texture2D castleTileset;
         private Texture2D swampTileset;
+        private Texture2D torchTexture;
+
         private Vector2 mapPosition;
         private Dictionary<Vector2, int> levelData;
         private Dictionary<Vector2, int> levelBackgroundData;
         private Dictionary<Vector2, int> levelBackground1Data;
         private Dictionary<Vector2, int> levelStaticBackgroundData;
         private Dictionary<Vector2, int> levelCollidersData;
+        private int torchCurrentFrame;
+        private float torchAnimationTimer;
         public List<Hitbox> colliders;
         public List<Hitbox> spikes;
         public Hitbox finishLine;
         public static readonly int tileSize = 16;
         private static readonly int level1TilesetWidth = 19;
         private static readonly int level2TilesetWidth = 25;
+        private static readonly float torchAnimationDuration = 0.2f;
+
         public MapGenerator()
-        { }
+        {
+            torchCurrentFrame = 0;
+            torchAnimationTimer = 0;
+        }
         public void LoadContent(ContentManager content)
         {
 
             castleTileset = content.Load<Texture2D>("Castle_tileset");
             swampTileset = content.Load<Texture2D>("Swamp_tileset");
+            torchTexture = content.Load<Texture2D>("Torch");
             LoadLevel(1);
         }
-        public void Update(float deltaTime)
-        { }
+        public void Update(float deltaTime, int level)
+        {
+            if (level == 1)
+            {
+                foreach (var item in levelBackgroundData)
+                {
+                    if (item.Value == 57) // animate torch
+                    {
+                        if (torchAnimationTimer >= torchAnimationDuration) // time interval between frames
+                        {
+                            torchCurrentFrame = torchCurrentFrame + 1 >= 3 ? 0 : torchCurrentFrame + 1;
+                            torchAnimationTimer = 0;
+                        }
+                        torchAnimationTimer += deltaTime;
+                    }
+                }
+            }
+        }
         public void DrawPlatform(SpriteBatch spriteBatch, int level)
         {
             Texture2D tileset = level == 1 ? castleTileset : swampTileset;
@@ -77,7 +103,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             }
             foreach (var item in levelBackgroundData)
             {
-                if (item.Value != -1)
+                if (item.Value != -1 && item.Value != 57)
                 {
                     Vector2 pos = mapPosition;
                     pos.X += item.Key.X * tileSize * GameManager.gameScale;
@@ -86,6 +112,15 @@ namespace NaamGaatNogKomen.Classes.Scripts
                                     new Rectangle(item.Value % tilesetWidth * tileSize,
                                                 item.Value / tilesetWidth * tileSize,
                                                 tileSize, tileSize),
+                                    Color.White, 0, Vector2.Zero, GameManager.gameScale, SpriteEffects.None, 0);
+                }
+                if (level == 1 && item.Value == 57) // animate torch
+                {
+                    Vector2 pos = mapPosition;
+                    pos.X += item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
+                    spriteBatch.Draw(torchTexture, pos,
+                                    new Rectangle(torchCurrentFrame * (17 + 1), 0, 17, 17),
                                     Color.White, 0, Vector2.Zero, GameManager.gameScale, SpriteEffects.None, 0);
                 }
             }

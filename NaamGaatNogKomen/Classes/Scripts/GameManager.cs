@@ -50,7 +50,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         public void Update(float deltaTime)
         {
             knight.Update(deltaTime);
-            mapGenerator.Update(deltaTime);
+            mapGenerator.Update(deltaTime,level);
             monstersManager.Update(deltaTime);
         }
 
