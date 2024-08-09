@@ -10,15 +10,47 @@ using NaamGaatNogKomen.Classes.Scripts.Enemies;
 
 namespace NaamGaatNogKomen.Classes.Scripts
 {
+    enum GameState
+    {
+        StartMenu,
+        Level1,
+        Level2,
+        GameOver_Loss,
+        GameOver_Win,
+
+    }
+
+    enum MenuState
+    {
+        Main,
+        HowToPlay,
+        Exit
+    }
     internal class GameManager
     {
         private static Knight knight;
         private static MapGenerator mapGenerator;
         private static MonstersManager monstersManager;
+
+        private int menuSelection;
+        public MenuState menuState;
+        private SpriteFont spriteFont;
+        private SpriteFont spriteLargeFont;
+        private static GameState gameState;
+        private KeyboardState previousKeyboardState;
+        private string[] gameOver = { "Restart", "Exit" };
+        private string[] main = { "Start Game", "How to play", "Exit" };
+        private string[] howToPlay = { "Move left: left arrow", "Move right: right arrow", "Jump: up arrow or Space", "Back" };
+
+        //Hearts Texture
         private static Texture2D plainTexture;
+
         private static int level;
         private static int lives;
+        private static float deathTimer;
         private static float movingLeftRemaining;
+
+        private readonly float deathGapTime = 5;
         public static readonly float gameScale = 3f;
         public static readonly int mapWidth = (int)(24 * MapGenerator.tileSize * gameScale);
         public static readonly int mapHeight = (int)(16 * MapGenerator.tileSize * gameScale);
@@ -31,6 +63,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
             monstersManager = new MonstersManager();
             plainTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
             plainTexture.SetData(new Color[] { Color.White });
+            gameState = GameState.StartMenu;
+            menuState = MenuState.Main;
             level = 0;
             lives = 3;
             movingLeftRemaining = 0;
@@ -42,26 +76,230 @@ namespace NaamGaatNogKomen.Classes.Scripts
             knight.LoadContent(content);
             mapGenerator.LoadContent(content);
             monstersManager.LoadContent(content);
-            GoToNextLevel();
+            spriteFont = content.Load<SpriteFont>("Fonts/Font");
+            spriteLargeFont = content.Load<SpriteFont>("Fonts/FontLarge");
+            //GoToNextLevel();
         }
 
 
 
         public void Update(float deltaTime)
         {
-            knight.Update(deltaTime);
-            mapGenerator.Update(deltaTime,level);
-            monstersManager.Update(deltaTime);
+            switch (gameState)
+            {
+                case GameState.StartMenu:
+                    KeyboardState keyboardState = Keyboard.GetState();
+
+                    switch (menuState)
+                    {
+                        case MenuState.Main:
+                            if (keyboardState.IsKeyDown(Keys.Down) && !previousKeyboardState.IsKeyDown(Keys.Down))
+                                menuSelection = menuSelection < 2 ? menuSelection + 1 : 0;
+                            else if (keyboardState.IsKeyDown(Keys.Up) && !previousKeyboardState.IsKeyDown(Keys.Up))
+                                menuSelection = menuSelection > 0 ? menuSelection - 1 : 2;
+                            else if (keyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter))
+                            {
+                                switch (menuSelection)
+                                {
+                                    case 0:
+                                        level = 0;
+                                        GoToNextLevel();
+                                        gameState = GameState.Level1;
+                                        break;
+                                    case 1:
+                                        menuState = MenuState.HowToPlay;
+                                        menuSelection = 3;
+                                        break;
+                                    case 2:
+                                        menuState = MenuState.Exit;
+                                        return;
+                                }
+                            }
+                            break;
+
+                        case MenuState.HowToPlay:
+                            if (keyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter))
+                            {
+                                menuState = MenuState.Main;
+                                menuSelection = 0;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                    previousKeyboardState = keyboardState;
+                    break;
+
+                case GameState.Level1:
+                    knight.Update(deltaTime);
+                    mapGenerator.Update(deltaTime, 1);
+                    monstersManager.Update(deltaTime);
+                    if (TouchedFinishLine(knight.hitbox))
+                    {
+                        gameState = GameState.Level2;
+                        GoToNextLevel();
+                    }
+
+                    break;
+
+                case GameState.Level2:
+                    knight.Update(deltaTime);
+                    mapGenerator.Update(deltaTime, 2);
+                    monstersManager.Update(deltaTime);
+                    if (TouchedFinishLine(knight.hitbox))
+                    {
+                        gameState = GameState.GameOver_Win;
+                    }
+                    break;
+
+                case GameState.GameOver_Loss:
+                    if (deathTimer < deathGapTime)
+                    {
+                        deathTimer += deltaTime;
+                        knight.Update(deltaTime);
+                        mapGenerator.Update(deltaTime, level);
+                        monstersManager.Update(deltaTime);
+                    }
+                    else
+                    {
+                        keyboardState = Keyboard.GetState();
+
+                        if (keyboardState.IsKeyDown(Keys.Down) && !previousKeyboardState.IsKeyDown(Keys.Down))
+                            menuSelection = menuSelection < 1 ? menuSelection + 1 : 0;
+                        else if (keyboardState.IsKeyDown(Keys.Up) && !previousKeyboardState.IsKeyDown(Keys.Up))
+                            menuSelection = menuSelection > 0 ? menuSelection - 1 : 1;
+                        else if (keyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter))
+                        {
+                            switch (menuSelection)
+                            {
+                                case 0:
+                                    level = 0;
+                                    lives = 3;
+                                    gameState = GameState.Level1;
+                                    GoToNextLevel();
+                                    break;
+                                case 1:
+                                    menuState = MenuState.Exit; // Exit game
+                                    break;
+                            }
+                        }
+                        previousKeyboardState = keyboardState;
+                    }
+
+
+                    break;
+                case GameState.GameOver_Win:
+                    keyboardState = Keyboard.GetState();
+
+                    if (keyboardState.IsKeyDown(Keys.Down) && !previousKeyboardState.IsKeyDown(Keys.Down))
+                        menuSelection = menuSelection < 1 ? menuSelection + 1 : 0;
+                    else if (keyboardState.IsKeyDown(Keys.Up) && !previousKeyboardState.IsKeyDown(Keys.Up))
+                        menuSelection = menuSelection > 0 ? menuSelection - 1 : 1;
+                    else if (keyboardState.IsKeyDown(Keys.Enter) && !previousKeyboardState.IsKeyDown(Keys.Enter))
+                    {
+                        switch (menuSelection)
+                        {
+                            case 0:
+                                level = 0;
+                                lives = 3;
+                                gameState = GameState.Level1;
+                                GoToNextLevel();
+                                break;
+                            case 1:
+                                menuState = MenuState.Exit; // Exit game
+                                break;
+                        }
+                    }
+                    previousKeyboardState = keyboardState;
+
+                    break;
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            mapGenerator.DrawBackground(spriteBatch, level);
-            for (int i = 0; i < lives; ++i)
-                DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i, (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
-            monstersManager.Draw(spriteBatch);
-            mapGenerator.DrawPlatform(spriteBatch, level);
-            knight.Draw(spriteBatch);
+            switch (gameState)
+            {
+                case GameState.StartMenu:
+                    // draw for start menu
+                    //spriteBatch.Draw(startMenuTexture, Vector2.Zero, new Rectangle(0, 0, mapWidth, mapHeight),
+                    //				Color.White, 0, Vector2.Zero, gameScale, SpriteEffects.None, 0);
+
+                    switch (menuState)
+                    {
+                        case MenuState.Main:
+                            DrawMenuOptions(spriteBatch, main);
+                            break;
+                        case MenuState.HowToPlay:
+                            DrawMenuOptions(spriteBatch, howToPlay);
+                            break;
+                        default:
+                            break;
+
+                    }
+                    break;
+
+                case GameState.Level1:
+                    // draw for level 1
+                    mapGenerator.DrawBackground(spriteBatch, 1);
+
+                    for (int i = 0; i < lives; ++i)
+                        DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i,
+                            (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
+
+                    monstersManager.Draw(spriteBatch);
+                    mapGenerator.DrawPlatform(spriteBatch, 1);
+                    knight.Draw(spriteBatch);
+                    break;
+
+                case GameState.Level2:
+                    // draw for level 2
+                    mapGenerator.DrawBackground(spriteBatch, 2);
+
+                    for (int i = 0; i < lives; ++i)
+                        DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i,
+                            (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
+
+                    monstersManager.Draw(spriteBatch);
+                    mapGenerator.DrawPlatform(spriteBatch, 2);
+                    knight.Draw(spriteBatch);
+                    break;
+
+                case GameState.GameOver_Loss:
+                    if (deathTimer < deathGapTime)
+                    {
+                        // draw for level
+                        mapGenerator.DrawBackground(spriteBatch, level);
+
+                        for (int i = 0; i < lives; ++i)
+                            DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i,
+                                (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
+
+                        monstersManager.Draw(spriteBatch);
+                        mapGenerator.DrawPlatform(spriteBatch, level);
+                        knight.Draw(spriteBatch);
+                    }
+                    // draw for game over 
+                    else
+                    {
+                        DrawMenuOptions(spriteBatch, gameOver);
+                        DrawGameOverText(spriteBatch);
+                    }
+
+                    break;
+
+                case GameState.GameOver_Win:
+                    // draw for game over
+                    DrawMenuOptions(spriteBatch, gameOver);
+                    DrawGameOverText(spriteBatch);
+
+                    break;
+
+                default:
+                    break;
+            }
 
         }
         public static void MoveMapLeft(float amount)
@@ -105,7 +343,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     --lives;
 
                     if (lives == 0)
-                        knight.DeathRoutine();
+                        DeathRoutine();
                     return true;
                 }
             }
@@ -122,7 +360,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         --lives;
 
                         if (lives == 0)
-                            knight.DeathRoutine();
+                            DeathRoutine();
 
                         return true;
                     }
@@ -136,7 +374,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         --lives;
 
                         if (lives == 0)
-                            knight.DeathRoutine();
+                            DeathRoutine();
 
                         return true;
                     }
@@ -156,7 +394,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         --lives;
 
                         if (lives == 0)
-                            knight.DeathRoutine();
+                            DeathRoutine();
 
                         return true;
                     }
@@ -174,6 +412,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public static void GoToNextLevel()
         {
+            movingLeftRemaining = 0;
             mapGenerator.LoadLevel(++level);
             monstersManager.LoadLevel(level);
             knight.GoToInitialPosition(level);
@@ -200,5 +439,37 @@ namespace NaamGaatNogKomen.Classes.Scripts
             foreach (Rectangle rect in heart)
                 spriteBatch.Draw(plainTexture, rect, color);
         }
+        private void DrawMenuOptions(SpriteBatch spriteBatch, string[] menuOptions)
+        {
+            Vector2 position = new Vector2(200, 160) * gameScale; // Adjust as needed
+
+            for (int i = 0; i < menuOptions.Length; i++)
+            {
+                Color textColor = (i == menuSelection) ? Color.Red : Color.White;
+                float wordDistX = position.X - 0.5f * (spriteFont.MeasureString(menuOptions[i]).X);
+                Vector2 wordPos = new Vector2(wordDistX, position.Y);
+
+                spriteBatch.DrawString(spriteFont, menuOptions[i], wordPos, textColor);
+
+                position.Y += 17 * gameScale; // Adjust spacing between options
+            }
+        }
+        private void DrawGameOverText(SpriteBatch spriteBatch)
+        {
+            Vector2 position = new Vector2(200, 100) * gameScale;
+            float wordDistX = position.X - 0.5f * (spriteLargeFont.MeasureString("Game Over").X);
+            Vector2 wordPos = new Vector2(wordDistX, position.Y);
+            spriteBatch.DrawString(spriteLargeFont, "Game Over", wordPos, Color.White);
+
+            DrawMenuOptions(spriteBatch, gameOver);
+        }
+
+        private static void DeathRoutine()
+        {
+            deathTimer = 0;
+            gameState = GameState.GameOver_Loss;
+            knight.DeathRoutine();
+        }
     }
+
 }

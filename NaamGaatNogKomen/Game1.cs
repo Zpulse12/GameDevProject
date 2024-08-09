@@ -41,6 +41,8 @@ namespace NaamGaatNogKomen
                 Exit();
             // TODO: Add your update logic here
             gameManager.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            if (gameManager.menuState == MenuState.Exit)
+                Exit();
             base.Update(gameTime);
         }
 
