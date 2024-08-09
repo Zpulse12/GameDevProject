@@ -17,7 +17,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         private readonly int FrameCount = 3;
         private readonly float animationDuration = 0.15f; //this is the time interval between frames of the animation
         private readonly Vector2 frameSize = new Vector2(16, 25); // w, h
-        private readonly float gravity = 1 * GameManager.gameScale;
+        private readonly float gravity = 4 * GameManager.gameScale;
         private Vector2 velocity = new Vector2(0, 0);
 
         public Projectile(Vector2 position)
@@ -46,7 +46,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                                 (int)(1 + currentFrame.X * (frameSize.X + 1)),
                                 0, (int)frameSize.X, (int)frameSize.Y);
 
-            velocity.Y += gravity * GameManager.gameScale * deltaTime;
+            velocity.Y += gravity * deltaTime;
             position.Y += velocity.Y;
             hitbox.Update(position);
         }
