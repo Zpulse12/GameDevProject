@@ -48,10 +48,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         private readonly Dictionary<KnightMovementStates, Vector2> knightSize = new Dictionary<KnightMovementStates, Vector2>
         {
-            { KnightMovementStates.Idle, new Vector2(17, 22) },
-            { KnightMovementStates.Run, new Vector2(21, 22) },
-            { KnightMovementStates.Jump, new Vector2(17, 22) },
-            { KnightMovementStates.Fall, new Vector2(19, 22) }
+            { KnightMovementStates.Idle, new Vector2(18, 22) },
+            { KnightMovementStates.Run, new Vector2(18, 22) },
+            { KnightMovementStates.Jump, new Vector2(18, 22) },
+            { KnightMovementStates.Fall, new Vector2(18, 22) }
         };
 
         private readonly Dictionary<int, Vector2> intialPosition = new Dictionary<int, Vector2>
@@ -142,15 +142,15 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     }
                 }
 
-                if (position.X + 22 * GameManager.gameScale / 2 > GameManager.mapWidth / 2 &&
-                         knightMovementDirection == KnightMovementDirection.Right &&
-                            scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale
-                            )
+                if (knightMovementStates != KnightMovementStates.Idle &&
+                    position.X + knightWidth / 2 > GameManager.mapWidth / 2 &&
+                    knightMovementDirection == KnightMovementDirection.Right &&
+                    scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale)
                 {
                     GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
                     scrollAmount += (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
                     position.X = GameManager.mapWidth / 2 - knightWidth / 2;
-                    hitbox.Update(position);
+                    //hitbox.Update(position);
                 }
 
                 if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) && !isJumping)
@@ -296,6 +296,19 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
         public void GoToInitialPosition(int level)
         {
+            isDead = false;
+            isJumping = false;
+            invincibilityTimer = 0;
+            DeathAnimationTimer = 4;
+
+            velocity.X = 0;
+            velocity.Y = 0;
+
+            knightMovementStates = KnightMovementStates.Idle;
+            knightMovementDirection = KnightMovementDirection.Right;
+
+            knightWidth = (int)((knightSize[knightMovementStates].X + 1) * GameManager.gameScale);
+            knightHeight = (int)((knightSize[knightMovementStates].Y + 1) * GameManager.gameScale);
             position = intialPosition[level];
             hitbox.Update(position);
             scrollAmount = 0;
