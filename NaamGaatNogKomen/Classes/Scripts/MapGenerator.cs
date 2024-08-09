@@ -10,7 +10,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
 {
     internal class MapGenerator
     {
-
         private Texture2D castleTileset;
         private Texture2D swampTileset;
         private Vector2 mapPosition;
@@ -32,13 +31,10 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
             castleTileset = content.Load<Texture2D>("Castle_tileset");
             swampTileset = content.Load<Texture2D>("Swamp_tileset");
-            LoadLevel(2);
-
+            LoadLevel(1);
         }
         public void Update(float deltaTime)
-        {
-
-        }
+        { }
         public void DrawPlatform(SpriteBatch spriteBatch, int level)
         {
             Texture2D tileset = level == 1 ? castleTileset : swampTileset;
@@ -124,10 +120,11 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     for (int x = 0; x < items.Length; x++)
                     {
                         int value;
-                        if (int.TryParse(items[x], out value) && value > -1)
-                        {
-                            result.Add(new Vector2(x, y), value);
-                        }
+                        if (int.TryParse(items[x], out value) && value >= -1)
+                            if (int.TryParse(items[x], out value) && value > -1)
+                            {
+                                result.Add(new Vector2(x, y), value);
+                            }
                     }
                     y++;
                 }
@@ -173,7 +170,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
             }
         }
-
         public void MoveLeft(int amount)
         {
             mapPosition.X -= amount;
@@ -182,9 +178,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             foreach (Hitbox collider in spikes)
                 collider.MoveLeft(amount);
             finishLine.MoveLeft(amount);
-
         }
-
         public void LoadLevel(int level)
         {
             mapPosition = Vector2.Zero;

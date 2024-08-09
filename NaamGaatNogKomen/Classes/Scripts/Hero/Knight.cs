@@ -33,6 +33,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private Vector2 position;
         private Vector2 velocity;
         private Texture2D texture;
+        private float scrollAmount;
         private KnightAnimation animation;
         private KnightMovementStates knightMovementStates;
         private KnightMovementDirection knightMovementDirection;
@@ -77,8 +78,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
-            knightWidth = (int)(knightSize[knightMovementStates].X * GameManager.gameScale);
-            knightHeight = (int)(knightSize[knightMovementStates].Y * GameManager.gameScale);
+            knightWidth = (int)((knightSize[knightMovementStates].X + 1) * GameManager.gameScale);
+            knightHeight = (int)((knightSize[knightMovementStates].Y + 1) * GameManager.gameScale);
         }
 
         public void LoadContent(ContentManager content)
@@ -142,9 +143,12 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 }
 
                 if (position.X + 22 * GameManager.gameScale / 2 > GameManager.mapWidth / 2 &&
-                             knightMovementDirection == KnightMovementDirection.Right)
+                         knightMovementDirection == KnightMovementDirection.Right &&
+                            scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale
+                            )
                 {
                     GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
+                    scrollAmount += (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
                     position.X = GameManager.mapWidth / 2 - knightWidth / 2;
                     hitbox.Update(position);
                 }
@@ -294,6 +298,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         {
             position = intialPosition[level];
             hitbox.Update(position);
+            scrollAmount = 0;
 
         }
     }
