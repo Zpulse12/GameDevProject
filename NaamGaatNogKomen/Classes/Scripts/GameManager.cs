@@ -99,6 +99,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         public static bool HitSpikes(Hitbox hitbox)
         {
             foreach (Hitbox collider in mapGenerator.spikes)
+            {
                 if (hitbox.rectangle.Intersects(collider.rectangle))
                 {
                     --lives;
@@ -107,29 +108,16 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         knight.DeathRoutine();
                     return true;
                 }
+            }
             return false;
         }
-        public static bool HitMonster(Hitbox hitbox, KnightMovementStates knightMovementStates)
+        public static bool HitMonster(Hitbox hitbox, KnightMovementStates knightMovementStates, bool isInvincible)
         {
-            foreach (var monster in monstersManager.Monster1List)
-                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
+            if (!isInvincible)
+            {
+                foreach (var monster in monstersManager.Monster1List)
                 {
-                    --lives;
-
-                    if (lives == 0)
-                        knight.DeathRoutine();
-
-                    return true;
-                }
-            foreach (var monster in monstersManager.Monster2List)
-                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster.IsAlive())
-                {
-                    if (knightMovementStates == KnightMovementStates.Fall)
-                    {
-                        monster.Die();
-                        knight.Bounce();
-                    }
-                    else
+                    if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
                     {
                         --lives;
 
@@ -139,6 +127,41 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         return true;
                     }
                 }
+
+                foreach (var monster in monstersManager.Monster3List)
+                {
+                    if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) ||
+                        hitbox.rectangle.Intersects(monster.projectile.hitbox.rectangle))
+                    {
+                        --lives;
+
+                        if (lives == 0)
+                            knight.DeathRoutine();
+
+                        return true;
+                    }
+                }
+            }
+            foreach (var monster in monstersManager.Monster2List)
+            {
+                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster.IsAlive())
+                {
+                    if (knightMovementStates == KnightMovementStates.Fall)
+                    {
+                        monster.Die();
+                        knight.Bounce();
+                    }
+                    else if (!isInvincible)
+                    {
+                        --lives;
+
+                        if (lives == 0)
+                            knight.DeathRoutine();
+
+                        return true;
+                    }
+                }
+            }
             return false;
         }
         public static bool TouchedFinishLine(Hitbox hitbox)

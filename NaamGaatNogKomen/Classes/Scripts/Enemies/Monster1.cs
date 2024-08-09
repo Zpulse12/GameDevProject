@@ -37,7 +37,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             timer = 0;
             currentFrame = Vector2.Zero;
 
-            hitbox = new Hitbox(new Rectangle(0, (int)(7 * GameManager.gameScale), (int)(37 * GameManager.gameScale), (int)(30 * GameManager.gameScale)), Vector2.Zero);
+            hitbox = new Hitbox(new Rectangle(0, (int)(7 * GameManager.gameScale), (int)(37 * GameManager.gameScale), (int)(22 * GameManager.gameScale)), Vector2.Zero);
             hitbox.Update(position);
         }
 
