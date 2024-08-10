@@ -197,9 +197,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 else if (item.Value == 2)
                 {
                     pos.X = item.Key.X * tileSize * GameManager.gameScale;
-                    pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
+                    pos.Y = (item.Key.Y - 4) * tileSize * GameManager.gameScale;
                     r = new Rectangle((int)pos.X, (int)pos.Y,
-                            (int)(tileSize * GameManager.gameScale), (int)(tileSize * GameManager.gameScale));
+                            (int)(tileSize * GameManager.gameScale), (int)(5 * tileSize * GameManager.gameScale));
                     finishLine = new Hitbox(r, new Vector2(0, 0));
                 }
             }

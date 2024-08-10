@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,7 +40,9 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         }
         public void LoadLevel(int level)
         {
-            Dictionary<Vector2, int> MonsterData = MapGenerator.LoadMap($"Map Creation\\Level{level}_Monsters.csv");
+            string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
+
+            Dictionary<Vector2, int> MonsterData = MapGenerator.LoadMap(dir + $"Map Creation\\Level{level}_Monsters.csv");
             AddMonsters(MonsterData);
         }
 
@@ -77,14 +80,14 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 }
             }
         }
-        public void Update(float deltaTime)
+        public void Update(float deltaTime, Vector2 knightPos)
         {
             foreach (Monster1 monster in Monster1List)
                 monster.Update(deltaTime);
             foreach (Monster2 monster in Monster2List)
                 monster.Update(deltaTime);
             foreach (Monster3 monster in Monster3List)
-                monster.Update(deltaTime);
+                monster.Update(deltaTime, knightPos);
         }
 
         public void Draw(SpriteBatch spriteBatch)

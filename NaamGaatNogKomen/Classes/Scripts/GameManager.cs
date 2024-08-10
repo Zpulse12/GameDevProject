@@ -65,8 +65,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
             plainTexture.SetData(new Color[] { Color.White });
             gameState = GameState.StartMenu;
             menuState = MenuState.Main;
-            level = 0;
-            lives = 3;
         }
 
 
@@ -102,6 +100,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                                 {
                                     case 0:
                                         level = 0;
+                                        lives = 3;
                                         GoToNextLevel();
                                         gameState = GameState.Level1;
                                         break;
@@ -133,7 +132,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 case GameState.Level1:
                     knight.Update(deltaTime);
                     mapGenerator.Update(deltaTime, 1);
-                    monstersManager.Update(deltaTime);
+                    monstersManager.Update(deltaTime, knight.GetPostion());
                     if (TouchedFinishLine(knight.hitbox))
                     {
                         scrollAmount = 0;
@@ -146,7 +145,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 case GameState.Level2:
                     knight.Update(deltaTime);
                     mapGenerator.Update(deltaTime, 2);
-                    monstersManager.Update(deltaTime);
+                    monstersManager.Update(deltaTime, knight.GetPostion());
                     if (TouchedFinishLine(knight.hitbox))
                     {
                         scrollAmount = 0;
@@ -160,7 +159,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         deathTimer += deltaTime;
                         knight.Update(deltaTime);
                         mapGenerator.Update(deltaTime, level);
-                        monstersManager.Update(deltaTime);
+                        monstersManager.Update(deltaTime, knight.GetPostion());
                     }
                     else
                     {
@@ -233,10 +232,10 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     switch (menuState)
                     {
                         case MenuState.Main:
-                            DrawMenuOptions(spriteBatch, main);
+                            DrawMenuOptions(spriteBatch, main, 100);
                             break;
                         case MenuState.HowToPlay:
-                            DrawMenuOptions(spriteBatch, howToPlay);
+                            DrawMenuOptions(spriteBatch, howToPlay, 90);
                             break;
                         default:
                             break;
@@ -441,9 +440,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
             foreach (Rectangle rect in heart)
                 spriteBatch.Draw(plainTexture, rect, color);
         }
-        private void DrawMenuOptions(SpriteBatch spriteBatch, string[] menuOptions)
+        private void DrawMenuOptions(SpriteBatch spriteBatch, string[] menuOptions, int Y = 160)
         {
-            Vector2 position = new Vector2(200, 160) * gameScale; // Adjust as needed
+            Vector2 position = new Vector2(mapWidth / 2, Y * gameScale); // Adjust as needed
 
             for (int i = 0; i < menuOptions.Length; i++)
             {

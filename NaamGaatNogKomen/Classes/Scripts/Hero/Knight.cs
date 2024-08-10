@@ -46,13 +46,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private readonly float gravity = 8f * GameManager.gameScale;
         private readonly float invincibilityTime = 2;
 
-        private readonly Dictionary<KnightMovementStates, Vector2> knightSize = new Dictionary<KnightMovementStates, Vector2>
-        {
-            { KnightMovementStates.Idle, new Vector2(18, 22) },
-            { KnightMovementStates.Run, new Vector2(18, 22) },
-            { KnightMovementStates.Jump, new Vector2(18, 22) },
-            { KnightMovementStates.Fall, new Vector2(18, 22) }
-        };
+        public static readonly Vector2 knightSize = new Vector2(18, 22);
 
         private readonly Dictionary<int, Vector2> intialPosition = new Dictionary<int, Vector2>
         {
@@ -79,8 +73,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
-            knightWidth = (int)((knightSize[knightMovementStates].X + 1) * GameManager.gameScale);
-            knightHeight = (int)((knightSize[knightMovementStates].Y + 1) * GameManager.gameScale);
+            knightWidth = (int)((knightSize.X + 1) * GameManager.gameScale);
+            knightHeight = (int)((knightSize.Y + 1) * GameManager.gameScale);
         }
 
         public void LoadContent(ContentManager content)
@@ -120,14 +114,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     }
                 }
 
-
-                if (position.X < 0)
-                {
-                    position.X = 0;
-                    velocity.X = 0;
-                    hitbox.Update(position);
-                }
-
                 if (velocity.X != 0)
                 {
                     position.X += velocity.X;
@@ -143,23 +129,27 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     }
                 }
 
+                // stop at the left most of the screen
+                if (position.X < GameManager.scrollAmount)
+                {
+                    position.X = GameManager.scrollAmount;
+                    velocity.X = 0;
+                    hitbox.Update(position);
+                }
+
                 if (knightMovementStates != KnightMovementStates.Idle &&
-                    position.X + knightWidth / 2 > GameManager.mapWidth / 2 &&
                     knightMovementDirection == KnightMovementDirection.Right &&
+                    position.X - scrollAmount + knightWidth / 2 > GameManager.mapWidth / 2 &&
                     scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale)
                 {
-                    float scrollOffset = (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
-                    GameManager.MoveMapLeft(scrollOffset);
-                    scrollAmount = scrollOffset;
-                    //position.X = GameManager.mapWidth / 2 - knightWidth;
-                    //hitbox.Update(position);
+                    scrollAmount = (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
+                    GameManager.MoveMapLeft(scrollAmount);
                 }
 
                 if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) && !isJumping)
                 {
                     isJumping = true;
                     velocity.Y = -3.25f * GameManager.gameScale;
-                    //knightMovementStates = KnightMovementStates.Jump;
                 }
 
                 if (isJumping)
@@ -305,12 +295,16 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
 
-            knightWidth = (int)((knightSize[knightMovementStates].X + 1) * GameManager.gameScale);
-            knightHeight = (int)((knightSize[knightMovementStates].Y + 1) * GameManager.gameScale);
+            knightWidth = (int)((knightSize.X + 1) * GameManager.gameScale);
+            knightHeight = (int)((knightSize.Y + 1) * GameManager.gameScale);
             position = intialPosition[level];
             hitbox.Update(position);
             scrollAmount = 0;
 
+        }
+        public Vector2 GetPostion()
+        {
+            return position;
         }
     }
 }
