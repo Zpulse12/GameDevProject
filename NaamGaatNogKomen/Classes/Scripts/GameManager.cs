@@ -100,7 +100,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                                 {
                                     case 0:
                                         level = 0;
-                                        lives = 300;
+                                        lives = 3;
                                         GoToNextLevel();
                                         gameState = GameState.Level1;
                                         break;

@@ -114,14 +114,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     }
                 }
 
-
-                if (position.X < 0)
-                {
-                    position.X = 0;
-                    velocity.X = 0;
-                    hitbox.Update(position);
-                }
-
                 if (velocity.X != 0)
                 {
                     position.X += velocity.X;
@@ -137,6 +129,14 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     }
                 }
 
+                // stop at the left most of the screen
+                if (position.X < GameManager.scrollAmount)
+                {
+                    position.X = GameManager.scrollAmount;
+                    velocity.X = 0;
+                    hitbox.Update(position);
+                }
+
                 if (knightMovementStates != KnightMovementStates.Idle &&
                     knightMovementDirection == KnightMovementDirection.Right &&
                     position.X - scrollAmount + knightWidth / 2 > GameManager.mapWidth / 2 &&
@@ -150,7 +150,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 {
                     isJumping = true;
                     velocity.Y = -3.25f * GameManager.gameScale;
-                    //knightMovementStates = KnightMovementStates.Jump;
                 }
 
                 if (isJumping)
