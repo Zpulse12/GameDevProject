@@ -144,15 +144,12 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 }
 
                 if (knightMovementStates != KnightMovementStates.Idle &&
-                    position.X + knightWidth / 2 > GameManager.mapWidth / 2 &&
                     knightMovementDirection == KnightMovementDirection.Right &&
+                    position.X - scrollAmount + knightWidth / 2 > GameManager.mapWidth / 2 &&
                     scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale)
                 {
-                    float scrollOffset = (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
-                    GameManager.MoveMapLeft(scrollOffset);
-                    scrollAmount = scrollOffset;
-                    //position.X = GameManager.mapWidth / 2 - knightWidth;
-                    //hitbox.Update(position);
+                    scrollAmount = (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
+                    GameManager.MoveMapLeft(scrollAmount);
                 }
 
                 if ((keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) && !isJumping)
@@ -311,6 +308,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             hitbox.Update(position);
             scrollAmount = 0;
 
+        }
+        public Vector2 GetPostion()
+        {
+            return position;
         }
     }
 }

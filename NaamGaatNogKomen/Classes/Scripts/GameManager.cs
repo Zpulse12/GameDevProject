@@ -65,8 +65,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
             plainTexture.SetData(new Color[] { Color.White });
             gameState = GameState.StartMenu;
             menuState = MenuState.Main;
-            level = 0;
-            lives = 3;
         }
 
 
@@ -102,6 +100,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                                 {
                                     case 0:
                                         level = 0;
+                                        lives = 300;
                                         GoToNextLevel();
                                         gameState = GameState.Level1;
                                         break;
@@ -133,7 +132,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 case GameState.Level1:
                     knight.Update(deltaTime);
                     mapGenerator.Update(deltaTime, 1);
-                    monstersManager.Update(deltaTime);
+                    monstersManager.Update(deltaTime, knight.GetPostion());
                     if (TouchedFinishLine(knight.hitbox))
                     {
                         scrollAmount = 0;
@@ -146,7 +145,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 case GameState.Level2:
                     knight.Update(deltaTime);
                     mapGenerator.Update(deltaTime, 2);
-                    monstersManager.Update(deltaTime);
+                    monstersManager.Update(deltaTime, knight.GetPostion());
                     if (TouchedFinishLine(knight.hitbox))
                     {
                         scrollAmount = 0;
@@ -160,7 +159,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         deathTimer += deltaTime;
                         knight.Update(deltaTime);
                         mapGenerator.Update(deltaTime, level);
-                        monstersManager.Update(deltaTime);
+                        monstersManager.Update(deltaTime, knight.GetPostion());
                     }
                     else
                     {

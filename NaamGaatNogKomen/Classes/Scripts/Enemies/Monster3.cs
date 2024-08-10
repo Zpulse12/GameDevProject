@@ -44,26 +44,26 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         }
 
 
-        public void Update(float deltaTime)
+        public void Update(float deltaTime, Vector2 knightPos)
         {
             // movement handling
 
             //// Left/Right movement
-            //if (movingLeft)
-            //{
-            //	if (displacment.X <= -maxXDisplacment)
-            //		movingLeft = false;
-            //	else
-            //		displacment.X -= velocity.X * deltaTime;
-            //}
-            //else
-            //{
-            //	if (displacment.X >= 0)
-            //		movingLeft = true;
-            //	else
-            //		displacment.X += velocity.X * deltaTime;
-            //}
-            //hitbox.Update(position + displacment);
+            if (System.Math.Abs(knightPos.X - position.X) > velocity.X * deltaTime * 2 && System.Math.Abs(knightPos.X - position.X) < 2 * MapGenerator.tileSize * GameManager.gameScale)
+            {
+                if (knightPos.X - position.X < 2) // go right
+                {
+                    movingLeft = true;
+                    position.X -= velocity.X * deltaTime;
+                }
+                else
+                {
+                    movingLeft = false;
+                    position.X += velocity.X * deltaTime;
+                }
+            }
+
+            hitbox.Update(position + displacment);
 
 
             // animation handling
@@ -90,7 +90,12 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 spriteEffects = SpriteEffects.None;
 
             if (projectile.Disapeared())
-                projectile = new Projectile(position + new Vector2(6 * GameManager.gameScale, 21 * GameManager.gameScale));
+            {
+                if (movingLeft)
+                    projectile = new Projectile(position + new Vector2(6 * GameManager.gameScale, 21 * GameManager.gameScale));
+                else
+                    projectile = new Projectile(position + new Vector2(16 * GameManager.gameScale, 21 * GameManager.gameScale));
+            }
 
             projectile.Update(deltaTime);
         }

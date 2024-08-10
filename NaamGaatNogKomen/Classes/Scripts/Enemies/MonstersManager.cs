@@ -77,14 +77,14 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 }
             }
         }
-        public void Update(float deltaTime)
+        public void Update(float deltaTime, Vector2 knightPos)
         {
             foreach (Monster1 monster in Monster1List)
                 monster.Update(deltaTime);
             foreach (Monster2 monster in Monster2List)
                 monster.Update(deltaTime);
             foreach (Monster3 monster in Monster3List)
-                monster.Update(deltaTime);
+                monster.Update(deltaTime, knightPos);
         }
 
         public void Draw(SpriteBatch spriteBatch)
