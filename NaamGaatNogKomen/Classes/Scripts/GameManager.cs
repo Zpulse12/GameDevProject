@@ -232,10 +232,10 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     switch (menuState)
                     {
                         case MenuState.Main:
-                            DrawMenuOptions(spriteBatch, main);
+                            DrawMenuOptions(spriteBatch, main, 100);
                             break;
                         case MenuState.HowToPlay:
-                            DrawMenuOptions(spriteBatch, howToPlay);
+                            DrawMenuOptions(spriteBatch, howToPlay, 90);
                             break;
                         default:
                             break;
@@ -440,9 +440,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
             foreach (Rectangle rect in heart)
                 spriteBatch.Draw(plainTexture, rect, color);
         }
-        private void DrawMenuOptions(SpriteBatch spriteBatch, string[] menuOptions)
+        private void DrawMenuOptions(SpriteBatch spriteBatch, string[] menuOptions, int Y = 160)
         {
-            Vector2 position = new Vector2(200, 160) * gameScale; // Adjust as needed
+            Vector2 position = new Vector2(mapWidth / 2, Y * gameScale); // Adjust as needed
 
             for (int i = 0; i < menuOptions.Length; i++)
             {
