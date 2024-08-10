@@ -49,7 +49,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private static int level;
         private static int lives;
         private static float deathTimer;
-        private static float movingLeftRemaining;
 
         private readonly float deathGapTime = 5;
         public static readonly float gameScale = 3f;
@@ -68,7 +67,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
             menuState = MenuState.Main;
             level = 0;
             lives = 3;
-            movingLeftRemaining = 0;
         }
 
 
@@ -251,7 +249,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     mapGenerator.DrawBackground(spriteBatch, 1);
 
                     for (int i = 0; i < lives; ++i)
-                        DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i,
+                        DrawPixelHeart(spriteBatch, (int)scrollAmount + (int)(10 * gameScale) + (int)(12 * gameScale) * i,
                             (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
 
                     monstersManager.Draw(spriteBatch);
@@ -264,7 +262,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     mapGenerator.DrawBackground(spriteBatch, 2);
 
                     for (int i = 0; i < lives; ++i)
-                        DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i,
+                        DrawPixelHeart(spriteBatch, (int)scrollAmount + (int)(10 * gameScale) + (int)(12 * gameScale) * i,
                             (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
 
                     monstersManager.Draw(spriteBatch);
@@ -311,12 +309,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         }
         public static void MoveMapLeft(float amount)
         {
-            scrollAmount = amount;
 
-            movingLeftRemaining += amount - (int)amount;
-            amount += (int)movingLeftRemaining;
-            movingLeftRemaining -= (int)movingLeftRemaining;
-            mapGenerator.MoveLeft(amount);
             scrollAmount = amount;
             //monstersManager.MoveLeft((int)amount);
         }
@@ -421,7 +414,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public static void GoToNextLevel()
         {
-            lives = 3;
             scrollAmount = 0;
             mapGenerator.LoadLevel(++level);
             monstersManager.LoadLevel(level);

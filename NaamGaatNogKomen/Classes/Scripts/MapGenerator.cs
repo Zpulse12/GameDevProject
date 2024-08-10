@@ -14,7 +14,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private Texture2D swampTileset;
         private Texture2D torchTexture;
 
-        private Vector2 mapPosition;
         private Dictionary<Vector2, int> levelData;
         private Dictionary<Vector2, int> levelBackgroundData;
         private Dictionary<Vector2, int> levelBackground1Data;
@@ -69,7 +68,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             {
                 if (item.Value != -1)
                 {
-                    Vector2 pos; //= mapPosition;
+                    Vector2 pos; 
                     pos.X = item.Key.X * tileSize * GameManager.gameScale;
                     pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
                     spriteBatch.Draw(tileset, pos,
@@ -90,9 +89,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 {
                     if (item.Value != -1)
                     {
-                        Vector2 pos = mapPosition;
-                        pos.X += item.Key.X * tileSize * GameManager.gameScale;
-                        pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
+                        Vector2 pos;
+                        pos.X = GameManager.scrollAmount + item.Key.X * tileSize * GameManager.gameScale;
+                        pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
                         spriteBatch.Draw(tileset, pos,
                                         new Rectangle(item.Value % tilesetWidth * tileSize,
                                                     item.Value / tilesetWidth * tileSize,
@@ -205,13 +204,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
             }
         }
-        public void MoveLeft(float amount)
-        {
-            mapPosition.X = amount;
-        }
+
         public void LoadLevel(int level)
         {
-            mapPosition = Vector2.Zero;
             string dir = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.LastIndexOf("bin"));
             levelData = LoadMap(dir + $"Map Creation\\Level{level}_Platform.csv");
             levelCollidersData = LoadMap(dir + $"Map Creation\\Level{level}_Colliders.csv");
