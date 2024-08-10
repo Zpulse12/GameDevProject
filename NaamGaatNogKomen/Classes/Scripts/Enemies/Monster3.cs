@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Scripts.Hero;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
@@ -20,9 +21,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         private Rectangle sourceRect; //this is used to select a portion of the spritesheet
         private SpriteEffects spriteEffects; // this can flip the animation horizontally or vertically
 
-
-        private readonly int maxXDisplacment = (int)(12 * MapGenerator.tileSize * GameManager.gameScale);
-        private readonly int maxYDisplacment = (int)(3 * MapGenerator.tileSize * GameManager.gameScale);
         private readonly int MonsterFrameCount = 8;
         private readonly float animationDuration = 0.2f; //this is the time interval between frames of the animation
         private readonly Vector2 frameSize = new Vector2(48, 55); // w, h
@@ -49,9 +47,11 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             // movement handling
 
             //// Left/Right movement
-            if (System.Math.Abs(knightPos.X - position.X) > velocity.X * deltaTime * 2 && System.Math.Abs(knightPos.X - position.X) < 2 * MapGenerator.tileSize * GameManager.gameScale)
+            float pos_X = position.X + frameSize.X / 2 * GameManager.gameScale;
+            float knightPos_x = knightPos.X + Knight.knightSize.X / 2 * GameManager.gameScale;
+            if (System.Math.Abs(knightPos_x - pos_X) > velocity.X * deltaTime * 2 && System.Math.Abs(knightPos_x - pos_X) < 3 * MapGenerator.tileSize * GameManager.gameScale)
             {
-                if (knightPos.X - position.X < 2) // go right
+                if (knightPos_x - pos_X < 2) // go right
                 {
                     movingLeft = true;
                     position.X -= velocity.X * deltaTime;
@@ -63,7 +63,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 }
             }
 
-            hitbox.Update(position + displacment);
+            hitbox.Update(position);
 
 
             // animation handling
@@ -81,8 +81,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             sourceRect = new Rectangle(
                                 (int)(1 + currentFrame.X * (frameSize.X + 1)),
                                 (int)(1 + currentFrame.Y * (frameSize.Y + 1)),
-                                (int)frameSize.X,
-                                (int)frameSize.Y);
+                                (int)frameSize.X, (int)frameSize.Y);
 
             if (!movingLeft)
                 spriteEffects = SpriteEffects.FlipHorizontally;

@@ -46,13 +46,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         private readonly float gravity = 8f * GameManager.gameScale;
         private readonly float invincibilityTime = 2;
 
-        private readonly Dictionary<KnightMovementStates, Vector2> knightSize = new Dictionary<KnightMovementStates, Vector2>
-        {
-            { KnightMovementStates.Idle, new Vector2(18, 22) },
-            { KnightMovementStates.Run, new Vector2(18, 22) },
-            { KnightMovementStates.Jump, new Vector2(18, 22) },
-            { KnightMovementStates.Fall, new Vector2(18, 22) }
-        };
+        public static readonly Vector2 knightSize = new Vector2(18, 22);
 
         private readonly Dictionary<int, Vector2> intialPosition = new Dictionary<int, Vector2>
         {
@@ -79,8 +73,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
-            knightWidth = (int)((knightSize[knightMovementStates].X + 1) * GameManager.gameScale);
-            knightHeight = (int)((knightSize[knightMovementStates].Y + 1) * GameManager.gameScale);
+            knightWidth = (int)((knightSize.X + 1) * GameManager.gameScale);
+            knightHeight = (int)((knightSize.Y + 1) * GameManager.gameScale);
         }
 
         public void LoadContent(ContentManager content)
@@ -302,8 +296,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
             knightMovementStates = KnightMovementStates.Idle;
             knightMovementDirection = KnightMovementDirection.Right;
 
-            knightWidth = (int)((knightSize[knightMovementStates].X + 1) * GameManager.gameScale);
-            knightHeight = (int)((knightSize[knightMovementStates].Y + 1) * GameManager.gameScale);
+            knightWidth = (int)((knightSize.X + 1) * GameManager.gameScale);
+            knightHeight = (int)((knightSize.Y + 1) * GameManager.gameScale);
             position = intialPosition[level];
             hitbox.Update(position);
             scrollAmount = 0;
