@@ -52,7 +52,7 @@ namespace NaamGaatNogKomen
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Matrix.CreateTranslation(-(int)GameManager.scrollAmount, 0, 0));
             gameManager.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);

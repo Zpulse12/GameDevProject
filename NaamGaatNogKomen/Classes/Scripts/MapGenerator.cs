@@ -69,9 +69,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
             {
                 if (item.Value != -1)
                 {
-                    Vector2 pos = mapPosition;
-                    pos.X += item.Key.X * tileSize * GameManager.gameScale;
-                    pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
+                    Vector2 pos; //= mapPosition;
+                    pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
                     spriteBatch.Draw(tileset, pos,
                                     new Rectangle(item.Value % tilesetWidth * tileSize,
                                                 item.Value / tilesetWidth * tileSize,
@@ -90,9 +90,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 {
                     if (item.Value != -1)
                     {
-                        Vector2 pos;
-                        pos.X = item.Key.X * tileSize * GameManager.gameScale;
-                        pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
+                        Vector2 pos = mapPosition;
+                        pos.X += item.Key.X * tileSize * GameManager.gameScale;
+                        pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
                         spriteBatch.Draw(tileset, pos,
                                         new Rectangle(item.Value % tilesetWidth * tileSize,
                                                     item.Value / tilesetWidth * tileSize,
@@ -105,9 +105,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
             {
                 if (item.Value != -1 && item.Value != 57)
                 {
-                    Vector2 pos = mapPosition;
-                    pos.X += item.Key.X * tileSize * GameManager.gameScale;
-                    pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
+                    Vector2 pos;
+                    pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
                     spriteBatch.Draw(tileset, pos,
                                     new Rectangle(item.Value % tilesetWidth * tileSize,
                                                 item.Value / tilesetWidth * tileSize,
@@ -116,9 +116,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
                 if (level == 1 && item.Value == 57) // animate torch
                 {
-                    Vector2 pos = mapPosition;
-                    pos.X += item.Key.X * tileSize * GameManager.gameScale;
-                    pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
+                    Vector2 pos;
+                    pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                    pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
                     spriteBatch.Draw(torchTexture, pos,
                                     new Rectangle(torchCurrentFrame * (17 + 1), 0, 17, 17),
                                     Color.White, 0, Vector2.Zero, GameManager.gameScale, SpriteEffects.None, 0);
@@ -130,9 +130,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 {
                     if (item.Value != -1)
                     {
-                        Vector2 pos = mapPosition;
-                        pos.X += item.Key.X * tileSize * GameManager.gameScale;
-                        pos.Y += item.Key.Y * tileSize * GameManager.gameScale;
+                        Vector2 pos;
+                        pos.X = item.Key.X * tileSize * GameManager.gameScale;
+                        pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
                         spriteBatch.Draw(tileset, pos,
                                         new Rectangle(item.Value % tilesetWidth * tileSize,
                                                     item.Value / tilesetWidth * tileSize,
@@ -205,14 +205,9 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 }
             }
         }
-        public void MoveLeft(int amount)
+        public void MoveLeft(float amount)
         {
-            mapPosition.X -= amount;
-            foreach (Hitbox collider in colliders)
-                collider.MoveLeft(amount);
-            foreach (Hitbox collider in spikes)
-                collider.MoveLeft(amount);
-            finishLine.MoveLeft(amount);
+            mapPosition.X = amount;
         }
         public void LoadLevel(int level)
         {

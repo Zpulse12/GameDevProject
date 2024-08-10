@@ -41,6 +41,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private string[] gameOver = { "Restart", "Exit" };
         private string[] main = { "Start Game", "How to play", "Exit" };
         private string[] howToPlay = { "Move left: left arrow", "Move right: right arrow", "Jump: up arrow or Space", "Back" };
+        public static float scrollAmount;
 
         //Hearts Texture
         private static Texture2D plainTexture;
@@ -137,6 +138,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     monstersManager.Update(deltaTime);
                     if (TouchedFinishLine(knight.hitbox))
                     {
+                        scrollAmount = 0;
                         gameState = GameState.Level2;
                         GoToNextLevel();
                     }
@@ -149,6 +151,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     monstersManager.Update(deltaTime);
                     if (TouchedFinishLine(knight.hitbox))
                     {
+                        scrollAmount = 0;
                         gameState = GameState.GameOver_Win;
                     }
                     break;
@@ -176,6 +179,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                                 case 0:
                                     level = 0;
                                     lives = 3;
+                                    scrollAmount = 0;
                                     gameState = GameState.Level1;
                                     GoToNextLevel();
                                     break;
@@ -203,6 +207,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                             case 0:
                                 level = 0;
                                 lives = 3;
+                                scrollAmount = 0;
                                 gameState = GameState.Level1;
                                 GoToNextLevel();
                                 break;
@@ -274,7 +279,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         mapGenerator.DrawBackground(spriteBatch, level);
 
                         for (int i = 0; i < lives; ++i)
-                            DrawPixelHeart(spriteBatch, (int)(10 * gameScale) + (int)(12 * gameScale) * i,
+                            DrawPixelHeart(spriteBatch, (int)scrollAmount + (int)(10 * gameScale) + (int)(12 * gameScale) * i,
                                 (int)(0.9f * MapGenerator.tileSize * gameScale), (int)gameScale, Color.DarkRed);
 
                         monstersManager.Draw(spriteBatch);
@@ -304,12 +309,14 @@ namespace NaamGaatNogKomen.Classes.Scripts
         }
         public static void MoveMapLeft(float amount)
         {
+            scrollAmount = amount;
+
             movingLeftRemaining += amount - (int)amount;
             amount += (int)movingLeftRemaining;
             movingLeftRemaining -= (int)movingLeftRemaining;
-
-            mapGenerator.MoveLeft((int)amount);
-            monstersManager.MoveLeft((int)amount);
+            mapGenerator.MoveLeft(amount);
+            scrollAmount = amount;
+            //monstersManager.MoveLeft((int)amount);
         }
         public static int HitMap(Hitbox hitbox, bool withX, bool withY)
         {
@@ -412,7 +419,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
         public static void GoToNextLevel()
         {
-            movingLeftRemaining = 0;
+            lives = 3;
+            scrollAmount = 0;
             mapGenerator.LoadLevel(++level);
             monstersManager.LoadLevel(level);
             knight.GoToInitialPosition(level);

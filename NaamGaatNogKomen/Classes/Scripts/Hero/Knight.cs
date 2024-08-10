@@ -67,6 +67,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
         {
             isDead = false;
             isJumping = false;
+            scrollAmount = 0;
             invincibilityTimer = 0;
             DeathAnimationTimer = 4;
 
@@ -135,7 +136,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
                     if (overlabX > 0 && overlabX < (knightWidth) / 2)
                     {
-                        position.X -= velocity.X;
+                        if (knightMovementDirection == KnightMovementDirection.Right)
+                            position.X -= velocity.X;
                         velocity.X = 0;
 
                         hitbox.Update(position);
@@ -147,9 +149,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                     knightMovementDirection == KnightMovementDirection.Right &&
                     scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale)
                 {
-                    GameManager.MoveMapLeft((position.X + knightWidth / 2) - GameManager.mapWidth / 2);
-                    scrollAmount += (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
-                    position.X = GameManager.mapWidth / 2 - knightWidth / 2;
+                    float scrollOffset = (position.X + knightWidth / 2) - GameManager.mapWidth / 2;
+                    GameManager.MoveMapLeft(scrollOffset);
+                    scrollAmount = scrollOffset;
+                    //position.X = GameManager.mapWidth / 2 - knightWidth;
                     //hitbox.Update(position);
                 }
 
@@ -157,7 +160,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                 {
                     isJumping = true;
                     velocity.Y = -3.25f * GameManager.gameScale;
-                    knightMovementStates = KnightMovementStates.Jump;
+                    //knightMovementStates = KnightMovementStates.Jump;
                 }
 
                 if (isJumping)
@@ -262,11 +265,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
                         invincibilityTimer = 0;
                     }
                 }
-                if (GameManager.TouchedFinishLine(hitbox))
-                {
-                    GameManager.GoToNextLevel();
 
-                }
 
                 animation.position = position;
                 animation.Update(deltaTime, velocity, knightMovementStates, knightMovementDirection);
