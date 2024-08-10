@@ -136,8 +136,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
                     if (overlabX > 0 && overlabX < (knightWidth) / 2)
                     {
-                        if (knightMovementDirection == KnightMovementDirection.Right)
-                            position.X -= velocity.X;
+                        position.X -= velocity.X;
                         velocity.X = 0;
 
                         hitbox.Update(position);

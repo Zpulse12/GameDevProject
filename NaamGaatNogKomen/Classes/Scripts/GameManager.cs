@@ -289,7 +289,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     {
                         scrollAmount = 0;
                         DrawMenuOptions(spriteBatch, gameOver);
-                        DrawGameOverText(spriteBatch);
+                        DrawText(spriteBatch, "You Lost");
                     }
 
                     break;
@@ -298,7 +298,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     // draw for game over
                     scrollAmount = 0;
                     DrawMenuOptions(spriteBatch, gameOver);
-                    DrawGameOverText(spriteBatch);
+                    DrawText(spriteBatch, "You Won");
 
                     break;
 
@@ -456,13 +456,12 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 position.Y += 17 * gameScale; // Adjust spacing between options
             }
         }
-        private void DrawGameOverText(SpriteBatch spriteBatch)
+        private void DrawText(SpriteBatch spriteBatch, string s)
         {
             Vector2 position = new Vector2(200, 100) * gameScale;
-            float wordDistX = position.X - 0.5f * (spriteLargeFont.MeasureString("Game Over").X);
+            float wordDistX = position.X - 0.5f * (spriteLargeFont.MeasureString(s).X);
             Vector2 wordPos = new Vector2(wordDistX, position.Y);
-            spriteBatch.DrawString(spriteLargeFont, "Game Over", wordPos, Color.White);
-
+            spriteBatch.DrawString(spriteLargeFont, s, wordPos, Color.White);
             DrawMenuOptions(spriteBatch, gameOver);
         }
 
