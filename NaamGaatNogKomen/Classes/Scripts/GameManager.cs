@@ -289,6 +289,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                     // draw for game over 
                     else
                     {
+                        scrollAmount = 0;
                         DrawMenuOptions(spriteBatch, gameOver);
                         DrawGameOverText(spriteBatch);
                     }
@@ -297,6 +298,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
                 case GameState.GameOver_Win:
                     // draw for game over
+                    scrollAmount = 0;
                     DrawMenuOptions(spriteBatch, gameOver);
                     DrawGameOverText(spriteBatch);
 
