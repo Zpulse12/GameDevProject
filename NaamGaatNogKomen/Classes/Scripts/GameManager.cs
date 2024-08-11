@@ -226,8 +226,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
             {
                 case GameState.StartMenu:
                     // draw for start menu
-                    //spriteBatch.Draw(startMenuTexture, Vector2.Zero, new Rectangle(0, 0, mapWidth, mapHeight),
-                    //				Color.White, 0, Vector2.Zero, gameScale, SpriteEffects.None, 0);
 
                     switch (menuState)
                     {
@@ -272,7 +270,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
                 case GameState.GameOver_Loss:
                     if (deathTimer < deathGapTime)
                     {
-                        // draw for level
+                        // draw for the current level
                         mapGenerator.DrawBackground(spriteBatch, level);
 
                         for (int i = 0; i < lives; ++i)
@@ -283,21 +281,21 @@ namespace NaamGaatNogKomen.Classes.Scripts
                         mapGenerator.DrawPlatform(spriteBatch, level);
                         knight.Draw(spriteBatch);
                     }
-                    // draw for game over 
+                    // draw for game over menu
                     else
                     {
                         scrollAmount = 0;
-                        DrawMenuOptions(spriteBatch, gameOver);
                         DrawText(spriteBatch, "You Lost");
+                        DrawMenuOptions(spriteBatch, gameOver);
                     }
 
                     break;
 
                 case GameState.GameOver_Win:
-                    // draw for game over
+                    // draw for game over menu
                     scrollAmount = 0;
-                    DrawMenuOptions(spriteBatch, gameOver);
                     DrawText(spriteBatch, "You Won");
+                    DrawMenuOptions(spriteBatch, gameOver);
 
                     break;
 
@@ -417,7 +415,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
         public static void GoToNextLevel()
         {
             scrollAmount = 0;
-            mapGenerator.LoadLevel(++level);
+            level++;
+            mapGenerator.LoadLevel(level);
             monstersManager.LoadLevel(level);
             knight.GoToInitialPosition(level);
         }

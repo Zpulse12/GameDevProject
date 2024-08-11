@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Scripts;
 
 namespace NaamGaatNogKomen
 {
@@ -21,7 +22,7 @@ namespace NaamGaatNogKomen
         protected Vector2 frameSize; // width, height
 
         protected readonly float animationDuration = 0.2f; //this is the time interval between frames of the animation
-        protected readonly Vector2 velocity = new Vector2(25, 20) * 3f;//to do -> has to be reconfigured to the scale of the game
+        protected readonly Vector2 velocity = new Vector2(25, 20) * GameManager.gameScale;
 
         public Enemy(Vector2 position, Rectangle hitboxData)
         {
