@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Interfaces;
 using NaamGaatNogKomen.Classes.Scripts;
+using NaamGaatNogKomen.Classes.Scripts.Managers;
 
-namespace NaamGaatNogKomen
+namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
     internal abstract class Enemy
-	{
+    {
         public Hitbox hitbox;
 
         protected float timer; //this is a timer used for the enemy animation
@@ -39,5 +41,6 @@ namespace NaamGaatNogKomen
 
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(float deltaTime, Vector2 knightPos);
-	}
+        public abstract void PlayAnimation(float deltaTime);
+    }
 }

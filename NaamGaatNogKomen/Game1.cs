@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes.Input;
 using System.Collections.Generic;
-using NaamGaatNogKomen.Classes.Scripts;
+using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen
 {

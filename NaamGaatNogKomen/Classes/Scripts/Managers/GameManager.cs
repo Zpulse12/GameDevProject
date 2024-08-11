@@ -7,8 +7,9 @@ using NaamGaatNogKomen.Classes.Scripts.Hero;
 using System.Reflection.Metadata;
 using System.Reflection.Emit;
 using NaamGaatNogKomen.Classes.Scripts.Enemies;
+using System.Threading;
 
-namespace NaamGaatNogKomen.Classes.Scripts
+namespace NaamGaatNogKomen.Classes.Scripts.Managers
 {
     enum GameState
     {
@@ -75,7 +76,6 @@ namespace NaamGaatNogKomen.Classes.Scripts
             monstersManager.LoadContent(content);
             spriteFont = content.Load<SpriteFont>("Fonts/Font");
             spriteLargeFont = content.Load<SpriteFont>("Fonts/FontLarge");
-            //GoToNextLevel();
         }
 
 
@@ -350,13 +350,29 @@ namespace NaamGaatNogKomen.Classes.Scripts
         }
         public static bool HitMonster(Hitbox hitbox, KnightMovementStates knightMovementStates, bool isInvincible)
         {
-            if (!isInvincible)
+            foreach (var monster in monstersManager.MonsterList)
             {
-                foreach (var monster in monstersManager.MonsterList)
+                if (monster is Monster1)
                 {
-                    if (monster is Monster1)
+                    if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && !isInvincible)
                     {
-                        if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
+                        --lives;
+
+                        if (lives == 0)
+                                DeathRoutine();
+                    return true;
+                }
+            }
+                else if (monster is Monster2 monster2)
+            {
+                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster2.IsAlive())
+                {
+                        if (knightMovementStates == KnightMovementStates.Fall)
+                        {
+                            monster2.Die();
+                            knight.Bounce();
+                        }
+                        else if (!isInvincible)
                         {
                             --lives;
 
@@ -366,38 +382,18 @@ namespace NaamGaatNogKomen.Classes.Scripts
                             return true;
                         }
                     }
-                    else if (monster is Monster2 monster2)
+                }
+                else if (monster is Monster3 monster3)
+                {
+                    if ((hitbox.rectangle.Intersects(monster.hitbox.rectangle) ||
+                    hitbox.rectangle.Intersects(monster3.projectile.hitbox.rectangle)) && !isInvincible)
                     {
-                        if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster2.IsAlive())
-                        {
-                            if (knightMovementStates == KnightMovementStates.Fall)
-                            {
-                                monster2.Die();
-                                knight.Bounce();
-                            }
-                            else if (!isInvincible)
-                            {
-                                --lives;
+                        --lives;
 
-                                if (lives == 0)
-                                    DeathRoutine();
+                        if (lives == 0)
+                            DeathRoutine();
 
-                                return true;
-                            }
-                        }
-                    }
-                    else if (monster is Monster3 monster3)
-                    {
-                        if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) ||
-                        hitbox.rectangle.Intersects(monster3.projectile.hitbox.rectangle))
-                        {
-                            --lives;
-
-                            if (lives == 0)
-                                DeathRoutine();
-
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
@@ -448,8 +444,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
             for (int i = 0; i < menuOptions.Length; i++)
             {
-                Color textColor = (i == menuSelection) ? Color.Red : Color.White;
-                float wordDistX = position.X - 0.5f * (spriteFont.MeasureString(menuOptions[i]).X);
+                Color textColor = i == menuSelection ? Color.Red : Color.White;
+                float wordDistX = position.X - 0.5f * spriteFont.MeasureString(menuOptions[i]).X;
                 Vector2 wordPos = new Vector2(wordDistX, position.Y);
 
                 spriteBatch.DrawString(spriteFont, menuOptions[i], wordPos, textColor);
@@ -460,7 +456,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private void DrawText(SpriteBatch spriteBatch, string s)
         {
             Vector2 position = new Vector2(200, 100) * gameScale;
-            float wordDistX = position.X - 0.5f * (spriteLargeFont.MeasureString(s).X);
+            float wordDistX = position.X - 0.5f * spriteLargeFont.MeasureString(s).X;
             Vector2 wordPos = new Vector2(wordDistX, position.Y);
             spriteBatch.DrawString(spriteLargeFont, s, wordPos, Color.White);
             DrawMenuOptions(spriteBatch, gameOver);

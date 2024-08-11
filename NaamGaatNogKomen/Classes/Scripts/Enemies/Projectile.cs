@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Interfaces;
+using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal class Projectile
+    internal class Projectile:IAnimatable
     {
         public Hitbox hitbox;
 
@@ -34,6 +36,22 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public void Update(float deltaTime)
         {
+            velocity.Y += gravity * deltaTime;
+            position.Y += velocity.Y;
+            hitbox.Update(position);
+            PlayAnimation(deltaTime);
+        }
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture)
+        {
+            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, SpriteEffects.None, 0);
+        }
+
+        public bool Disapeared()
+        {
+            return position.Y >= GameManager.mapHeight;
+        }
+        public void PlayAnimation(float deltaTime)
+        {
             if (timer >= animationDuration) // time interval between frames
             {
                 currentFrame.X = currentFrame.X + 1 >= FrameCount ? 0 : currentFrame.X + 1;
@@ -42,27 +60,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             }
             timer += deltaTime;
 
-            sourceRect = new Rectangle(
-                                (int)(1 + currentFrame.X * (frameSize.X + 1)),
+            sourceRect = new Rectangle((int)(1 + currentFrame.X * (frameSize.X + 1)),
                                 0, (int)frameSize.X, (int)frameSize.Y);
-
-            velocity.Y += gravity * deltaTime;
-            position.Y += velocity.Y;
-            hitbox.Update(position);
-        }
-        public void Draw(SpriteBatch spriteBatch, Texture2D texture)
-        {
-            spriteBatch.Draw(texture, position, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, SpriteEffects.None, 0);
-        }
-
-        public void MoveLeft(int amount)
-        {
-            position.X -= amount;
-        }
-
-        public bool Disapeared()
-        {
-            return position.Y >= GameManager.mapHeight;
         }
     }
 }

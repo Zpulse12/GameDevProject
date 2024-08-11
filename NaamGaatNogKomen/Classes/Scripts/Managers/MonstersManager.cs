@@ -3,13 +3,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NaamGaatNogKomen.Classes.Scripts.Enemies;
 
-namespace NaamGaatNogKomen.Classes.Scripts.Enemies
+namespace NaamGaatNogKomen.Classes.Scripts.Managers
 {
     internal class MonstersManager
     {
@@ -19,10 +19,13 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         public static Texture2D Monster2DeathTexture;
         public static Texture2D Monster3ProjectileTexture;
 
+        private MonsterFactory monsterFactory;
+
         public List<Enemy> MonsterList;
 
         public MonstersManager()
         {
+            monsterFactory = new MonsterFactory();
         }
 
         public void LoadContent(ContentManager content)
@@ -47,24 +50,13 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             MonsterList = new List<Enemy>();
             foreach (var item in monstData)
             {
-                if (item.Value != -1)
+                if (item.Value > -1 && item.Value < 3)
                 {
                     Vector2 pos = item.Key * MapGenerator.tileSize * GameManager.gameScale;
 
-                    switch (item.Value)
-                    {
-                        case 0:
-                            MonsterList.Add(new Monster1(pos));
-                            break;
-                        case 1:
-                            MonsterList.Add(new Monster2(pos));
-                            break;
-                        case 2:
-                            MonsterList.Add(new Monster3(pos));
-                            break;
-                    }
+                    MonsterList.Add(monsterFactory.CreateMonster(item.Value, pos));
                 }
-            }  
+            }
         }
         public void Update(float deltaTime, Vector2 knightPos)
         {

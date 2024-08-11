@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Interfaces;
 using NaamGaatNogKomen.Classes.Scripts.Hero;
+using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal class Monster3:Enemy
+    internal class Monster3:Enemy, IAnimatable
     {
         public Projectile projectile;
 
@@ -24,9 +26,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public override void Update(float deltaTime, Vector2 knightPos)
         {
-            // movement handling
-
-            //// Left/Right movement
             float pos_X = position.X + frameSize.X / 2 * GameManager.gameScale;
             float knightPos_x = knightPos.X + Knight.knightSize.X / 2 * GameManager.gameScale;
             if (System.Math.Abs(knightPos_x - pos_X) > velocity.X * deltaTime * 2 && System.Math.Abs(knightPos_x - pos_X) < 3 * MapGenerator.tileSize * GameManager.gameScale)
@@ -45,8 +44,27 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
             hitbox.Update(position);
 
+            PlayAnimation(deltaTime);
 
-            // animation handling
+            if (projectile.Disapeared())
+            {
+                if (movingLeft)
+                    projectile = new Projectile(position + new Vector2(6 * GameManager.gameScale, 21 * GameManager.gameScale));
+                else
+                    projectile = new Projectile(position + new Vector2(16 * GameManager.gameScale, 21 * GameManager.gameScale));
+            }
+
+            projectile.Update(deltaTime);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            projectile.Draw(spriteBatch, MonstersManager.Monster3ProjectileTexture);
+            spriteBatch.Draw(MonstersManager.Monster3Texture, position + displacement, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
+        }
+
+        public override void PlayAnimation(float deltaTime)
+        {
             if (timer >= animationDuration) // time interval between frames
             {
                 currentFrame.X = currentFrame.X + 1 >= monsterFrameCount / 2 ? 0 : currentFrame.X + 1;
@@ -67,28 +85,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 spriteEffects = SpriteEffects.FlipHorizontally;
             else
                 spriteEffects = SpriteEffects.None;
-
-            if (projectile.Disapeared())
-            {
-                if (movingLeft)
-                    projectile = new Projectile(position + new Vector2(6 * GameManager.gameScale, 21 * GameManager.gameScale));
-                else
-                    projectile = new Projectile(position + new Vector2(16 * GameManager.gameScale, 21 * GameManager.gameScale));
-            }
-
-            projectile.Update(deltaTime);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            projectile.Draw(spriteBatch, MonstersManager.Monster3ProjectileTexture);
-            spriteBatch.Draw(MonstersManager.Monster3Texture, position + displacement, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
-        }
-
-        public void MoveLeft(int amount)
-        {
-            position.X -= amount;
-            projectile.MoveLeft(amount);
         }
     }
 }
