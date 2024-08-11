@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using NaamGaatNogKomen.Classes.Scripts.Hero;
+using NaamGaatNogKomen.Classes.Scripts.Managers;
 using System.Collections.Generic;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Hero

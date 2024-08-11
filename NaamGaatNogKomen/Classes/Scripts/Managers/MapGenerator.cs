@@ -6,7 +6,7 @@ using System.IO;
 using static System.Formats.Asn1.AsnWriter;
 using System;
 
-namespace NaamGaatNogKomen.Classes.Scripts
+namespace NaamGaatNogKomen.Classes.Scripts.Managers
 {
     internal class MapGenerator
     {
@@ -68,7 +68,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
             {
                 if (item.Value != -1)
                 {
-                    Vector2 pos; 
+                    Vector2 pos;
                     pos.X = item.Key.X * tileSize * GameManager.gameScale;
                     pos.Y = item.Key.Y * tileSize * GameManager.gameScale;
                     spriteBatch.Draw(tileset, pos,

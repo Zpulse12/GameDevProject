@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {

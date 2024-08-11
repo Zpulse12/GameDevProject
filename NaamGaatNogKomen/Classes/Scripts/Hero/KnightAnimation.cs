@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Hero
 {
@@ -37,30 +38,32 @@ namespace NaamGaatNogKomen.Classes.Scripts.Hero
 
             float absVelocity = velocity.X > 0 ? velocity.X : -velocity.X;
 
-            if (knightMovementState == KnightMovementStates.Run)
+            switch (knightMovementState)
             {
-                if (timer >= 1 / (absVelocity * 6))
+            case KnightMovementStates.Idle:
+                if (timer >= animationDuration[(int)knightMovementState]) // time interval between frames
                 {
                     currentFrame.X = currentFrame.X + 1 >= framesCount[(int)knightMovementState] ? 0 : currentFrame.X + 1;
                     timer = 0;
                 }
-            }
-            else if (knightMovementState == KnightMovementStates.Idle)
-            {
-                if (timer >= animationDuration[(int)knightMovementState])
+                break;
+
+            case KnightMovementStates.Run:
+                if (timer >= 1 / (absVelocity * 6)) // time interval between frames
                 {
                     currentFrame.X = currentFrame.X + 1 >= framesCount[(int)knightMovementState] ? 0 : currentFrame.X + 1;
                     timer = 0;
                 }
-            }
-            else if (knightMovementState == KnightMovementStates.Dead)
-            {
+                break;
+
+            case KnightMovementStates.Dead:
                 if (currentFrame.X < 2 && timer >= animationDuration[(int)knightMovementState] * 1.25f ||
-                  (currentFrame.X >= 2 && timer >= animationDuration[(int)knightMovementState]))
+                    (currentFrame.X >= 2 && timer >= animationDuration[(int)knightMovementState]))
                 {
                     currentFrame.X = currentFrame.X + 1 >= framesCount[(int)knightMovementState] ? 2 : currentFrame.X + 1;
                     timer = 0;
                 }
+                break;
             }
             timer += deltaTime;
 

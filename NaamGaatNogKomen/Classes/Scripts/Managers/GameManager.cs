@@ -8,7 +8,7 @@ using System.Reflection.Metadata;
 using System.Reflection.Emit;
 using NaamGaatNogKomen.Classes.Scripts.Enemies;
 
-namespace NaamGaatNogKomen.Classes.Scripts
+namespace NaamGaatNogKomen.Classes.Scripts.Managers
 {
     enum GameState
     {
@@ -448,8 +448,8 @@ namespace NaamGaatNogKomen.Classes.Scripts
 
             for (int i = 0; i < menuOptions.Length; i++)
             {
-                Color textColor = (i == menuSelection) ? Color.Red : Color.White;
-                float wordDistX = position.X - 0.5f * (spriteFont.MeasureString(menuOptions[i]).X);
+                Color textColor = i == menuSelection ? Color.Red : Color.White;
+                float wordDistX = position.X - 0.5f * spriteFont.MeasureString(menuOptions[i]).X;
                 Vector2 wordPos = new Vector2(wordDistX, position.Y);
 
                 spriteBatch.DrawString(spriteFont, menuOptions[i], wordPos, textColor);
@@ -460,7 +460,7 @@ namespace NaamGaatNogKomen.Classes.Scripts
         private void DrawText(SpriteBatch spriteBatch, string s)
         {
             Vector2 position = new Vector2(200, 100) * gameScale;
-            float wordDistX = position.X - 0.5f * (spriteLargeFont.MeasureString(s).X);
+            float wordDistX = position.X - 0.5f * spriteLargeFont.MeasureString(s).X;
             Vector2 wordPos = new Vector2(wordDistX, position.Y);
             spriteBatch.DrawString(spriteLargeFont, s, wordPos, Color.White);
             DrawMenuOptions(spriteBatch, gameOver);

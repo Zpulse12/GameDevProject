@@ -8,8 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NaamGaatNogKomen.Classes.Scripts.Enemies;
 
-namespace NaamGaatNogKomen.Classes.Scripts.Enemies
+namespace NaamGaatNogKomen.Classes.Scripts.Managers
 {
     internal class MonstersManager
     {
@@ -64,7 +65,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                             break;
                     }
                 }
-            }  
+            }
         }
         public void Update(float deltaTime, Vector2 knightPos)
         {
