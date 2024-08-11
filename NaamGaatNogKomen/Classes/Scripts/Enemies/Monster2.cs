@@ -47,41 +47,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 hitbox.Update(position + displacement);
             }
 
-
-            if (isAlive)
-            {
-                if (timer >= animationDuration) // time interval between frames
-                {
-                    currentFrame.X = currentFrame.X + 1 >= monsterFrameCount / 2 ? 0 : currentFrame.X + 1;
-                    timer = 0;
-                }
-                timer += deltaTime;
-
-                sourceRect = new Rectangle((int)(1 + currentFrame.X * (frameSize.X + 1)),
-                                            0, (int)frameSize.X, (int)frameSize.Y);
-            }
-
-            else
-            {
-                if (timer >= deathAnimationDuration && currentFrame.Y != -1) // time interval between frames
-                {
-                    currentFrame.X = currentFrame.X + 1 >= monsterDeathFrameCount / 2 ? 0 : currentFrame.X + 1;
-
-                    if (currentFrame.X == 0)
-                        currentFrame.Y = currentFrame.Y == 1 ? -1 : currentFrame.Y + 1;
-                    timer = 0;
-                }
-                timer += deltaTime;
-
-                sourceRect = new Rectangle((int)(1 + currentFrame.X * (deathFrameSize.X + 1)),
-                                           1 + (int)(currentFrame.Y) * (int)(deathFrameSize.Y + 1),
-                                           (int)deathFrameSize.X, (int)deathFrameSize.Y);
-            }
-
-            if (!movingLeft)
-                spriteEffects = SpriteEffects.FlipHorizontally;
-            else
-                spriteEffects = SpriteEffects.None;
+            PlayAnimation(deltaTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -107,9 +73,42 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         {
             return isAlive;
         }
-        public void MoveLeft(int amount)
+        public override void PlayAnimation(float deltaTime)
         {
-            position.X -= amount;
+            if (isAlive)
+            {
+                if (timer >= animationDuration) // time interval between frames
+                {
+                    currentFrame.X = currentFrame.X + 1 >= monsterFrameCount / 2 ? 0 : currentFrame.X + 1;
+                    timer = 0;
+                }
+                timer += deltaTime;
+
+                sourceRect = new Rectangle((int)(1 + currentFrame.X * (frameSize.X + 1)),
+                                            0, (int)frameSize.X, (int)frameSize.Y);
+            }
+            else
+            {
+                if (timer >= deathAnimationDuration && currentFrame.Y != -1) // time interval between frames
+                {
+                    currentFrame.X = currentFrame.X + 1 >= monsterDeathFrameCount / 2 ? 0 : currentFrame.X + 1;
+
+                    if (currentFrame.X == 0)
+                        currentFrame.Y = currentFrame.Y == 1 ? -1 : currentFrame.Y + 1;
+                    timer = 0;
+                }
+                timer += deltaTime;
+
+                sourceRect = new Rectangle((int)(1 + currentFrame.X * (deathFrameSize.X + 1)),
+                                           1 + (int)currentFrame.Y * (int)(deathFrameSize.Y + 1),
+                                           (int)deathFrameSize.X, (int)deathFrameSize.Y);
+            }
+
+
+            if (!movingLeft)
+                spriteEffects = SpriteEffects.FlipHorizontally;
+            else
+                spriteEffects = SpriteEffects.None;
         }
     }
 }

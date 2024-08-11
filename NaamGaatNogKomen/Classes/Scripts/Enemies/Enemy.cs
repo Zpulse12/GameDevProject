@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Interfaces;
 using NaamGaatNogKomen.Classes.Scripts;
 using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal abstract class Enemy
+    internal abstract class Enemy : IAnimatable
     {
         public Hitbox hitbox;
 
@@ -40,5 +41,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void Update(float deltaTime, Vector2 knightPos);
+        public abstract void PlayAnimation(float deltaTime);
     }
 }

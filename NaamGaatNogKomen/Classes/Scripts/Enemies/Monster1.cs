@@ -55,7 +55,16 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                     displacement.X += velocity.X * deltaTime;
             }
             hitbox.Update(position + displacement);
-            if (timer >= animationDuration)
+            PlayAnimation(deltaTime);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(MonstersManager.Monster1Texture, position + displacement, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
+        }
+        public override void PlayAnimation(float deltaTime)
+        {
+            if (timer >= animationDuration) // time interval between frames
             {
                 currentFrame.X = currentFrame.X + 1 >= monsterFrameCount ? 0 : currentFrame.X + 1;
                 timer = 0;
@@ -72,11 +81,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 spriteEffects = SpriteEffects.FlipHorizontally;
             else
                 spriteEffects = SpriteEffects.None;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(MonstersManager.Monster1Texture, position + displacement, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
         }
     }
 }
