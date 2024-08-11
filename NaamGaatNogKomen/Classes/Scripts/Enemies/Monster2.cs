@@ -1,17 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Interfaces;
 using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal class Monster2: Enemy
-    {
-     
+    internal class Monster2: Enemy, IAnimatable,IMovable
+    {  
         private bool isAlive;
 
-
-        private readonly int maxXDisplacment = (int)(6 * MapGenerator.tileSize * GameManager.gameScale);
+        private readonly int maxXDisplacement = (int)(6 * MapGenerator.tileSize * GameManager.gameScale);
         private readonly int monsterDeathFrameCount = 8;
         private readonly float deathAnimationDuration = 0.2f; //this is the time interval between frames of the animation
         private readonly Vector2 deathFrameSize = new Vector2(42, 16); // w, h
@@ -29,23 +28,9 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         public override void Update(float deltaTime, Vector2 knightPos)
         {
             if (isAlive)
-            {
-                if (movingLeft)
-                {
-                    if (displacement.X <= -maxXDisplacment)
-                        movingLeft = false;
-                    else
-                        displacement.X -= velocity.X * deltaTime;
-                }
-                else
-                {
-                    if (displacement.X >= 0)
-                        movingLeft = true;
-                    else
-                        displacement.X += velocity.X * deltaTime;
-                }
-                hitbox.Update(position + displacement);
-            }
+                Move(deltaTime);
+
+            hitbox.Update(position + displacement);
 
             PlayAnimation(deltaTime);
         }
@@ -109,6 +94,23 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 spriteEffects = SpriteEffects.FlipHorizontally;
             else
                 spriteEffects = SpriteEffects.None;
+        }
+        public void Move(float deltaTime)
+        {
+            if (movingLeft)
+            {
+                if (displacement.X <= -maxXDisplacement)
+                    movingLeft = false;
+                else
+                    displacement.X -= velocity.X * deltaTime;
+            }
+            else
+            {
+                if (displacement.X >= 0)
+                    movingLeft = true;
+                else
+                    displacement.X += velocity.X * deltaTime;
+            }
         }
     }
 }

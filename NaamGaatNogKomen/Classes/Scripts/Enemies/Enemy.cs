@@ -6,7 +6,7 @@ using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal abstract class Enemy : IAnimatable
+    internal abstract class Enemy
     {
         public Hitbox hitbox;
 

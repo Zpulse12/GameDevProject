@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NaamGaatNogKomen.Classes.Interfaces;
 using NaamGaatNogKomen.Classes.Scripts.Hero;
 using NaamGaatNogKomen.Classes.Scripts.Managers;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal class Monster3:Enemy
+    internal class Monster3:Enemy, IAnimatable
     {
         public Projectile projectile;
 
@@ -25,9 +26,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         public override void Update(float deltaTime, Vector2 knightPos)
         {
-            // movement handling
-
-            //// Left/Right movement
             float pos_X = position.X + frameSize.X / 2 * GameManager.gameScale;
             float knightPos_x = knightPos.X + Knight.knightSize.X / 2 * GameManager.gameScale;
             if (System.Math.Abs(knightPos_x - pos_X) > velocity.X * deltaTime * 2 && System.Math.Abs(knightPos_x - pos_X) < 3 * MapGenerator.tileSize * GameManager.gameScale)
