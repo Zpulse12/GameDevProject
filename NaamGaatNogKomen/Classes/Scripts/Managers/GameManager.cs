@@ -76,7 +76,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Managers
             monstersManager.LoadContent(content);
             spriteFont = content.Load<SpriteFont>("Fonts/Font");
             spriteLargeFont = content.Load<SpriteFont>("Fonts/FontLarge");
-            //GoToNextLevel();
         }
 
 
