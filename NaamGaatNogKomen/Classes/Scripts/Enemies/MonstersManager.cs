@@ -13,15 +13,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
     internal class MonstersManager
     {
-        public List<Monster1> Monster1List;
         public static Texture2D Monster1Texture;
-        public static Texture2D Monster2DeathTexture;
-
-        public List<Monster2> Monster2List;
         public static Texture2D Monster2Texture;
-
-        public List<Monster3> Monster3List;
         public static Texture2D Monster3Texture;
+        public static Texture2D Monster2DeathTexture;
         public static Texture2D Monster3ProjectileTexture;
 
         public List<Enemy> MonsterList;
@@ -34,8 +29,8 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         {
             Monster1Texture = content.Load<Texture2D>("Monster1");
             Monster2Texture = content.Load<Texture2D>("Monster2");
-            Monster2DeathTexture = content.Load<Texture2D>("Monster2Death");
             Monster3Texture = content.Load<Texture2D>("Monster3");
+            Monster2DeathTexture = content.Load<Texture2D>("Monster2Death");
             Monster3ProjectileTexture = content.Load<Texture2D>("Projectile");
         }
         public void LoadLevel(int level)
@@ -48,37 +43,28 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 
         private void AddMonsters(Dictionary<Vector2, int> monstData)
         {
-            Monster1List = new List<Monster1>();
-            Monster2List = new List<Monster2>();
-            Monster3List = new List<Monster3>();
+
             MonsterList = new List<Enemy>();
             foreach (var item in monstData)
             {
-                if (item.Value == 0) // monster 1 (flying monster)
+                if (item.Value != -1)
                 {
-                    Vector2 pos;
-                    pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
-                    pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
+                    Vector2 pos = item.Key * MapGenerator.tileSize * GameManager.gameScale;
 
-                    MonsterList.Add(new Monster1(pos));
+                    switch (item.Value)
+                    {
+                        case 0:
+                            MonsterList.Add(new Monster1(pos));
+                            break;
+                        case 1:
+                            MonsterList.Add(new Monster2(pos));
+                            break;
+                        case 2:
+                            MonsterList.Add(new Monster3(pos));
+                            break;
+                    }
                 }
-                else if (item.Value == 1) // monster 2 (crawling monster)
-                {
-                    Vector2 pos;
-                    pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
-                    pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
-
-                    MonsterList.Add(new Monster2(pos));
-                }
-                else if (item.Value == 2) // monster 3 (Throwing monster)
-                {
-                    Vector2 pos;
-                    pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
-                    pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
-
-                    MonsterList.Add(new Monster3(pos));
-                }
-            }
+            }  
         }
         public void Update(float deltaTime, Vector2 knightPos)
         {
@@ -92,13 +78,6 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
         {
             foreach (Enemy monster in MonsterList)
                 monster.Draw(spriteBatch);
-
-            //foreach (Monster1 monster in Monster1List)
-            //	monster.Draw(spriteBatch);
-            //foreach (Monster2 monster in Monster2List)
-            //	monster.Draw(spriteBatch);
-            //foreach (Monster3 monster in Monster3List)
-            //	monster.Draw(spriteBatch);
         }
     }
 }
