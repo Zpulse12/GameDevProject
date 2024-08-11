@@ -7,6 +7,7 @@ using NaamGaatNogKomen.Classes.Scripts.Hero;
 using System.Reflection.Metadata;
 using System.Reflection.Emit;
 using NaamGaatNogKomen.Classes.Scripts.Enemies;
+using System.Threading;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Managers
 {
@@ -350,13 +351,29 @@ namespace NaamGaatNogKomen.Classes.Scripts.Managers
         }
         public static bool HitMonster(Hitbox hitbox, KnightMovementStates knightMovementStates, bool isInvincible)
         {
-            if (!isInvincible)
+            foreach (var monster in monstersManager.MonsterList)
             {
-                foreach (var monster in monstersManager.MonsterList)
+                if (monster is Monster1)
                 {
-                    if (monster is Monster1)
+                    if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && !isInvincible)
                     {
-                        if (hitbox.rectangle.Intersects(monster.hitbox.rectangle))
+                        --lives;
+
+                        if (lives == 0)
+                                DeathRoutine();
+                    return true;
+                }
+            }
+                else if (monster is Monster2 monster2)
+            {
+                if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster2.IsAlive())
+                {
+                        if (knightMovementStates == KnightMovementStates.Fall)
+                        {
+                            monster2.Die();
+                            knight.Bounce();
+                        }
+                        else if (!isInvincible)
                         {
                             --lives;
 
@@ -366,38 +383,18 @@ namespace NaamGaatNogKomen.Classes.Scripts.Managers
                             return true;
                         }
                     }
-                    else if (monster is Monster2 monster2)
+                }
+                else if (monster is Monster3 monster3)
+                {
+                    if ((hitbox.rectangle.Intersects(monster.hitbox.rectangle) ||
+                    hitbox.rectangle.Intersects(monster3.projectile.hitbox.rectangle)) && !isInvincible)
                     {
-                        if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster2.IsAlive())
-                        {
-                            if (knightMovementStates == KnightMovementStates.Fall)
-                            {
-                                monster2.Die();
-                                knight.Bounce();
-                            }
-                            else if (!isInvincible)
-                            {
-                                --lives;
+                        --lives;
 
-                                if (lives == 0)
-                                    DeathRoutine();
+                        if (lives == 0)
+                            DeathRoutine();
 
-                                return true;
-                            }
-                        }
-                    }
-                    else if (monster is Monster3 monster3)
-                    {
-                        if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) ||
-                        hitbox.rectangle.Intersects(monster3.projectile.hitbox.rectangle))
-                        {
-                            --lives;
-
-                            if (lives == 0)
-                                DeathRoutine();
-
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
