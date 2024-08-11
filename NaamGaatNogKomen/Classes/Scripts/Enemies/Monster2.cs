@@ -4,65 +4,46 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal class Monster2
+    internal class Monster2: Enemy
     {
-        public Hitbox hitbox;
-
-        private float timer;
-
-        private bool movingLeft;
-        private Vector2 position;
-        private Vector2 displacment;
-
-        private Vector2 currentFrame;
-        private Rectangle sourceRect;
-        public SpriteEffects spriteEffects;
+     
         private bool isAlive;
 
 
         private readonly int maxXDisplacment = (int)(6 * MapGenerator.tileSize * GameManager.gameScale);
-        private readonly int monsterFrameCount = 4;
         private readonly int monsterDeathFrameCount = 8;
-        private readonly float animationDuration = 0.2f; //this is the time interval between frames of the animation
         private readonly float deathAnimationDuration = 0.2f; //this is the time interval between frames of the animation
-        private readonly Vector2 frameSize = new Vector2(32, 16); // w, h
         private readonly Vector2 deathFrameSize = new Vector2(42, 16); // w, h
-        private readonly Vector2 velocity = new Vector2(25 * GameManager.gameScale, 0);
+        private static readonly Rectangle HitboxData = new Rectangle((int)(4 * GameManager.gameScale), (int)(1 * GameManager.gameScale),
+                            (int)(24 * GameManager.gameScale), (int)(15 * GameManager.gameScale));
 
-        public Monster2(Vector2 position)
+        public Monster2(Vector2 position) : base(position, HitboxData)
         {
             isAlive = true;
-            movingLeft = true;
-            this.position = position;
-            displacment = Vector2.Zero;
-
-            timer = 0;
-            currentFrame = Vector2.Zero;
-
-            hitbox = new Hitbox(new Rectangle((int)(4 * GameManager.gameScale), (int)(1 * GameManager.gameScale), (int)(24 * GameManager.gameScale), (int)(15 * GameManager.gameScale)), Vector2.Zero);
-            hitbox.Update(position);
+            monsterFrameCount = 4;
+            frameSize = new Vector2(32, 16);
         }
 
 
-        public void Update(float deltaTime)
+        public override void Update(float deltaTime, Vector2 knightPos)
         {
             if (isAlive)
             {
                 if (movingLeft)
                 {
-                    if (displacment.X <= -maxXDisplacment)
+                    if (displacement.X <= -maxXDisplacment)
                         movingLeft = false;
                     else
-                        displacment.X -= velocity.X * deltaTime;
+                        displacement.X -= velocity.X * deltaTime;
                 }
                 else
                 {
-                    if (displacment.X >= 0)
+                    if (displacement.X >= 0)
                         movingLeft = true;
                     else
-                        displacment.X += velocity.X * deltaTime;
+                        displacement.X += velocity.X * deltaTime;
                 }
-                hitbox.Update(position + displacment);
+                hitbox.Update(position + displacement);
             }
 
 
@@ -102,12 +83,14 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 spriteEffects = SpriteEffects.None;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Texture2D texture, Texture2D deathTexture)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (isAlive)
-                spriteBatch.Draw(texture, position + displacment, sourceRect, Color.White, 0, Vector2.Zero, 1f * GameManager.gameScale, spriteEffects, 0);
+                spriteBatch.Draw(MonstersManager.Monster2Texture, position + displacement, sourceRect,
+                    Color.White, 0, Vector2.Zero, 1f * GameManager.gameScale, spriteEffects, 0);
             else if (currentFrame.X != -1)
-                spriteBatch.Draw(deathTexture, position + displacment, sourceRect, Color.White, 0, Vector2.Zero, 1f * GameManager.gameScale, spriteEffects, 0);
+                spriteBatch.Draw(MonstersManager.Monster2DeathTexture, position + displacement, sourceRect,
+                                    Color.White, 0, Vector2.Zero, 1f * GameManager.gameScale, spriteEffects, 0);
         }
         public void Die()
         {

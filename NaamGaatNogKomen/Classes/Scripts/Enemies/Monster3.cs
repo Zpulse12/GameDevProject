@@ -5,44 +5,24 @@ using NaamGaatNogKomen.Classes.Scripts.Hero;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal class Monster3
+    internal class Monster3:Enemy
     {
-        public Hitbox hitbox;
         public Projectile projectile;
 
-        private float timer; //this is a timer used for the coins animation
 
-        private bool movingLeft;
-        private bool movingDown;
-        private Vector2 position;
-        private Vector2 displacment;
+        private static readonly Rectangle HitboxData = new Rectangle(0, (int)(7 * GameManager.gameScale),
+                                            (int)(37 * GameManager.gameScale), (int)(30 * GameManager.gameScale));
 
-        private Vector2 currentFrame; //this is the current frame the animation is using from the sprite sheet
-        private Rectangle sourceRect; //this is used to select a portion of the spritesheet
-        private SpriteEffects spriteEffects; // this can flip the animation horizontally or vertically
-
-        private readonly int MonsterFrameCount = 8;
-        private readonly float animationDuration = 0.2f; //this is the time interval between frames of the animation
-        private readonly Vector2 frameSize = new Vector2(48, 55); // w, h
-        private readonly Vector2 velocity = new Vector2(25 * GameManager.gameScale, 20 * GameManager.gameScale);
-
-        public Monster3(Vector2 position)
+        public Monster3(Vector2 position) : base(position, HitboxData)
         {
-            movingLeft = true;
-            this.position = position;
-            displacment = Vector2.Zero;
+            frameSize = new Vector2(48, 55);
+            monsterFrameCount = 8;
 
-            timer = 0;
-            currentFrame = Vector2.Zero;
-
-            hitbox = new Hitbox(new Rectangle(0, (int)(7 * GameManager.gameScale), (int)(37 * GameManager.gameScale), (int)(30 * GameManager.gameScale)), Vector2.Zero);
-            hitbox.Update(position);
-
-            projectile = new Projectile(position);//(new Vector2(2 * MapGenerator.tileSize, 2 * MapGenerator.tileSize));
+            projectile = new Projectile(position);
         }
 
 
-        public void Update(float deltaTime, Vector2 knightPos)
+        public override void Update(float deltaTime, Vector2 knightPos)
         {
             // movement handling
 
@@ -69,7 +49,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             // animation handling
             if (timer >= animationDuration) // time interval between frames
             {
-                currentFrame.X = currentFrame.X + 1 >= MonsterFrameCount / 2 ? 0 : currentFrame.X + 1;
+                currentFrame.X = currentFrame.X + 1 >= monsterFrameCount / 2 ? 0 : currentFrame.X + 1;
 
                 if (currentFrame.X == 0)
                     currentFrame.Y = currentFrame.Y + 1 >= 2 ? 0 : currentFrame.Y + 1;
@@ -99,10 +79,10 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             projectile.Update(deltaTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Texture2D texture, Texture2D projectileTexture)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            projectile.Draw(spriteBatch, projectileTexture);
-            spriteBatch.Draw(texture, position + displacment, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
+            projectile.Draw(spriteBatch, MonstersManager.Monster3ProjectileTexture);
+            spriteBatch.Draw(MonstersManager.Monster3Texture, position + displacement, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
         }
 
         public void MoveLeft(int amount)

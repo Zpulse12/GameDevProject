@@ -4,78 +4,59 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NaamGaatNogKomen.Classes.Scripts.Enemies
 {
-    internal class Monster1
+    internal class Monster1: Enemy
     {
-        public Hitbox hitbox;
 
-        private float timer; 
 
-        private bool movingLeft;
+
         private bool movingDown;
-        private Vector2 position;
-        private Vector2 displacment;
-        private Vector2 currentFrame; 
-        private Rectangle sourceRect; 
-        public SpriteEffects spriteEffects;
-
-
 
         private readonly int maxXDisplacment = (int)(12 * MapGenerator.tileSize * GameManager.gameScale);
         private readonly int maxYDisplacment = (int)(3 * MapGenerator.tileSize * GameManager.gameScale);
-        private readonly int MonsterFrameCount = 4;
-        private readonly float animationDuration = 0.2f;
-        private readonly Vector2 frameSize = new Vector2(43, 37); // w, h
-        private readonly Vector2 velocity = new Vector2(25 * GameManager.gameScale, 20 * GameManager.gameScale);
+        private static readonly Rectangle HitboxData = new Rectangle(0, (int)(7 * GameManager.gameScale),
+                                    (int)(37 * GameManager.gameScale), (int)(22 * GameManager.gameScale));
 
-        public Monster1(Vector2 position)
+        public Monster1(Vector2 position) : base(position, HitboxData)
         {
-            movingLeft = true;
-            movingDown = true;
-            this.position = position;
-            displacment = Vector2.Zero;
-
-            timer = 0;
-            currentFrame = Vector2.Zero;
-
-            hitbox = new Hitbox(new Rectangle(0, (int)(7 * GameManager.gameScale), (int)(37 * GameManager.gameScale), (int)(22 * GameManager.gameScale)), Vector2.Zero);
-            hitbox.Update(position);
+            monsterFrameCount = 4;
+            frameSize = new Vector2(43, 37);
         }
 
 
-        public void Update(float deltaTime)
+        public override void Update(float deltaTime, Vector2 knightPos)
         {
             if (movingDown)
             {
-                if (displacment.Y >= maxYDisplacment)
+                if (displacement.Y >= maxYDisplacment)
                     movingDown = false;
                 else
-                    displacment.Y += velocity.Y * deltaTime;
+                    displacement.Y += velocity.Y * deltaTime;
             }
             else
             {
-                if (displacment.Y <= 0)
+                if (displacement.Y <= 0)
                     movingDown = true;
                 else
-                    displacment.Y -= velocity.Y * deltaTime;
+                    displacement.Y -= velocity.Y * deltaTime;
             }
             if (movingLeft)
             {
-                if (displacment.X <= -maxXDisplacment)
+                if (displacement.X <= -maxXDisplacment)
                     movingLeft = false;
                 else
-                    displacment.X -= velocity.X * deltaTime;
+                    displacement.X -= velocity.X * deltaTime;
             }
             else
             {
-                if (displacment.X >= 0)
+                if (displacement.X >= 0)
                     movingLeft = true;
                 else
-                    displacment.X += velocity.X * deltaTime;
+                    displacement.X += velocity.X * deltaTime;
             }
-            hitbox.Update(position + displacment);
+            hitbox.Update(position + displacement);
             if (timer >= animationDuration)
             {
-                currentFrame.X = currentFrame.X + 1 >= MonsterFrameCount ? 0 : currentFrame.X + 1;
+                currentFrame.X = currentFrame.X + 1 >= monsterFrameCount ? 0 : currentFrame.X + 1;
                 timer = 0;
             }
             timer += deltaTime;
@@ -92,14 +73,9 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                 spriteEffects = SpriteEffects.None;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Texture2D texture)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position + displacment, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
-        }
-
-        public void MoveLeft(int amount)
-        {
-            position.X -= amount;
+            spriteBatch.Draw(MonstersManager.Monster1Texture, position + displacement, sourceRect, Color.White, 0, Vector2.Zero, 0.75f * GameManager.gameScale, spriteEffects, 0);
         }
     }
 }

@@ -14,20 +14,20 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
     internal class MonstersManager
     {
         public List<Monster1> Monster1List;
-        private Texture2D Monster1Texture;
-        private Texture2D Monster2DeathTexture;
+        public static Texture2D Monster1Texture;
+        public static Texture2D Monster2DeathTexture;
 
         public List<Monster2> Monster2List;
-        private Texture2D Monster2Texture;
+        public static Texture2D Monster2Texture;
 
         public List<Monster3> Monster3List;
-        private Texture2D Monster3Texture;
-        private Texture2D Monster3ProjectileTexture;
+        public static Texture2D Monster3Texture;
+        public static Texture2D Monster3ProjectileTexture;
+
+        public List<Enemy> MonsterList;
 
         public MonstersManager()
         {
-            //Monster1List = new List<Monster1>();
-            //Monster1List.Add(new Monster1());
         }
 
         public void LoadContent(ContentManager content)
@@ -51,7 +51,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
             Monster1List = new List<Monster1>();
             Monster2List = new List<Monster2>();
             Monster3List = new List<Monster3>();
-
+            MonsterList = new List<Enemy>();
             foreach (var item in monstData)
             {
                 if (item.Value == 0) // monster 1 (flying monster)
@@ -60,7 +60,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                     pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
                     pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
 
-                    Monster1List.Add(new Monster1(pos));
+                    MonsterList.Add(new Monster1(pos));
                 }
                 else if (item.Value == 1) // monster 2 (crawling monster)
                 {
@@ -68,7 +68,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                     pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
                     pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
 
-                    Monster2List.Add(new Monster2(pos));
+                    MonsterList.Add(new Monster2(pos));
                 }
                 else if (item.Value == 2) // monster 3 (Throwing monster)
                 {
@@ -76,38 +76,29 @@ namespace NaamGaatNogKomen.Classes.Scripts.Enemies
                     pos.X = item.Key.X * MapGenerator.tileSize * GameManager.gameScale;
                     pos.Y = item.Key.Y * MapGenerator.tileSize * GameManager.gameScale;
 
-                    Monster3List.Add(new Monster3(pos));
+                    MonsterList.Add(new Monster3(pos));
                 }
             }
         }
         public void Update(float deltaTime, Vector2 knightPos)
         {
-            foreach (Monster1 monster in Monster1List)
-                monster.Update(deltaTime);
-            foreach (Monster2 monster in Monster2List)
-                monster.Update(deltaTime);
-            foreach (Monster3 monster in Monster3List)
+            foreach (Enemy monster in MonsterList)
                 monster.Update(deltaTime, knightPos);
         }
 
+
+
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Monster1 monster in Monster1List)
-                monster.Draw(spriteBatch, Monster1Texture);
-            foreach (Monster2 monster in Monster2List)
-                monster.Draw(spriteBatch, Monster2Texture, Monster2DeathTexture);
-            foreach (Monster3 monster in Monster3List)
-                monster.Draw(spriteBatch, Monster3Texture, Monster3ProjectileTexture);
-        }
+            foreach (Enemy monster in MonsterList)
+                monster.Draw(spriteBatch);
 
-        public void MoveLeft(int amount)
-        {
-            foreach (Monster1 monster in Monster1List)
-                monster.MoveLeft(amount);
-            foreach (Monster2 monster in Monster2List)
-                monster.MoveLeft(amount);
-            foreach (Monster3 monster in Monster3List)
-                monster.MoveLeft(amount);
+            //foreach (Monster1 monster in Monster1List)
+            //	monster.Draw(spriteBatch);
+            //foreach (Monster2 monster in Monster2List)
+            //	monster.Draw(spriteBatch);
+            //foreach (Monster3 monster in Monster3List)
+            //	monster.Draw(spriteBatch);
         }
     }
 }
