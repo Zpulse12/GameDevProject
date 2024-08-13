@@ -41,7 +41,6 @@ namespace BlackKnight.Classes.Scripts.Hero
 
             if (keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) // Jump
             {
-                // for the jump, we give the knight an intial velocity upward, then there is a gravity that push him down
                 knight.velocity.Y = -3.25f * GameManager.gameScale;
                 knight.TransitionToState(new JumpState());
             }
@@ -107,7 +106,6 @@ namespace BlackKnight.Classes.Scripts.Hero
 
             if (keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.Up)) // Jump
             {
-                // for the jump, we give the knight an intial velocity upward, then there is a gravity that push him down
                 knight.velocity.Y = -3.25f * GameManager.gameScale;
                 knight.TransitionToState(new JumpState());
             }
@@ -116,18 +114,14 @@ namespace BlackKnight.Classes.Scripts.Hero
         {
             if (knight.moveLeft)
             {
-                // increasing velocity using linear interpolation function
                 knight.velocity.X = Knight.Lerp(knight.velocity.X, -Knight.maxVelocityX, 0.75f * deltaTime);
             }
             else if (knight.moveRight)
             {
-                // increasing velocity using linear interpolation function
                 knight.velocity.X = Knight.Lerp(knight.velocity.X, Knight.maxVelocityX, 0.75f * deltaTime);
             }
             else if (knight.velocity.X != 0)
             {
-                // slowing down the knight when not pressing left or right key using linear interpolation function
-                // making the ending velocity not zero to have a smooth stop
                 if (knight.velocity.X > 0)
                 {
                     knight.velocity.X = Knight.Lerp(knight.velocity.X, -0.66f * Knight.maxVelocityX, 0.9f * deltaTime);
@@ -147,8 +141,6 @@ namespace BlackKnight.Classes.Scripts.Hero
             // collision detection
             if (knight.velocity.X != 0)
             {
-                // if the knight is moving in the x-axis, we try to push him by his velocity, if he collided
-                // with the map we push him back by the overlapping (with the map) in the x-axis value
                 knight.position.X += knight.velocity.X;
                 knight.hitbox.Update(knight.position);
                 int overlabX = GameManager.HitMap(knight.hitbox, true, false);
@@ -173,8 +165,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                 knight.hitbox.Update(knight.position);
             }
 
-            // side scrolling for the map
-            // move the map when the knight is in the middle of the screen
             if (knight.knightMovementDirection == KnightMovementDirection.Right &&
                 knight.position.X - knight.scrollAmount + knight.knightWidth / 2 > GameManager.mapWidth / 2 &&
                 knight.scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale)
@@ -183,11 +173,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                 GameManager.MoveMapLeft(knight.scrollAmount);
             }
 
-            // if the knight was not jumping or bouncing, check if there is a ground under him
-            // and if there is not, start falling
-            // if not colliding with a ground under me 
-            // trying to push the knight downward and see if he collided with something or not
-            // if he didn't then there is no ground under him, then start free falling
             knight.position.Y += 1;
             knight.hitbox.Update(knight.position);
             int overlapY = GameManager.HitMap(knight.hitbox, false, true);
@@ -201,11 +186,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                 knight.velocity.Y = 0;
                 knight.hitbox.Update(knight.position);
             }
-
-
-            ///////////////////////////////////////////////////////////
-            ///					Movement logic is done				///
-            ///////////////////////////////////////////////////////////
 
             if (Knight.invincibilityTimer > 0)
             {
@@ -271,18 +251,14 @@ namespace BlackKnight.Classes.Scripts.Hero
             {
                 if (knight.moveLeft)
                 {
-                    // increasing velocity using linear interpolation function
                     knight.velocity.X = Knight.Lerp(knight.velocity.X, -Knight.maxVelocityX, 0.75f * deltaTime);
                 }
                 else if (knight.moveRight)
                 {
-                    // increasing velocity using linear interpolation function
                     knight.velocity.X = Knight.Lerp(knight.velocity.X, Knight.maxVelocityX, 0.75f * deltaTime);
                 }
                 else if (knight.velocity.X != 0)
                 {
-                    // slowing down the knight when not pressing left or right key using linear interpolation function
-                    // making the ending velocity not zero to have a smooth stop
                     if (knight.velocity.X > 0)
                     {
                         knight.velocity.X = Knight.Lerp(knight.velocity.X, -0.66f * Knight.maxVelocityX, 0.9f * deltaTime);
@@ -298,8 +274,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                 // collision detection
                 if (knight.velocity.X != 0)
                 {
-                    // if the knight is moving in the x-axis, we try to push him by his velocity, if he collided
-                    // with the map we push him back by the overlapping (with the map) in the x-axis value
                     knight.position.X += knight.velocity.X;
                     knight.hitbox.Update(knight.position);
                     int overlabX = GameManager.HitMap(knight.hitbox, true, false);
@@ -320,8 +294,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                     knight.hitbox.Update(knight.position);
                 }
 
-                // side scrolling for the map
-                // move the map when the knight is in the middle of the screen
                 if (knight.knightMovementDirection == KnightMovementDirection.Right &&
                     knight.position.X - knight.scrollAmount + knight.knightWidth / 2 > GameManager.mapWidth / 2 &&
                     knight.scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale)
@@ -336,11 +308,6 @@ namespace BlackKnight.Classes.Scripts.Hero
 
                 if (knight.velocity.Y >= 0)
                     knight.TransitionToState(new FallState());
-
-
-                ///////////////////////////////////////////////////////////
-                ///					Movement logic is done				///
-                ///////////////////////////////////////////////////////////
 
                 if (Knight.invincibilityTimer > 0)
                 {
@@ -400,18 +367,14 @@ namespace BlackKnight.Classes.Scripts.Hero
             {
                 if (knight.moveLeft)
                 {
-                    // increasing velocity using linear interpolation function
                     knight.velocity.X = Knight.Lerp(knight.velocity.X, -Knight.maxVelocityX, 0.75f * deltaTime);
                 }
                 else if (knight.moveRight)
                 {
-                    // increasing velocity using linear interpolation function
                     knight.velocity.X = Knight.Lerp(knight.velocity.X, Knight.maxVelocityX, 0.75f * deltaTime);
                 }
                 else if (knight.velocity.X != 0)
                 {
-                    // slowing down the knight when not pressing left or right key using linear interpolation function
-                    // making the ending velocity not zero to have a smooth stop
                     if (knight.velocity.X > 0)
                     {
                         knight.velocity.X = Knight.Lerp(knight.velocity.X, -0.66f * Knight.maxVelocityX, 0.9f * deltaTime);
@@ -427,8 +390,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                 // collision detection
                 if (knight.velocity.X != 0)
                 {
-                    // if the knight is moving in the x-axis, we try to push him by his velocity, if he collided
-                    // with the map we push him back by the overlapping (with the map) in the x-axis value
                     knight.position.X += knight.velocity.X;
                     knight.hitbox.Update(knight.position);
                     int overlabX = GameManager.HitMap(knight.hitbox, true, false);
@@ -449,8 +410,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                     knight.hitbox.Update(knight.position);
                 }
 
-                // side scrolling for the map
-                // move the map when the knight is in the middle of the screen
                 if (knight.knightMovementDirection == KnightMovementDirection.Right &&
                     knight.position.X - knight.scrollAmount + knight.knightWidth / 2 > GameManager.mapWidth / 2 &&
                     knight.scrollAmount + GameManager.mapWidth < 44 * MapGenerator.tileSize * GameManager.gameScale)
@@ -463,10 +422,7 @@ namespace BlackKnight.Classes.Scripts.Hero
                 knight.position.Y += knight.velocity.Y;
                 knight.hitbox.Update(knight.position);
 
-                // after applying gravity to the knight we check if he overlaped with the map
-                // if he did, push him back with the overlapping (with the y-axis) amount
                 int overlapY = GameManager.HitMap(knight.hitbox, false, true);
-                // overlapY is the overlapping pixel count with the y-axis
                 if (overlapY > 0 && overlapY <= knight.knightHeight * GameManager.gameScale / 2)
                 {
                     if (knight.velocity.Y > 0)
@@ -486,10 +442,6 @@ namespace BlackKnight.Classes.Scripts.Hero
                     }
 
                 }
-
-                ///////////////////////////////////////////////////////////
-                ///					Movement logic is done				///
-                ///////////////////////////////////////////////////////////
 
                 if (Knight.invincibilityTimer > 0)
                 {
@@ -513,10 +465,8 @@ namespace BlackKnight.Classes.Scripts.Hero
                 knight.position.Y += knight.velocity.Y;
                 knight.hitbox.Update(knight.position);
 
-                // after applying gravity to the knight we check if he overlaped with the map
-                // if he did, push him back with the overlapping (with the y-axis) amount
                 int overlapY = GameManager.HitMap(knight.hitbox, false, true);
-                // overlapY is the overlapping pixel count with the y-axis
+
                 if (overlapY > 0 && overlapY <= knight.knightHeight * GameManager.gameScale / 2)
                 {
                     if (knight.velocity.Y > 0)
@@ -554,7 +504,6 @@ namespace BlackKnight.Classes.Scripts.Hero
             knight.currentFrame.X = 0;
             knight.timer = 0;
 
-            // necessary displacements for proper animation
             knight.position.Y -= 5 * GameManager.gameScale;
             knight.position.X -= 13 * GameManager.gameScale;
 
