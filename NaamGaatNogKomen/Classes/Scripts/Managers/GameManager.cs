@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 using NaamGaatNogKomen.Classes.Scripts.Hero;
 using System.Reflection.Metadata;
 using System.Reflection.Emit;
@@ -348,7 +349,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Managers
             }
             return false;
         }
-        public static bool HitMonster(Hitbox hitbox, KnightMovementStates knightMovementStates, bool isInvincible)
+        public static bool HitMonster(Hitbox hitbox, bool isInvincible, bool isFalling = false)
         {
             foreach (var monster in monstersManager.MonsterList)
             {
@@ -367,7 +368,7 @@ namespace NaamGaatNogKomen.Classes.Scripts.Managers
             {
                 if (hitbox.rectangle.Intersects(monster.hitbox.rectangle) && monster2.IsAlive())
                 {
-                        if (knightMovementStates == KnightMovementStates.Fall)
+                        if (isFalling)
                         {
                             monster2.Die();
                             knight.Bounce();
